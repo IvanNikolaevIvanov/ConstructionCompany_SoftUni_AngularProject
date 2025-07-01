@@ -1,14 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using static ConstructionCompany.Infrastructure.Constants.DataConstants;
+using ConstructionCompany.Infrastructure.Enumerations;
 
-public enum ApplicationStatus
-{
-    Created = 0,              // Initial draft by agent
-    Submitted = 1,            // Sent to supervisor
-    ReturnedBySupervisor = 2, // Supervisor returned with feedback
-    Approved = 3,             // Approved by supervisor
-    Finished = 4              // Finalized/completed project
-}
+
 
 
 public class ProjectApplication
@@ -17,11 +12,11 @@ public class ProjectApplication
     public int Id { get; set; }
 
     [Required]
-    [MaxLength(150)]
+    [MaxLength(TitleMaxLength)]
     public string Title { get; set; }
 
     [Required]
-    [MaxLength(1000)]
+    [MaxLength(DescriptionMaxLength)]
     public string Description { get; set; }
 
     [Required]
@@ -32,15 +27,15 @@ public class ProjectApplication
 
     // Client Info
     [Required]
-    [MaxLength(100)]
+    [MaxLength(ClientNameMaxLength)]
     public string ClientName { get; set; }
 
     [Required]
-    [MaxLength(100)]
+    [MaxLength(ClientBankMaxLength)]
     public string ClientBank { get; set; }
 
     [Required]
-    [MaxLength(34)] // IBAN max length
+    [MaxLength(ClientBankIbanMaxLength)] // IBAN max length
     public string ClientBankIban { get; set; }
 
     // Financial
@@ -49,7 +44,7 @@ public class ProjectApplication
     public decimal Price { get; set; }
 
     [Required]
-    [MaxLength(300)]
+    [MaxLength(PriceInWordsMaxLength)]
     public string PriceInWords { get; set; }
 
     // Construction Materials

@@ -1,4 +1,5 @@
 using ConstructionCompany.API.SeedDb;
+using ConstructionCompany.Core.Services;
 using ConstructionCompany.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -38,9 +39,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//Scoped Services
+builder.Services.AddScoped<ProjectApplicationService>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
