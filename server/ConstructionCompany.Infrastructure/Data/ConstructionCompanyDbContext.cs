@@ -30,7 +30,7 @@ public class ConstructionCompanyDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(f => f.Author)
             .WithMany()
             .HasForeignKey(f => f.AuthorId)
-            .OnDelete(DeleteBehavior.Restrict);  // 👈 disable cascade
+            .OnDelete(DeleteBehavior.Restrict); 
     }
 
 }
