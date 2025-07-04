@@ -1,0 +1,49 @@
+@use "bootstrap/scss/bootstrap" as bootstrap;
+@use "../variables" as *;
+@use "../base/mixins" as mixins;
+@use "sass:map";
+@use "sass:list";
+
+// Custom helper for breakpoint infix (similar to Bootstrap internal)
+@function breakpoint-infix($breakpoint) {
+  @return if($breakpoint == xs, "", "-#{$breakpoint}");
+}
+
+.absolute-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: $zindex-fixed;
+}
+
+.position-absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: $zindex-fixed;
+}
+
+@each $breakpoint in map.keys(bootstrap.$grid-breakpoints) {
+  @include bootstrap.media-breakpoint-up($breakpoint) {
+    @each $spacer, $value in $spacers {
+      .position-top#{breakpoint-infix($breakpoint)}-#{$spacer} {
+        top: $value !important;
+      }
+
+      .position-left#{breakpoint-infix($breakpoint)}-#{$spacer} {
+        left: $value !important;
+      }
+
+      .position-right#{breakpoint-infix($breakpoint)}-#{$spacer} {
+        right: $value !important;
+      }
+
+      .position-bottom#{breakpoint-infix($breakpoint)}-#{$spacer} {
+        bottom: $value !important;
+      }
+    }
+  }
+}

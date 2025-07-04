@@ -1,0 +1,35 @@
+@use "../../../node_modules/bootstrap/scss/bootstrap" as bootstrap;
+@use "sass:map";
+@use "mixins" as mixins;
+
+.row[class*="vertical-divider-"] {
+  overflow-x: hidden;
+  position: relative;
+
+  > [class*="col"]:nth-child(n + 2):after {
+    content: "";
+    background-color: var(--vertical-divider-color);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    @media (max-width: map.get(bootstrap.$container-max-widths, md)) {
+      width: 100%;
+      height: mixins.rem(1);
+      left: 0;
+      top: mixins.rem(-4);
+    }
+
+    @media (min-width: map.get(bootstrap.$grid-breakpoints, md)) {
+      width: mixins.rem(1);
+      height: auto;
+      left: mixins.rem(-1);
+    }
+  }
+}
+
+@each $color, $value in map.merge(bootstrap.$colors, bootstrap.$theme-colors) {
+  .row.vertical-divider-#{$color} {
+    --vertical-divider-color: #{$value};
+  }
+}

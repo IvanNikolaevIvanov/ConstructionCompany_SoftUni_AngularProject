@@ -1,0 +1,52 @@
+//
+// Form section
+//
+@use "bootstrap/scss/bootstrap" as bootstrap;
+@use "../variables" as *;
+@use "../base/mixins" as mixins;
+@use "sass:map";
+@use "sass:list";
+
+.form-collapsible-section-body:before {
+  content: "";
+  display: block;
+  height: map_get($spacers, 14);
+}
+
+.form-collapsible-section-head {
+  background: $secondary;
+  font-size: mixins.rem(21);
+  line-height: mixins.rem(24);
+  cursor: pointer;
+  display: flex;
+  color: map_get($colors, black);
+  overflow: hidden;
+
+  @if $enable-rounded {
+    border-radius: $border-radius;
+  }
+}
+
+.form-collapsible-section-title,
+.form-collapsible-section-toggle,
+.form-collapsible-section-number {
+  display: flex;
+  align-items: center;
+  padding: map_get($spacers, 8);
+}
+
+.form-collapsible-section-number {
+  background: darken($secondary, 5%);
+  justify-content: center;
+  min-width: mixins.rem(60);
+}
+
+.form-collapsible-section-toggle {
+  transition: bootstrap.$transition-base;
+  margin-left: auto;
+}
+
+.form-collapsible-section[aria-expanded="true"]
+  .form-collapsible-section-toggle {
+  transform: rotate(-180deg);
+}

@@ -1,0 +1,34 @@
+//
+// Mixins & Functions
+//
+
+@use "sass:math";
+@use "sass:meta";
+
+// Rem Calculator (modern version)
+@function rem($size) {
+  @if meta.type-of($size) == "number" and not math.is-unitless($size) {
+    @return math.div(math.div($size, ($size * 0 + 1)), 16) * 1rem;
+  } @else {
+    @return math.div($size, 16) * 1rem;
+  }
+}
+
+// Placeholder shorthand (leave as is, still valid)
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &:-moz-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
