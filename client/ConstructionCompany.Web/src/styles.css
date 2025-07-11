@@ -26547,3 +26547,24 @@ body.page-scrolled .header-fixed {
 .sds-block-foreground.sds-block-foreground-right {
   margin-left: auto;
 }
+
+#about {
+  scroll-margin-top: 100px; 
+}
+
+#services {
+  scroll-margin-top: 100px;
+}
+
+#why-choose-us {
+  scroll-margin-top: 100px;
+}
+
+#contacts {
+  scroll-margin-top: 100px;
+}
+
+#our-work {
+  scroll-margin-top: 100px;
+}
+
