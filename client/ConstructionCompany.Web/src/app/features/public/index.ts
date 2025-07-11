@@ -1,3 +1,4 @@
+export * from './app-home/app-home';
 export * from './app-about/app-about';
 export * from './app-contacts/app-contacts';
 export * from './app-our-work/app-our-work';

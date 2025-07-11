@@ -5,12 +5,14 @@ import { AppAbout } from '../app-about/app-about';
 import { AppWhyUs } from '../app-why-us/app-why-us';
 import { AppOurWork } from '../app-our-work/app-our-work';
 import { AppContacts } from '../app-contacts/app-contacts';
+import { AppHome } from '../app-home/app-home';
 
 @Component({
   selector: 'app-public-page',
   imports: [
     Header,
     Footer,
+    AppHome,
     AppAbout,
     AppServices,
     AppWhyUs,

@@ -1,1 +1,199 @@
-<p>app-contacts works!</p>
+<section id="contacts">
+  <div class="section bg-secondary">
+    <div class="section-content container">
+      <div class="text-center">
+        <small
+          class="fs-1 font-family-secondary text-uppercase font-weight-bold letter-spacing-caption text-muted"
+        >
+          We answer within 24 hours
+        </small>
+        <h1>Contact Us</h1>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <form
+            onsubmit="emailSend(); reset(); return false;"
+            class="row mt-17"
+          >
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label for="first_name" class="form-label">First name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="first_name"
+                  placeholder="first name"
+                  name="first name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label for="last_name" class="form-label">Last name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="last_name"
+                  placeholder="last name"
+                  name="last name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  placeholder="phone"
+                  name="phone"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="email"
+                  placeholder="email"
+                  name="email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label for="service" class="form-label"
+                  >Select the service</label
+                >
+                <select class="custom-select" id="service">
+                  <option value="1">Kitchen Remodeling</option>
+                  <option value="2">Bathroom Remodeling</option>
+                  <option value="3">Roofing</option>
+                  <option value="4">Windows & Doors</option>
+                  <option value="5">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="form-group">
+                <label for="zip-code" class="form-label">Your zip code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="zip-code"
+                  placeholder="zip-code"
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label for="message" class="form-label">Message</label>
+                <textarea
+                  id="message"
+                  class="form-control"
+                  rows="3"
+                  placeholder="message"
+                  name="message"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div
+              class="col-12 d-flex justify-content-between align-items-center flex-column flex-md-row"
+            >
+              <div class="form-group mb-0">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  Send message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container py-19 py-lg-20">
+    <div class="row vertical-divider-light">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0">
+          <div class="card-body py-17 px-10 text-center">
+            <div class="card-icon mb-6">
+              <i class="material-icons">location_on</i>
+            </div>
+            <div
+              class="fs-1 lh-1 my-5 font-family-secondary text-uppercase font-weight-bold letter-spacing-caption text-muted"
+            >
+              Located At
+            </div>
+            <p class="mb-0 text-body">
+              18 Kinberly way , Cotuit, 02635<br />Massachusetts, United States
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0">
+          <div class="card-body py-17 px-10 text-center">
+            <div class="card-icon mb-6">
+              <i class="material-icons">phone</i>
+            </div>
+            <div
+              class="fs-1 lh-1 my-5 font-family-secondary text-uppercase font-weight-bold letter-spacing-caption text-muted"
+            >
+              Mobile phone
+            </div>
+            <p class="mb-0 text-body">+1 774-208-3395</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0">
+          <div class="card-body py-17 px-10 text-center">
+            <div class="card-icon mb-6">
+              <i class="material-icons">access_time</i>
+            </div>
+            <div
+              class="fs-1 lh-1 my-5 font-family-secondary text-uppercase font-weight-bold letter-spacing-caption text-muted"
+            >
+              Working hours
+            </div>
+            <p class="mb-0 text-body">09:00 AM - 17:00 PM</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card border-0">
+          <div class="card-body py-17 px-10 text-center">
+            <div class="card-icon mb-6">
+              <i class="material-icons">alternate_email</i>
+            </div>
+            <div
+              class="fs-1 lh-1 my-5 font-family-secondary text-uppercase font-weight-bold letter-spacing-caption text-muted"
+            >
+              Email
+            </div>
+            <p class="mb-0 text-body">handymanofcapecod&#64;gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47721.127468294166!2d-70.49033238874439!3d41.62179920860212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e4d2ade82c8dcb%3A0x6ac1ec978673dc58!2sCotuit%2C%20MA%2002635%2C%20USA!5e0!3m2!1sen!2s!4v1729432211350!5m2!1sen!2s"
+      style="border: 0"
+      width="100%"
+      height="450"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+</section>
