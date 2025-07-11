@@ -18,35 +18,49 @@
             data-toggle="shuffle-grid"
             data-target="#services-grid"
           >
-            <button class="btn btn-light selected" data-value="all">All</button>
-            <button class="btn btn-light" data-value="construction">
+            <button
+              class="btn btn-light"
+              [class.selected]="selectedFilter === 'all'"
+              (click)="onFilterClick('all')"
+            >
+              All
+            </button>
+            <button
+              class="btn btn-light"
+              [class.selected]="selectedFilter === 'construction'"
+              (click)="onFilterClick('construction')"
+            >
               Construction
             </button>
-            <button class="btn btn-light" data-value="design">Design</button>
+            <button
+              class="btn btn-light"
+              [class.selected]="selectedFilter === 'design'"
+              (click)="onFilterClick('design')"
+            >
+              Design
+            </button>
           </div>
         </div>
       </div>
     </div>
     <div
-      class="shuffle-grid shuffle-grid-gap-14 shuffle-grid-cols-1 shuffle-grid-cols-lg-2 mt-14"
+      #servicesGrid
       id="services-grid"
+      class="shuffle-grid shuffle-grid-gap-14 shuffle-grid-cols-1 shuffle-grid-cols-lg-2 mt-14"
     >
-      <div class="shuffle-grid-item" data-groups="design">
+      <div class="shuffle-grid-item" data-groups="construction">
         <div class="card border-0">
           <div class="row no-gutters">
             <div class="col-sm-4 position-relative">
-              <img
-                src="src/assets/images/image-18.jpg"
-                class="img-overlay"
-                alt="photo"
-              />
+              <img src="Construction_3.jpg" class="img-overlay" alt="photo" />
             </div>
             <div class="col-sm-8">
               <div class="card-body py-11 px-14">
-                <h2 class="fs-5 fs-md-6 fs-lg-7">Kitchen Remodeling</h2>
+                <h2 class="fs-5 fs-md-6 fs-lg-7">Construction</h2>
                 <p>
-                  Transform your kitchen into a modern, functional space
-                  tailored to meet your unique style and needs.
+                  We are a trusted construction company delivering high-quality
+                  building solutions with precision, integrity, and over a
+                  century of expertise.
                 </p>
               </div>
             </div>
@@ -57,19 +71,15 @@
         <div class="card border-0">
           <div class="row no-gutters">
             <div class="col-sm-4 position-relative">
-              <img
-                src="src/assets/images/image-19.jpg"
-                class="img-overlay"
-                alt="photo"
-              />
+              <img src="remodel_1.jpg" class="img-overlay" alt="photo" />
             </div>
             <div class="col-sm-8">
               <div class="card-body py-11 px-14">
-                <h2 class="fs-5 fs-md-6 fs-lg-7">Bathroom Remodeling</h2>
+                <h2 class="fs-5 fs-md-6 fs-lg-7">Remodeling</h2>
                 <p>
-                  Elevate your bathroom to bring luxury and comfort to your
-                  daily routine. We deliver personalized solutions for a
-                  beautifully refreshed space.
+                  We specialize in remodeling buildings with craftsmanship and
+                  care, transforming spaces into beautiful, functional
+                  environments tailored to your lifestyle.
                 </p>
               </div>
             </div>
@@ -80,19 +90,15 @@
         <div class="card border-0">
           <div class="row no-gutters">
             <div class="col-sm-4 position-relative">
-              <img
-                src="src/assets/images/image-20.jpg"
-                class="img-overlay"
-                alt="photo"
-              />
+              <img src="renovation_1.jpg" class="img-overlay" alt="photo" />
             </div>
             <div class="col-sm-8">
               <div class="card-body py-11 px-14">
-                <h2 class="fs-5 fs-md-6 fs-lg-7">Flooring</h2>
+                <h2 class="fs-5 fs-md-6 fs-lg-7">Renovation</h2>
                 <p>
-                  Enhance your home with our top-quality flooring offering a
-                  wide range of materials from hardwood to tile. We ensure
-                  precise craftsmanship and attention to detail.
+                  We bring new life to old spaces through expert renovation,
+                  combining modern design with quality craftsmanship to refresh
+                  and enhance your building.
                 </p>
               </div>
             </div>
@@ -103,65 +109,15 @@
         <div class="card border-0">
           <div class="row no-gutters">
             <div class="col-sm-4 position-relative">
-              <img
-                src="src/assets/images/image-21.jpg"
-                class="img-overlay"
-                alt="photo"
-              />
+              <img src="design_1.jpg" class="img-overlay" alt="photo" />
             </div>
             <div class="col-sm-8">
               <div class="card-body py-11 px-14">
-                <h2 class="fs-5 fs-md-6 fs-lg-7">Roofing</h2>
+                <h2 class="fs-5 fs-md-6 fs-lg-7">Design</h2>
                 <p>
-                  Protect your home with our reliable roofing services,
-                  specializing in high-quality installations, repairs, and
-                  replacements.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="shuffle-grid-item" data-groups="construction">
-        <div class="card border-0">
-          <div class="row no-gutters">
-            <div class="col-sm-4 position-relative">
-              <img
-                src="src/assets/images/image-22.jpg"
-                class="img-overlay"
-                alt="photo"
-              />
-            </div>
-            <div class="col-sm-8">
-              <div class="card-body py-11 px-14">
-                <h2 class="fs-5 fs-md-6 fs-lg-7">Windows & Doors</h2>
-                <p>
-                  Upgrade your home's efficiency and style with our expert
-                  windows and doors installation services, offering a variety of
-                  designs to suit your taste and needs.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="shuffle-grid-item" data-groups="construction">
-        <div class="card border-0">
-          <div class="row no-gutters">
-            <div class="col-sm-4 position-relative">
-              <img
-                src="src/assets/images/image-23.jpg"
-                class="img-overlay"
-                alt="photo"
-              />
-            </div>
-            <div class="col-sm-8">
-              <div class="card-body py-11 px-14">
-                <h2 class="fs-5 fs-md-6 fs-lg-7">Painting</h2>
-                <p>
-                  Revitalize your space with our professional painting services,
-                  providing flawless interior and exterior finishes that bring
-                  color and life to your home.
+                  We provide innovative and functional design solutions for
+                  large-scale construction projects, ensuring every detail meets
+                  the highest standards of form and function.
                 </p>
               </div>
             </div>

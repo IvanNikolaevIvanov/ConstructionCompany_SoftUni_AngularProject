@@ -18,11 +18,32 @@
             data-toggle="shuffle-grid"
             data-target="#projects-grid"
           >
-            <button class="btn btn-light selected" data-value="all">All</button>
+            <!-- <button class="btn btn-light selected" data-value="all">All</button>
             <button class="btn btn-light" data-value="construction">
               Construction
             </button>
-            <button class="btn btn-light" data-value="design">Design</button>
+            <button class="btn btn-light" data-value="design">Design</button> -->
+            <button
+              class="btn btn-light"
+              [class.selected]="selectedFilter === 'all'"
+              (click)="onFilterClick('all')"
+            >
+              All
+            </button>
+            <button
+              class="btn btn-light"
+              [class.selected]="selectedFilter === 'construction'"
+              (click)="onFilterClick('construction')"
+            >
+              Construction
+            </button>
+            <button
+              class="btn btn-light"
+              [class.selected]="selectedFilter === 'design'"
+              (onclick)="onFilterClick('design')"
+            >
+              Design
+            </button>
           </div>
         </div>
       </div>
@@ -35,7 +56,7 @@
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/image-47.jpg)"
+            style="background-image: url(building_1.jpg)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -46,17 +67,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/image-47.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_1.jpg" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/image-48.jpg)"
+            style="background-image: url(building_2.jpg)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -67,17 +85,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/image-48.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_2.jpg" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="design">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/image-49.jpg)"
+            style="background-image: url(building_3.jpg)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -88,17 +103,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/image-49.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_3.jpg" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction,design">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/OurWork-5.jpg)"
+            style="background-image: url(building_4.jpg)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -109,17 +121,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/OurWork-5.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_4.jpg" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction,design">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/OurWork-6.jpg)"
+            style="background-image: url(building_5.jpg)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -130,17 +139,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/OurWork-6.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_5.jpg" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="design">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/OurWork-7.jpg)"
+            style="background-image: url(building_6.jpeg)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -151,17 +157,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/OurWork-7.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_6.jpeg" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/OurWork-8.jpg)"
+            style="background-image: url(building_7.webp)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -172,17 +175,14 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/OurWork-8.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_7.webp" class="card-link-overlay"></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="design">
         <div class="card card-square bg-transparent border-0">
           <div
             class="card-bg"
-            style="background-image: url(src/assets/images/OurWork-9.jpg)"
+            style="background-image: url(building_8.webp)"
           ></div>
           <div
             class="card-bg card-bg-hover"
@@ -193,10 +193,7 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a
-            href="src/assets/images/OurWork-9.jpg"
-            class="card-link-overlay"
-          ></a>
+          <a href="building_8.webp" class="card-link-overlay"></a>
         </div>
       </div>
     </div>
