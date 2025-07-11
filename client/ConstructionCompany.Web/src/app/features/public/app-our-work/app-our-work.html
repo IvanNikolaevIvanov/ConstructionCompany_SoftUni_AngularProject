@@ -25,22 +25,22 @@
             <button class="btn btn-light" data-value="design">Design</button> -->
             <button
               class="btn btn-light"
-              [class.selected]="selectedFilter === 'all'"
+              [ngClass]="{ selected: selectedCategory === 'all' }"
               (click)="onFilterClick('all')"
             >
               All
             </button>
             <button
               class="btn btn-light"
-              [class.selected]="selectedFilter === 'construction'"
+              [ngClass]="{ selected: selectedCategory === 'construction' }"
               (click)="onFilterClick('construction')"
             >
               Construction
             </button>
             <button
               class="btn btn-light"
-              [class.selected]="selectedFilter === 'design'"
-              (onclick)="onFilterClick('design')"
+              [ngClass]="{ selected: selectedCategory === 'design' }"
+              (click)="onFilterClick('design')"
             >
               Design
             </button>
@@ -50,6 +50,7 @@
     </div>
     <div
       class="shuffle-grid shuffle-grid-gap-14 shuffle-grid-cols-1 shuffle-grid-cols-md-2 shuffle-grid-cols-xl-4 mt-14"
+      #projectsGrid
       id="projects-grid"
     >
       <div class="shuffle-grid-item" data-groups="design">
@@ -67,7 +68,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_1.jpg" class="card-link-overlay"></a>
+          <a
+            href="building_1.jpg"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction">
@@ -85,7 +90,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_2.jpg" class="card-link-overlay"></a>
+          <a
+            href="building_2.jpg"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="design">
@@ -103,7 +112,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_3.jpg" class="card-link-overlay"></a>
+          <a
+            href="building_3.jpg"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction,design">
@@ -121,7 +134,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_4.jpg" class="card-link-overlay"></a>
+          <a
+            href="building_4.jpg"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction,design">
@@ -139,7 +156,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_5.jpg" class="card-link-overlay"></a>
+          <a
+            href="building_5.jpg"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="design">
@@ -157,7 +178,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_6.jpeg" class="card-link-overlay"></a>
+          <a
+            href="building_6.jpeg"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="construction">
@@ -175,7 +200,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_7.webp" class="card-link-overlay"></a>
+          <a
+            href="building_7.webp"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
       <div class="shuffle-grid-item" data-groups="design">
@@ -193,7 +222,11 @@
           >
             <i class="material-icons fs-8">zoom_in</i>
           </div>
-          <a href="building_8.webp" class="card-link-overlay"></a>
+          <a
+            href="building_8.webp"
+            class="card-link-overlay"
+            data-lg-size="1406-1390"
+          ></a>
         </div>
       </div>
     </div>

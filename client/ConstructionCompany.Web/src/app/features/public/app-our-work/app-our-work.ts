@@ -1,32 +1,48 @@
+import { CommonModule } from '@angular/common';
+import lightGallery from 'lightgallery';
+import lgZoom from 'lightgallery/plugins/zoom';
 import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
 import Shuffle from 'shufflejs';
 
 @Component({
   selector: 'app-our-work',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './app-our-work.html',
   styleUrl: './app-our-work.scss',
 })
 export class AppOurWork implements AfterViewInit {
-  private shuffleInstance!: Shuffle;
+  @ViewChild('projectsGrid', { static: false }) projectsGrid!: ElementRef;
 
-  @ViewChild('serviceGrid') servicesGrid!: ElementRef<HTMLDivElement>;
+  selectedCategory: string = 'all';
 
-  selectedFilter: string = 'all';
+  shuffleInstance!: Shuffle;
 
   ngAfterViewInit(): void {
-    this.shuffleInstance = new Shuffle(this.servicesGrid.nativeElement, {
-      itemSelector: '.shuffle-grid-item',
-      buffer: 1,
-    });
+    if (this.projectsGrid?.nativeElement) {
+      lightGallery(this.projectsGrid.nativeElement, {
+        selector: '.card-link-overlay',
+        plugins: [lgZoom],
+        speed: 500,
+      });
+
+      this.shuffleInstance = new Shuffle(this.projectsGrid.nativeElement, {
+        itemSelector: '.shuffle-grid-item',
+      });
+    }
   }
 
-  onFilterClick(filter: string) {
-    this.selectedFilter = filter;
-    if (filter === 'all') {
-      this.shuffleInstance.filter(Shuffle.ALL_ITEMS);
+  onFilterClick(category: string): void {
+    this.selectedCategory = category;
+
+    if (!this.shuffleInstance) return;
+
+    if (category === 'all') {
+      this.shuffleInstance.filter(() => true);
     } else {
-      this.shuffleInstance.filter(filter);
+      this.shuffleInstance.filter((element) => {
+        const groups = element.getAttribute('data-groups')?.split(',') || [];
+        return groups.includes(category);
+      });
     }
   }
 }

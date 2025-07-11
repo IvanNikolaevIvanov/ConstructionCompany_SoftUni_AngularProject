@@ -20,21 +20,21 @@
           >
             <button
               class="btn btn-light"
-              [class.selected]="selectedFilter === 'all'"
+              [ngClass]="{ selected: selectedCategory === 'all' }"
               (click)="onFilterClick('all')"
             >
               All
             </button>
             <button
               class="btn btn-light"
-              [class.selected]="selectedFilter === 'construction'"
+              [ngClass]="{ selected: selectedCategory === 'construction' }"
               (click)="onFilterClick('construction')"
             >
               Construction
             </button>
             <button
               class="btn btn-light"
-              [class.selected]="selectedFilter === 'design'"
+              [ngClass]="{ selected: selectedCategory === 'design' }"
               (click)="onFilterClick('design')"
             >
               Design

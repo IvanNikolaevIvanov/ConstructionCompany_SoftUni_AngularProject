@@ -30,6 +30,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "node_modules/lightgallery/css/lightgallery-bundle.min.css",
               "src/styles.css",
               "node_modules/jarallax/dist/jarallax.css"
             ]
