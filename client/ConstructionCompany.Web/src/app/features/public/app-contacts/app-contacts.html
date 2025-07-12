@@ -11,7 +11,7 @@
       </div>
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
-          <form
+          <!-- <form
             onsubmit="emailSend(); reset(); return false;"
             class="row mt-17"
           >
@@ -73,10 +73,10 @@
                   >Select the service</label
                 >
                 <select class="custom-select" id="service">
-                  <option value="1">Kitchen Remodeling</option>
-                  <option value="2">Bathroom Remodeling</option>
-                  <option value="3">Roofing</option>
-                  <option value="4">Windows & Doors</option>
+                  <option value="1">Construction</option>
+                  <option value="2">Remodeling</option>
+                  <option value="3">Renovation</option>
+                  <option value="4">Design</option>
                   <option value="5">Other</option>
                 </select>
               </div>
@@ -114,6 +114,100 @@
                 </button>
               </div>
             </div>
+          </form> -->
+          <!-- contacts.component.html -->
+          <form (submit)="sendEmail($event)" #contactForm="ngForm" class="row">
+            <div class="col-12 col-md-6 mb-3">
+              <label for="first_name">First name</label>
+              <input
+                id="first_name"
+                name="first_name"
+                ngModel
+                required
+                class="form-control"
+                placeholder="First name"
+              />
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="last_name">Last name</label>
+              <input
+                id="last_name"
+                name="last_name"
+                ngModel
+                required
+                class="form-control"
+                placeholder="Last name"
+              />
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="phone">Phone</label>
+              <input
+                id="phone"
+                name="phone"
+                ngModel
+                required
+                class="form-control"
+                placeholder="Phone"
+              />
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="from_email">Email</label>
+              <input
+                id="from_email"
+                type="email"
+                name="from_email"
+                ngModel
+                required
+                class="form-control"
+                placeholder="Email"
+              />
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="service">Select the service</label>
+              <select
+                id="service"
+                name="service"
+                ngModel
+                required
+                class="form-control"
+              >
+                <option value="" disabled selected>
+                  -- Choose a Service --
+                </option>
+                <option value="Construction">Construction</option>
+                <option value="Remodeling">Remodeling</option>
+                <option value="Renovation">Renovation</option>
+                <option value="Design">Design</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <label for="zip_code">Your zip code</label>
+              <input
+                id="zip_code"
+                name="zip_code"
+                ngModel
+                class="form-control"
+                placeholder="Zip code"
+              />
+            </div>
+            <div class="col-12 mb-3">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                ngModel
+                required
+                class="form-control"
+                rows="5"
+                placeholder="Your message"
+              ></textarea>
+            </div>
+            <div class="col-12 text-center mt-10">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Send message
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -133,7 +227,7 @@
               Located At
             </div>
             <p class="mb-0 text-body">
-              18 Kinberly way , Cotuit, 02635<br />Massachusetts, United States
+              265 Central Park West , New York, 10024<br />
             </p>
           </div>
         </div>
@@ -179,7 +273,7 @@
             >
               Email
             </div>
-            <p class="mb-0 text-body">handymanofcapecod&#64;gmail.com</p>
+            <p class="mb-0 text-body">sales&#64;bricksandsteel.com</p>
           </div>
         </div>
       </div>
@@ -187,7 +281,7 @@
   </div>
   <div class="d-flex justify-content-center">
     <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47721.127468294166!2d-70.49033238874439!3d41.62179920860212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e4d2ade82c8dcb%3A0x6ac1ec978673dc58!2sCotuit%2C%20MA%2002635%2C%20USA!5e0!3m2!1sen!2s!4v1729432211350!5m2!1sen!2s"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3020.934178050594!2d-73.9710245582366!3d40.78546119351685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2589b1a90ee33%3A0xee6630bddbbf6711!2s265%20Central%20Prk%20W%20%231c%2C%20New%20York%2C%20NY%2010024!5e0!3m2!1sen!2sus!4v1752306511293!5m2!1sen!2sus"
       style="border: 0"
       width="100%"
       height="450"
