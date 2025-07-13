@@ -1,50 +1,68 @@
 <section class="header header-fixed-xl">
   <div class="header-main bg-white">
     <div class="container">
-      <div class="row">
-        <nav
-          class="navbar navbar-expand-lg navbar-light w-100 navbar-fixed-top"
-          id="header-navbar"
-        >
-          <a class="header-navbar" routerLink="/">
-            <img src="logo.png" width="200" height="200" alt="logo" />
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+      <div class="row flex-column flex-lg-row align-items-center">
+        <div class="col-12 d-flex justify-content-end mb-2 pt-2">
+          <a routerLink="/login" class="btn btn-outline-primary btn-sm mr-2"
+            >Login</a
           >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link text-uppercase" href="#home">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-uppercase" href="#about">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-uppercase" href="#services">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-uppercase" href="#why-choose-us"
-                  >Why choose us</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-uppercase" href="#our-work">Our work</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-uppercase" href="#contacts">Contacts</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+          <a routerLink="/register" class="btn btn-primary btn-sm">Register</a>
+        </div>
+
+        <!-- Navbar -->
+        <div class="col-12">
+          <nav
+            class="navbar navbar-expand-lg navbar-light w-100 navbar-fixed-top p-0"
+            id="header-navbar"
+          >
+            <a class="header-navbar" routerLink="/">
+              <img src="logo.png" width="200" height="200" alt="logo" />
+            </a>
+
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link text-uppercase" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-uppercase" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-uppercase" href="#services"
+                    >Services</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-uppercase" href="#why-choose-us"
+                    >Why choose us</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-uppercase" href="#our-work"
+                    >Our work</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-uppercase" href="#contacts"
+                    >Contacts</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <!-- Buttons row (top of header) -->
       </div>
     </div>
   </div>

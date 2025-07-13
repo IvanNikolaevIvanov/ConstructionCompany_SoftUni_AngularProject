@@ -33,6 +33,9 @@
               "node_modules/lightgallery/css/lightgallery-bundle.min.css",
               "src/styles.css",
               "node_modules/jarallax/dist/jarallax.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {

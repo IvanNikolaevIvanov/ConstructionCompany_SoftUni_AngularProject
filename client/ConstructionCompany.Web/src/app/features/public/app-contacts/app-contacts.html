@@ -124,6 +124,7 @@
                 name="first_name"
                 ngModel
                 required
+                #firstName="ngModel"
                 class="form-control"
                 placeholder="First name"
               />
@@ -135,6 +136,7 @@
                 name="last_name"
                 ngModel
                 required
+                #lastName="ngModel"
                 class="form-control"
                 placeholder="Last name"
               />
@@ -146,9 +148,20 @@
                 name="phone"
                 ngModel
                 required
+                pattern="^\+?\d{7,15}$"
+                #phone="ngModel"
                 class="form-control"
-                placeholder="Phone"
+                placeholder="Phone (e.g. +1234567890)"
               />
+              <div
+                *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+                class="text-danger"
+              >
+                <div *ngIf="phone.errors?.['required']">Phone is required</div>
+                <div *ngIf="phone.errors?.['pattern']">
+                  Phone number is invalid
+                </div>
+              </div>
             </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="from_email">Email</label>
@@ -158,9 +171,18 @@
                 name="from_email"
                 ngModel
                 required
+                email
+                #email="ngModel"
                 class="form-control"
                 placeholder="Email"
               />
+              <div
+                *ngIf="email.invalid && (email.dirty || email.touched)"
+                class="text-danger"
+              >
+                <div *ngIf="email.errors?.['required']">Email is required</div>
+                <div *ngIf="email.errors?.['email']">Email must be valid</div>
+              </div>
             </div>
             <div class="col-12 col-md-6 mb-3">
               <label for="service">Select the service</label>
@@ -198,13 +220,26 @@
                 name="message"
                 ngModel
                 required
+                #message="ngModel"
                 class="form-control"
                 rows="5"
                 placeholder="Your message"
               ></textarea>
+              <div
+                *ngIf="message.invalid && (message.dirty || message.touched)"
+                class="text-danger"
+              >
+                <div *ngIf="message.errors?.['required']">
+                  Message is required
+                </div>
+              </div>
             </div>
             <div class="col-12 text-center mt-10">
-              <button type="submit" class="btn btn-primary btn-lg">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                [disabled]="contactForm.invalid"
+              >
                 Send message
               </button>
             </div>
