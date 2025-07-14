@@ -6,10 +6,12 @@ import { AppWhyUs } from '../app-why-us/app-why-us';
 import { AppOurWork } from '../app-our-work/app-our-work';
 import { AppContacts } from '../app-contacts/app-contacts';
 import { AppHome } from '../app-home/app-home';
+import { AuthenticationBar } from '../../../shared/components/authentication-bar/authentication-bar';
 
 @Component({
   selector: 'app-public-page',
   imports: [
+    AuthenticationBar,
     Header,
     Footer,
     AppHome,

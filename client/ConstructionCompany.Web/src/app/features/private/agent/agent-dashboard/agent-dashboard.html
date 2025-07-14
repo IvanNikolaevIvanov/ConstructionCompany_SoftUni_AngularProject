@@ -1,0 +1,40 @@
+<div class="d-flex">
+  <private-menu [role]="currentUserRole"></private-menu>
+
+  <div class="flex-grow-1 p-4">
+    <h2>Agent Dashboard</h2>
+    <div class="row">
+      <!-- Left Column: Draft (Created) Applications -->
+      <div class="col-12 col-lg-6 mb-4">
+        <h4>Created Applications</h4>
+        <!-- <div *ngIf="draftApps.length; else noDrafts">
+          <div *ngFor="let app of draftApps" class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">{{ app.title }}</h5>
+              <p class="card-text">Status: {{ app.status }}</p>
+              <a [routerLink]="['/agent/edit', app.id]" class="btn btn-sm btn-secondary">Continue Editing</a>
+            </div>
+          </div>
+        </div> -->
+        <ng-template #noDrafts><p>Created applications.</p></ng-template>
+      </div>
+
+      <!-- Right Column: Returned Applications -->
+      <div class="col-12 col-lg-6 mb-4">
+        <h4>Returned by Supervisor</h4>
+        <!-- <div *ngIf="returnedApps.length; else noReturned">
+          <div *ngFor="let app of returnedApps" class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title">{{ app.title }}</h5>
+              <p class="card-text">Feedback: {{ app.supervisorFeedbackText }}</p>
+              <a [routerLink]="['/agent/edit', app.id]" class="btn btn-sm btn-warning">Edit & Resubmit</a>
+            </div>
+          </div>
+        </div> -->
+        <ng-template #noReturned
+          ><p>No applications returned yet.</p></ng-template
+        >
+      </div>
+    </div>
+  </div>
+</div>
