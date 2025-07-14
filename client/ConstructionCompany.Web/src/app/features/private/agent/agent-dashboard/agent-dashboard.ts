@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { PrivateMenu } from '../../shared/private-menu/private-menu';
 
 @Component({
   selector: 'agent-dashboard',
-  imports: [PrivateMenu],
+  imports: [],
   templateUrl: './agent-dashboard.html',
   styleUrl: './agent-dashboard.scss',
 })
 export class AgentDashboard {
-  currentUserRole: string = 'Agent';
+  // currentUserRole: string = 'Agent';
 }
