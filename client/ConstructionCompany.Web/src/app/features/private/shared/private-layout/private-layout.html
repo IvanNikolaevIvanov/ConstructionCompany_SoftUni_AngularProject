@@ -1,6 +1,6 @@
 <div class="d-flex vh-100">
-  <private-menu [role]="currentUserRole"></private-menu>
-  <div class="flex-grow-1 overflow-auto">
+  <private-menu [role]="currentUserRole" class="sidebar"></private-menu>
+  <div class="content">
     <router-outlet></router-outlet>
   </div>
 </div>

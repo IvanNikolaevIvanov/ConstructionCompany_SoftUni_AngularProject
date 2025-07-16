@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './private-layout.scss',
 })
 export class PrivateLayout implements OnInit {
-  currentUserRole = '';
+  currentUserRole = 'Agent';
 
   // constructor(private auth: AuthService) {}
 

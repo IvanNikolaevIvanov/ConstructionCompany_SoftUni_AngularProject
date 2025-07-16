@@ -1,27 +1,27 @@
 <aside class="sidebar bg-light d-flex flex-column p-3 vh-100">
   <!-- Logo -->
-  <div class="sidebar-logo text-center mb-4">
-    <img src="assets/logo.png" alt="Logo" class="img-fluid" />
+  <div class="sidebar-logo">
+    <img src="logo.png" alt="Logo" class="img-fluid" />
   </div>
 
   <!-- Navigation -->
-  <nav class="nav nav-pills flex-column">
+  <nav class="nav flex-column">
     <!-- Agent Menu -->
-    <li *ngIf="role === 'Agent'" class="nav-item mb-2">
+    <li *ngIf="role === 'Agent'" class="nav-item">
       <a class="nav-link" routerLink="/agent/dashboard">Dashboard</a>
     </li>
-    <li *ngIf="role === 'Agent'" class="nav-item mb-2">
+    <li *ngIf="role === 'Agent'" class="nav-item">
       <a class="nav-link" routerLink="/agent/create">Create New Project</a>
     </li>
 
     <!-- Supervisor Menu -->
-    <li *ngIf="role === 'Supervisor'" class="nav-item mb-2">
+    <li *ngIf="role === 'Supervisor'" class="nav-item">
       <a class="nav-link" routerLink="/supervisor/dashboard">Dashboard</a>
     </li>
-    <li *ngIf="role === 'Supervisor'" class="nav-item mb-2">
+    <li *ngIf="role === 'Supervisor'" class="nav-item">
       <a class="nav-link" routerLink="/supervisor/pending">Pending Review</a>
     </li>
-    <li *ngIf="role === 'Supervisor'" class="nav-item mb-2">
+    <li *ngIf="role === 'Supervisor'" class="nav-item">
       <a class="nav-link" routerLink="/supervisor/applications"
         >All Applications</a
       >
