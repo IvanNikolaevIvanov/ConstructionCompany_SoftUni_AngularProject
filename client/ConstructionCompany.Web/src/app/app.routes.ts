@@ -7,11 +7,12 @@ import {
   SupervisorDashboard,
 } from './features/private';
 
+// add lazy loading for the components
 export const routes: Routes = [
   { path: '', component: PublicPage },
 
-  //   { path: 'login', component: LoginComponent },
-  //   { path: 'register', component: RegisterComponent },
+  // { path: 'login', component: LoginComponent },
+  // { path: 'register', component: RegisterComponent },
 
   {
     path: '',
@@ -21,11 +22,13 @@ export const routes: Routes = [
       {
         path: 'agent/dashboard',
         component: AgentDashboard,
+        canActivate: [authGuard],
         data: { roles: ['Agent'] },
       },
       {
         path: 'supervisor/dashboard',
         component: SupervisorDashboard,
+        canActivate: [authGuard],
         data: { roles: ['Supervisor'] },
       },
     ],

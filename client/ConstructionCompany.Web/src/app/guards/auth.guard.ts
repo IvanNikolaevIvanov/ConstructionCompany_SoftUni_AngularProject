@@ -1,25 +1,37 @@
 // src/app/guards/auth.guard.ts
 
+import {
+  CanActivateFn,
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-// import { AuthService } from '../services/auth.service';
+import { AuthService } from '../core/services/auth.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  //   const auth = inject(AuthService);
-  //   const router = inject(Router);
+export const authGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
 
-  // I prefer synchronously checking a stored user info
-  //   const user = auth.userValue;
-  //   if (user) {
-  // Optionally check role-based access:
-  // const allowedRoles = route.data['roles'] as string[];
-  // if (allowedRoles?.includes(user.role)) return true;
-  //     return true;
-  //   }
+  const loggedIn = auth.isLoggedIn();
 
-  // Redirect to login while preserving the intended URL
-  //   return router.createUrlTree(['/login'], {
-  //     queryParams: { returnUrl: state.url },
-  //   });
+  const allowedRoles = route.data['roles'] as string[] | undefined;
+  const userRole = auth.role();
+
+  if (!loggedIn) {
+    // Redirect to login preserving returnUrl
+    return router.createUrlTree(['/login'], {
+      queryParams: { returnUrl: state.url },
+    });
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole!)) {
+    // Redirect unauthorized users
+    return router.createUrlTree(['/']);
+  }
+
   return true;
 };
