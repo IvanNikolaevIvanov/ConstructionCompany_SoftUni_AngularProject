@@ -5,6 +5,7 @@ import {
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
+  UrlTree,
 } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
@@ -12,7 +13,7 @@ import { AuthService } from '../core/services/auth.service';
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-) => {
+): boolean | UrlTree => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
@@ -29,8 +30,7 @@ export const authGuard: CanActivateFn = (
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole!)) {
-    // Redirect unauthorized users
-    return router.createUrlTree(['/']);
+    return false;
   }
 
   return true;

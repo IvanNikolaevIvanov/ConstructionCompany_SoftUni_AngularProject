@@ -6,12 +6,13 @@ import {
   PrivateLayout,
   SupervisorDashboard,
 } from './features/private';
+import { Login } from './features/auth/login/login';
 
 // add lazy loading for the components
 export const routes: Routes = [
   { path: '', component: PublicPage },
 
-  // { path: 'login', component: LoginComponent },
+  { path: 'login', component: Login },
   // { path: 'register', component: RegisterComponent },
 
   {
