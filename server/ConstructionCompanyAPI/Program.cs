@@ -1,6 +1,8 @@
 using ConstructionCompany.API.SeedDb;
+using ConstructionCompany.Core.Contracts;
 using ConstructionCompany.Core.Services;
 using ConstructionCompany.Infrastructure.Data;
+using ConstructionCompany.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +42,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 //Scoped Services
-builder.Services.AddScoped<ProjectApplicationService>();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IProjectApplicationService, ProjectApplicationService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

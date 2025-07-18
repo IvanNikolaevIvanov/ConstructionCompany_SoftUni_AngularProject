@@ -2,9 +2,12 @@ import { Injectable, signal, computed, effect } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { LoginResponse } from '../interfaces/LoginResponse';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment';
 // use signals
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // private url = `${environment.apiUrl}`;
+
   // Private signal holding the login object (or null)
   private loginData = signal<LoginResponse | null>(null);
 
@@ -41,9 +44,12 @@ export class AuthService {
   });
 
   // Perform login
-  login(username: string, password: string): void {
+  login(email: string, password: string): void {
     this.http
-      .post<LoginResponse>('/api/auth/login', { username, password })
+      .post<LoginResponse>(`${environment.apiUrl}/Auth/login`, {
+        email,
+        password,
+      })
       .subscribe({
         next: (res) => this.loginData.set(res),
         error: (err) => {
