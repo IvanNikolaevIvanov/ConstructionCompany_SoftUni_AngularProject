@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'app/core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,5 +11,16 @@ import { FormsModule, NgForm } from '@angular/forms';
   styleUrl: './register.scss',
 })
 export class Register {
-  onSubmit(form: NgForm): void {}
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  onSubmit(form: NgForm): void {
+    if (form.invalid) return;
+
+    const { email, password } = form.value;
+
+    this.auth.register(email, password, () => {
+      this.router.navigate(['/agent/dashboard']);
+    });
+  }
 }

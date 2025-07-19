@@ -69,13 +69,14 @@ export class AuthService {
 
   register(email: string, password: string, onSuccess?: () => void): void {
     this.http
-      .post(`${environment.apiUrl}/Auth/register`, {
+      .post<LoginResponse>(`${environment.apiUrl}/Auth/register`, {
         email,
         password,
       })
       .subscribe({
-        next: () => {
-          this.login(email, password, onSuccess);
+        next: (res) => {
+          this.loginData.set(res);
+          if (onSuccess) onSuccess();
         },
         error: (err) => {
           console.error('Register failed', err);
