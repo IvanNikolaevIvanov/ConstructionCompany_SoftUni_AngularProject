@@ -3,7 +3,7 @@
     <h2>Login</h2>
 
     <div class="form-group">
-      <label for="email">email</label>
+      <label for="email">Email</label>
       <input
         id="email"
         name="email"
@@ -16,7 +16,7 @@
         *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)"
         class="error"
       >
-        email is required
+        Email is required
       </div>
     </div>
 
@@ -41,7 +41,15 @@
       </div>
     </div>
 
-    <button type="submit" class="btn" [disabled]="loginForm.invalid">
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-success mt-10"
+      [disabled]="loginForm.invalid"
+    >
       Login
     </button>
   </form>

@@ -44,7 +44,12 @@ export class AuthService {
   });
 
   // Perform login
-  login(email: string, password: string, onSuccess?: () => void): void {
+  login(
+    email: string,
+    password: string,
+    onSuccess?: () => void,
+    onError?: (errorMsg: string) => void
+  ): void {
     this.http
       .post<LoginResponse>(`${environment.apiUrl}/Auth/login`, {
         email,
@@ -57,7 +62,9 @@ export class AuthService {
         },
         error: (err) => {
           console.error('Login failed', err);
-          throw err;
+          const message =
+            err?.error?.message || err?.error || 'Invalid credentials.';
+          if (onError) onError(message);
         },
       });
   }

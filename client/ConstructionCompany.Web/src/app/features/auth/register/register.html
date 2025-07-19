@@ -33,7 +33,7 @@
         ngModel
         required
         minlength="4"
-        maxlength="9"
+        maxlength="15"
         class="form-control"
         #passwordCtrl="ngModel"
       />
@@ -55,7 +55,11 @@
       </div>
     </div>
 
-    <button type="submit" class="btn" [disabled]="registerForm.invalid">
+    <button
+      type="submit"
+      class="btn btn-success mt-10"
+      [disabled]="registerForm.invalid"
+    >
       Register
     </button>
   </form>
