@@ -3,22 +3,20 @@
     <h2>Login</h2>
 
     <div class="form-group">
-      <label for="username">Username</label>
+      <label for="email">email</label>
       <input
-        id="username"
-        name="username"
+        id="email"
+        name="email"
         ngModel
         required
         class="form-control"
-        #usernameCtrl="ngModel"
+        #emailCtrl="ngModel"
       />
       <div
-        *ngIf="
-          usernameCtrl.invalid && (usernameCtrl.dirty || usernameCtrl.touched)
-        "
+        *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)"
         class="error"
       >
-        Username is required
+        email is required
       </div>
     </div>
 

@@ -7,13 +7,14 @@ import {
   SupervisorDashboard,
 } from './features/private';
 import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
 
 // add lazy loading for the components
 export const routes: Routes = [
   { path: '', component: PublicPage },
 
   { path: 'login', component: Login },
-  // { path: 'register', component: RegisterComponent },
+  { path: 'register', component: Register },
 
   {
     path: '',

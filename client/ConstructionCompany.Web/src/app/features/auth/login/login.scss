@@ -5,12 +5,18 @@
   min-height: 100vh;
   background: #f2f2f2;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 .login-form {
-  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 500px;
+  max-width: 800px;
+  min-height: 500px;
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 3.2rem;
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -28,14 +34,14 @@
 
     label {
       display: block;
-      font-size: 0.9rem;
+      font-size: 1rem;
       margin-bottom: 0.3rem;
     }
 
     .form-control {
       width: 100%;
-      padding: 0.6rem 0.8rem;
-      font-size: 1rem;
+      padding: 0.8rem 1rem;
+      font-size: 1.1rem;
       border: 1px solid #ccc;
       border-radius: 4px;
       &:focus {
@@ -53,9 +59,10 @@
 
   .btn {
     display: block;
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1.1rem;
+    width: 50%;
+    margin: 2rem auto 0 auto;
+    padding: 1rem;
+    font-size: 1rem;
     color: #fff;
     background: #007bff;
     border: none;
@@ -65,5 +72,33 @@
       background: #aaa;
       cursor: not-allowed;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-form {
+    max-width: 100%;
+    min-width: auto;
+    padding: 2rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .form-control {
+      font-size: 0.8rem;
+      padding: 0.5rem 0.7rem;
+    }
+
+    .btn {
+      font-size: 0.6rem;
+      padding: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 1.5rem;
   }
 }

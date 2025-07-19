@@ -44,17 +44,20 @@ export class AuthService {
   });
 
   // Perform login
-  login(email: string, password: string): void {
+  login(email: string, password: string, onSuccess?: () => void): void {
     this.http
       .post<LoginResponse>(`${environment.apiUrl}/Auth/login`, {
         email,
         password,
       })
       .subscribe({
-        next: (res) => this.loginData.set(res),
+        next: (res) => {
+          this.loginData.set(res);
+          if (onSuccess) onSuccess();
+        },
         error: (err) => {
           console.error('Login failed', err);
-          throw err; // or handle error gracefully
+          throw err;
         },
       });
   }
@@ -63,49 +66,21 @@ export class AuthService {
   logout(): void {
     this.loginData.set(null);
   }
+
+  register(email: string, password: string, onSuccess?: () => void): void {
+    this.http
+      .post(`${environment.apiUrl}/Auth/register`, {
+        email,
+        password,
+      })
+      .subscribe({
+        next: () => {
+          this.login(email, password, onSuccess);
+        },
+        error: (err) => {
+          console.error('Register failed', err);
+          throw err;
+        },
+      });
+  }
 }
-
-// private tokenKey = 'auth_token';
-// private userSubject = new BehaviorSubject<LoginResponse | null>(
-//   JSON.parse(localStorage.getItem(this.tokenKey) || 'null')
-// );
-
-// user$ = this.userSubject.asObservable();
-
-// constructor(private http: HttpClient) {}
-
-// login(username: string, password: string): Observable<void> {
-//   return this.http
-//     .post<LoginResponse>('/api/auth/login', { username, password })
-//     .pipe(
-//       tap((res) => {
-//         localStorage.setItem(this.tokenKey, JSON.stringify(res));
-//         this.userSubject.next(res);
-//       }),
-//       map(() => {})
-//     );
-// }
-
-// logout(): void {
-//   localStorage.removeItem(this.tokenKey);
-//   this.userSubject.next(null);
-// }
-
-// get userValue(): LoginResponse | null {
-//   return this.userSubject.value;
-// }
-
-// get token(): string | null {
-//   return this.userValue?.token || null;
-// }
-
-// get isLoggedIn(): boolean {
-//   const t = this.token;
-//   if (!t) return false;
-//   const payload = JSON.parse(atob(t.split('.')[1]));
-//   return payload.exp * 1000 > Date.now();
-// }
-
-// get role(): string | undefined {
-//   return this.userValue?.role;
-// }

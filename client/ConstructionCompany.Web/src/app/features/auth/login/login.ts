@@ -24,9 +24,7 @@ export class Login implements OnInit {
   onSubmit(form: NgForm) {
     if (form.invalid) return;
 
-    this.auth.login(form.value.username, form.value.password);
-
-    if (this.auth.isLoggedIn()) {
+    this.auth.login(form.value.email, form.value.password, () => {
       const role = this.auth.role();
 
       if (this.returnUrl) {
@@ -38,6 +36,6 @@ export class Login implements OnInit {
       } else {
         this.router.navigate(['/']);
       }
-    }
+    });
   }
 }

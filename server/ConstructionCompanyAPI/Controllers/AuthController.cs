@@ -28,6 +28,44 @@ namespace ConstructionCompany.API.Controllers
             _configuration = configuration;
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var existing = await _userManager.FindByEmailAsync(dto.Email);
+            if (existing != null)
+                return BadRequest("Email is already registered.");
+
+            var user = new ApplicationUser
+            {
+                UserName = dto.Email,
+                Email = dto.Email,
+            };
+
+            var createResult = await _userManager.CreateAsync(user, dto.Password);
+            if (!createResult.Succeeded)
+            {
+                return BadRequest(createResult.Errors);
+            }
+
+            const string defaultRole = "Agent";
+            if (!await _userManager.IsInRoleAsync(user, defaultRole))
+                await _userManager.AddToRoleAsync(user, defaultRole);
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = GenerateJwtToken(user, roles);
+
+            return Ok(new
+            {
+                token,
+                expires = DateTime.UtcNow.AddHours(1),
+                role = roles.FirstOrDefault()
+            });
+
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginDto)
         {
