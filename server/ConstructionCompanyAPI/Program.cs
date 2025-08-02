@@ -126,8 +126,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Then in middleware pipeline
-app.UseCors("AllowAngularApp");
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -158,6 +157,8 @@ app.Use(async (context, next) =>
     await next();
 });
 
+// Then in middleware pipeline
+app.UseCors("AllowAngularDev");
 app.UseAuthentication();       
 app.UseAuthorization();
 
