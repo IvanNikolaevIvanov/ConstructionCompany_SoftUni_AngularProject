@@ -1,7 +1,9 @@
-<div class="d-flex vh-100">
+<div class="d-flex flex-column vh-100">
   <authentication-bar></authentication-bar>
-  <private-menu [role]="currentUserRole" class="sidebar"></private-menu>
-  <div class="content mt-20">
-    <router-outlet></router-outlet>
+  <div class="d-flex flex-grow-1">
+    <private-menu [role]="currentUserRole" class="sidebar"></private-menu>
+    <div class="content flex-fill mt-20">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

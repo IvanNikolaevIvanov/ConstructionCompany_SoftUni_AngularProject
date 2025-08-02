@@ -3,6 +3,8 @@ import { PublicPage } from './features/public';
 import { authGuard } from './guards/auth.guard';
 import {
   AgentDashboard,
+  CreateNewApplication,
+  FileUpload,
   PrivateLayout,
   SupervisorDashboard,
 } from './features/private';
@@ -24,6 +26,12 @@ export const routes: Routes = [
       {
         path: 'agent/dashboard',
         component: AgentDashboard,
+        canActivate: [authGuard],
+        data: { roles: ['Agent'] },
+      },
+      {
+        path: 'agent/create-new-application',
+        component: CreateNewApplication,
         canActivate: [authGuard],
         data: { roles: ['Agent'] },
       },

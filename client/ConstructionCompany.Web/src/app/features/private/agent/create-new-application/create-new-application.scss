@@ -1,0 +1,77 @@
+.col-md-8 {
+  margin-top: 0px;
+  padding-top: 11px;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+}
+
+.checkbox-container {
+  margin-left: 1.3rem;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+}
+
+input.form-control,
+select.form-select,
+.error {
+  max-width: 100%;
+  box-sizing: border-box; /* Make padding/border count inside width */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.input-error {
+  border-left-color: red !important;
+  border-color: red;
+}
+
+.error {
+  display: block;
+  width: 100%; /* Constrain to column width */
+  word-wrap: break-word;
+  white-space: normal; /* Allow wrapping instead of stretching */
+  color: red;
+  font-weight: bold;
+  font-size: 0.875rem;
+  margin-top: 0.1rem;
+}
+
+.large-checkbox {
+  transform: scale(1.5);
+  margin-right: 0.5rem;
+  cursor: pointer;
+  accent-color: #0d6efd; /* Bootstrap primary color */
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* Hover effect */
+.large-checkbox:hover {
+  transform: scale(1.65);
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+}
+
+/* Focus (when tabbed to) */
+.large-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(13, 110, 253, 0.8);
+}
+
+/* Checked hover looks even nicer */
+.large-checkbox:checked:hover {
+  box-shadow: 0 0 8px rgba(13, 110, 253, 0.8);
+}
+
+#button-container {
+  margin-top: 2rem;
+}
+
+#upload-section {
+  padding-top: 5px;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+}

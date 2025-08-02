@@ -7,7 +7,7 @@ export interface ProjectApplicationModel {
   id: number;
   title: string;
   description: string;
-  submittedAt: string; // ISO 8601 format (e.g., "2025-07-03T12:00:00Z")
+  submittedAt: string;
   status: ApplicationStatus;
 
   // Client Info
