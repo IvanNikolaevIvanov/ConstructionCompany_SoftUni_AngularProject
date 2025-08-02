@@ -87,7 +87,7 @@ namespace ConstructionCompany.API.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, // set to true for HTTPS in production
+                Secure = false, // set to true for HTTPS in production
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddHours(1),
                 Path = "/"
