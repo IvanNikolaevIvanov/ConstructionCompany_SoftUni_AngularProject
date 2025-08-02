@@ -16,8 +16,10 @@ export class AuthService {
     const saved = localStorage.getItem('auth_token');
     this.loginData.set(saved ? JSON.parse(saved) : null);
 
+    console.log('loginData:', this.loginData());
     // Automatically sync storage with signal changes
     effect(() => {
+      console.log('loginData:', this.loginData());
       const data = this.loginData();
       if (data) {
         localStorage.setItem('auth_token', JSON.stringify(data));
@@ -48,7 +50,7 @@ export class AuthService {
     email: string,
     password: string,
     onSuccess?: () => void,
-    onError?: (errorMsg: string) => void
+    onError?: (errorMsg: string) => void,
   ): void {
     this.http
       .post<LoginResponse>(`${environment.apiUrl}/Auth/login`, {

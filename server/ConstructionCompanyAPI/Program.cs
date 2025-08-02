@@ -75,6 +75,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.Use(async (context, next) =>
+{
+    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+    Console.WriteLine($"Authorization header received: {authHeader}");
+    await next();
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 

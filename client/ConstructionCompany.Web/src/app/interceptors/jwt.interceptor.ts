@@ -21,5 +21,8 @@ export const jwtInterceptor: HttpInterceptorFn = (
       setHeaders: { Authorization: `Bearer ${token}` },
     });
   }
+
+  console.log('Auth header will be:', token ? `Bearer ${token}` : 'No token');
+
   return next(req);
 };
