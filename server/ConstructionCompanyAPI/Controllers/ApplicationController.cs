@@ -9,6 +9,7 @@ namespace ConstructionCompany.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Agent,Supervisor")]
     public class ApplicationController : ControllerBase
     {
         private readonly ProjectApplicationService appService;
