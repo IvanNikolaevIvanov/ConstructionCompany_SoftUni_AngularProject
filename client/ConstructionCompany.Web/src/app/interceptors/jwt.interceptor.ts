@@ -6,23 +6,13 @@ import {
 import { inject } from '@angular/core'; // <-- use Angular's inject
 import { AuthService } from '../core/services/auth.service';
 
-export const jwtInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn,
-) => {
-  const auth = inject(AuthService);
-  const token = auth.token();
-
+export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   console.log('Intercepted request to:', req.url);
-  console.log('Token:', token);
 
-  if (token) {
-    req = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` },
-    });
-  }
+  // You might want to add withCredentials here if you want to enforce it for all requests:
+  const clonedReq = req.clone({
+    withCredentials: true,
+  });
 
-  console.log('Auth header will be:', token ? `Bearer ${token}` : 'No token');
-
-  return next(req);
+  return next(clonedReq);
 };
