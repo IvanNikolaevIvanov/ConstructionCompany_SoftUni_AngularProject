@@ -21,10 +21,10 @@ cd path\to\server\ConstructionCompanyAPI
 dotnet restore                        # Restore NuGet packages
 dotnet ef database update            # Apply migrations, seed roles/users ❗️
 dotnet run                           # Start backend on http://localhost:5000 or another port
-Use dotnet ef migrations add InitialCreate if no migrations exist, then dotnet ef database update.`<br>`
-`<br>`
-✍️ EF Core stores the migration history in the database`<br>` 
-dotnet run builds and starts your app immediately (Kestrel server)`<br>` 
+Use dotnet ef migrations add InitialCreate if no migrations exist, then dotnet ef database update.<br>
+<br>
+✍️ EF Core stores the migration history in the database<br>
+dotnet run builds and starts your app immediately (Kestrel server)<br>
 `<br>`
 2. Frontend: Angular SPA (ConstructionCompany.Web)`<br>`
 In a second terminal:`<br>`
