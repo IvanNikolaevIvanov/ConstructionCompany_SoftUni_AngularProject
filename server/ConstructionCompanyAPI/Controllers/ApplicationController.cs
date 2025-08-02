@@ -1,4 +1,5 @@
-﻿using ConstructionCompany.Core.Models;
+﻿using ConstructionCompany.Core.Contracts;
+using ConstructionCompany.Core.Models;
 using ConstructionCompany.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,9 +13,9 @@ namespace ConstructionCompany.API.Controllers
     [Authorize(Roles = "Agent,Supervisor")]
     public class ApplicationController : ControllerBase
     {
-        private readonly ProjectApplicationService appService;
+        private readonly IProjectApplicationService appService;
 
-        public ApplicationController(ProjectApplicationService _appService)
+        public ApplicationController(IProjectApplicationService _appService)
         {
             appService = _appService;
         }
