@@ -84,12 +84,38 @@ namespace ConstructionCompany.API.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var token = GenerateJwtToken(user, roles);
 
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // set to true for HTTPS in production
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddHours(1),
+                Path = "/"
+            };
+
+            Response.Cookies.Append("jwt_token", token, cookieOptions);
+
             return Ok(new
             {
-                token,
+                message = "Logged in successfully",
                 expires = DateTime.UtcNow.AddHours(1),
                 role = roles.FirstOrDefault()
             });
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            // Overwrite the JWT cookie to expire immediately
+            Response.Cookies.Append("jwt", "", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,   // required if using HTTPS
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(-1) // expire in the past
+            });
+
+            return Ok(new { message = "Logged out successfully." });
         }
 
         private string GenerateJwtToken(ApplicationUser user, IList<string> roles)

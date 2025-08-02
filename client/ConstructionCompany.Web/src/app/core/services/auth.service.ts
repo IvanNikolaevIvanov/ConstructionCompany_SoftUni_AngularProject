@@ -6,14 +6,12 @@ import { environment } from 'environments/environment';
 // use signals
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // private url = `${environment.apiUrl}`;
-
   // Private signal holding the login object (or null)
   private loginData = signal<LoginResponse | null>(null);
 
   // Load saved data on startup
   constructor(private http: HttpClient) {
-    const saved = localStorage.getItem('auth_token');
+    const saved = localStorage.getItem('auth_user');
     this.loginData.set(saved ? JSON.parse(saved) : null);
 
     console.log('loginData:', this.loginData());
@@ -22,30 +20,21 @@ export class AuthService {
       console.log('loginData:', this.loginData());
       const data = this.loginData();
       if (data) {
-        localStorage.setItem('auth_token', JSON.stringify(data));
+        localStorage.setItem('auth_user', JSON.stringify(data));
       } else {
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
       }
     });
   }
 
   // Extracted values for components/guards
-  readonly token = computed(() => this.loginData()?.token ?? null);
+  // readonly token = computed(() => this.loginData()?.token ?? null);
 
   readonly role = computed(() => this.loginData()?.role);
 
-  readonly isLoggedIn = computed(() => {
-    const t = this.token();
-    if (!t) return false;
-    try {
-      const payload = JSON.parse(atob(t.split('.')[1]));
-      return payload.exp * 1000 > Date.now();
-    } catch {
-      return false;
-    }
-  });
+  readonly isLoggedIn = computed(() => this.loginData() !== null);
 
-  // Perform login
+  /** Login using cookie-based JWT */
   login(
     email: string,
     password: string,
@@ -53,10 +42,11 @@ export class AuthService {
     onError?: (errorMsg: string) => void,
   ): void {
     this.http
-      .post<LoginResponse>(`${environment.apiUrl}/Auth/login`, {
-        email,
-        password,
-      })
+      .post<LoginResponse>(
+        `${environment.apiUrl}/Auth/login`,
+        { email, password },
+        { withCredentials: true }, // ✅ Needed for cookies
+      )
       .subscribe({
         next: (res) => {
           this.loginData.set(res);
@@ -73,15 +63,26 @@ export class AuthService {
 
   // Clear auth
   logout(): void {
-    this.loginData.set(null);
+    this.http
+      .post(`${environment.apiUrl}/Auth/logout`, {}, { withCredentials: true })
+      .subscribe({
+        next: () => {
+          this.loginData.set(null); // clear UI state
+        },
+        error: (err) => console.error('Logout failed', err),
+      });
   }
 
   register(email: string, password: string, onSuccess?: () => void): void {
     this.http
-      .post<LoginResponse>(`${environment.apiUrl}/Auth/register`, {
-        email,
-        password,
-      })
+      .post<LoginResponse>(
+        `${environment.apiUrl}/Auth/register`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true },
+      )
       .subscribe({
         next: (res) => {
           this.loginData.set(res);

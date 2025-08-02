@@ -8,7 +8,9 @@ export class ApplicationService {
   constructor(private http: HttpClient) {}
 
   createApplication(formData: FormData): Observable<any> {
-    return this.http.post(`/api/Application`, formData);
+    return this.http.post(`/api/Application`, formData, {
+      withCredentials: true,
+    });
   }
 
   // getApplications(): Observable<any[]> {
