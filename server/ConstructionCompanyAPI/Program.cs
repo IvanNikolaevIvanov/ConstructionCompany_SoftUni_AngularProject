@@ -6,6 +6,7 @@ using ConstructionCompany.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -24,6 +25,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 var jwtKey = builder.Configuration["Jwt:Key"];
 var key = Encoding.UTF8.GetBytes(jwtKey);
 
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -31,6 +34,9 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.TokenHandlers.Clear();
+    options.TokenHandlers.Add(new JsonWebTokenHandler());
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -57,15 +63,10 @@ builder.Services.AddAuthentication(options =>
             var token = context.Request.Cookies["jwt_token"];
             if (!string.IsNullOrEmpty(token))
             {
-                Console.WriteLine($"Cookie token length: {token.Length}");
-                Console.WriteLine($"Cookie token: {token}");
-
-                // Optional: check if it contains 2 dots
-                var dotCount = token.Count(c => c == '.');
-                Console.WriteLine($"Dot count: {dotCount}");
-
                 context.Token = System.Net.WebUtility.UrlDecode(token);
-                Console.WriteLine("Token from cookie (decoded): " + context.Token);
+                Console.WriteLine($"Cookie token length: {token.Length}");
+                Console.WriteLine($"Token from cookie: {context.Token}");
+                Console.WriteLine($"Dot count: {context.Token.Count(c => c == '.')}");
             }
             else
             {
