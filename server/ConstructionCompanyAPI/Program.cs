@@ -47,12 +47,29 @@ builder.Services.AddAuthentication(options =>
     {
         OnMessageReceived = context =>
         {
-            if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.ContainsKey("jwt_token"))
+            //if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.ContainsKey("jwt_token"))
+            //{
+            //    var token = context.Request.Cookies["jwt_token"];
+            //    // URL decode it
+            //    context.Token = System.Net.WebUtility.UrlDecode(token);
+            //    Console.WriteLine("Token from cookie (decoded): " + context.Token);
+            //}
+            var token = context.Request.Cookies["jwt_token"];
+            if (!string.IsNullOrEmpty(token))
             {
-                var token = context.Request.Cookies["jwt_token"];
-                // URL decode it
+                Console.WriteLine($"Cookie token length: {token.Length}");
+                Console.WriteLine($"Cookie token: {token}");
+
+                // Optional: check if it contains 2 dots
+                var dotCount = token.Count(c => c == '.');
+                Console.WriteLine($"Dot count: {dotCount}");
+
                 context.Token = System.Net.WebUtility.UrlDecode(token);
                 Console.WriteLine("Token from cookie (decoded): " + context.Token);
+            }
+            else
+            {
+                Console.WriteLine("No jwt_token cookie found");
             }
             return Task.CompletedTask;
         },
