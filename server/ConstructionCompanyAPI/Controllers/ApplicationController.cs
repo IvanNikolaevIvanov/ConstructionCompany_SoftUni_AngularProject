@@ -9,7 +9,6 @@ namespace ConstructionCompany.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Agent,Supervisor")]
     public class ApplicationController : ControllerBase
     {
         private readonly ProjectApplicationService appService;
@@ -21,13 +20,40 @@ namespace ConstructionCompany.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Agent")]
-        public async Task<IActionResult> Create([FromBody] ProjectApplicationModel model)
+        [RequestSizeLimit(50_000_000)]
+        public async Task<IActionResult> Create(
+            [FromForm] ProjectApplicationModel model,
+            [FromForm] List<IFormFile> files)
         {
             var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (agentId == null) return Unauthorized();
 
-            var result = await appService.CreateApplicationAsync(agentId, model);
-            return Ok(new { result.Id, result.Title });
+            var appResult = await appService.CreateApplicationAsync(agentId, model);
+
+            var filePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine("wwwroot", "uploads", appResult.Id.ToString());
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    var filePath = Path.Combine(uploadsFolder, file.FileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    var relativePath = Path.Combine("uploads", appResult.Id.ToString(), file.FileName);
+                    filePaths.Add(relativePath);
+                }
+            }
+
+            //if (filePaths.Any())
+            //    await appService.SaveApplicationFilesAsync(appResult.Id, filePaths);
+
+            return Ok(new { appResult.Id, appResult.Title, Files = filePaths });
         }
     }
 }

@@ -13,6 +13,8 @@ import { ApplicationFileModel } from 'app/models';
 import { PriceIntoWordsPipe } from 'app/shared/pipes';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FileUpload } from '../file-upload/file-upload';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'create-new-application',
@@ -46,6 +48,8 @@ export class CreateNewApplication {
 
   constructor(
     private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
     pricePipe: PriceIntoWordsPipe,
   ) {
     this.applicationForm = this.fb.group({
@@ -233,6 +237,48 @@ export class CreateNewApplication {
     // Convert to numeric before sending to backend
     const numeric = this.numericPrice ?? 0;
     console.log('Saving price:', numeric);
+
+    if (this.applicationForm.invalid) {
+      this.applicationForm.markAsTouched();
+      return;
+    }
+
+    const formValue = this.applicationForm.value;
+    const formData = new FormData();
+
+    // Append form fields
+    formData.append('Title', formValue.title);
+    formData.append('Description', formValue.description);
+    formData.append('ClientName', formValue.clientName);
+    formData.append('ClientBank', formValue.clientBank);
+    formData.append('ClientBankIban', formValue.clientBankIban);
+    formData.append('Price', String(this.numericPrice ?? 0));
+    formData.append('PriceInWords', formValue.priceInWords ?? '');
+    formData.append('UsesConcrete', String(formValue.usesConcrete));
+    formData.append('UsesBricks', String(formValue.usesBricks));
+    formData.append('UsesSteel', String(formValue.usesSteel));
+    formData.append('UsesInsulation', String(formValue.usesInsulation));
+    formData.append('UsesWood', String(formValue.usesWood));
+    formData.append('UsesGlass', String(formValue.usesGlass));
+
+    // Append files (must match parameter name in controller)
+    this.files.forEach((fileModel) => {
+      if (fileModel.file) {
+        formData.append('files', fileModel.file, fileModel.fileName);
+      }
+    });
+
+    this.http.post('/api/application', formData).subscribe({
+      next: (res: any) => {
+        console.log('Application created:', res);
+        alert(`Application "${res.title}" created successfully!`);
+        // this.router.navigate(['/applications']);
+      },
+      error: (err) => {
+        console.error('Error saving application:', err);
+        alert('Failed to create application. Please try again.');
+      },
+    });
   }
 
   onFilesChanged(newFiles: ApplicationFileModel[]) {
