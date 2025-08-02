@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { ProjectApplicationModel } from '../../models';
 
 @Injectable({ providedIn: 'root' })
-export class ProjectApplicationsService {
-  private apiUrl = 'https://localhost:5001/api';
+export class ApplicationService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private httpClient: HttpClient) {}
-
-  getAllProjectApplications(): Observable<ProjectApplicationModel[]> {
-    return this.httpClient.get<ProjectApplicationModel[]>(
-      `${this.apiUrl}/Application`
-    );
+  createApplication(formData: FormData): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/Application`, formData);
   }
+
+  // getApplications(): Observable<any[]> {
+  //   return this.http.get<any[]>(this.apiUrl);
+  // }
 }

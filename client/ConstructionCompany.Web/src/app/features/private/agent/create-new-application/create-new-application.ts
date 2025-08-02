@@ -15,6 +15,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FileUpload } from '../file-upload/file-upload';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ApplicationService } from 'app/core/services';
 
 @Component({
   selector: 'create-new-application',
@@ -48,7 +49,7 @@ export class CreateNewApplication {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
+    private appService: ApplicationService,
     private router: Router,
     pricePipe: PriceIntoWordsPipe,
   ) {
@@ -243,6 +244,22 @@ export class CreateNewApplication {
       return;
     }
 
+    const formData: FormData = this.buildFormData();
+
+    this.appService.createApplication(formData).subscribe({
+      next: (res: any) => {
+        console.log('Application created:', res);
+        alert(`Application "${res.title}" created successfully!`);
+        // this.router.navigate(['/applications']);
+      },
+      error: (err) => {
+        console.error('Error saving application:', err);
+        alert('Failed to create application. Please try again.');
+      },
+    });
+  }
+
+  private buildFormData(): FormData {
     const formValue = this.applicationForm.value;
     const formData = new FormData();
 
@@ -268,17 +285,7 @@ export class CreateNewApplication {
       }
     });
 
-    this.http.post('/api/application', formData).subscribe({
-      next: (res: any) => {
-        console.log('Application created:', res);
-        alert(`Application "${res.title}" created successfully!`);
-        // this.router.navigate(['/applications']);
-      },
-      error: (err) => {
-        console.error('Error saving application:', err);
-        alert('Failed to create application. Please try again.');
-      },
-    });
+    return formData;
   }
 
   onFilesChanged(newFiles: ApplicationFileModel[]) {
