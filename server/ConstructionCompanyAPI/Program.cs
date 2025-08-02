@@ -49,8 +49,10 @@ builder.Services.AddAuthentication(options =>
         {
             if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.ContainsKey("jwt_token"))
             {
-                context.Token = context.Request.Cookies["jwt_token"];
-                Console.WriteLine($"Token from cookie: {context.Token}");
+                var token = context.Request.Cookies["jwt_token"];
+                // URL decode it
+                context.Token = System.Net.WebUtility.UrlDecode(token);
+                Console.WriteLine("Token from cookie (decoded): " + context.Token);
             }
             return Task.CompletedTask;
         },
