@@ -1,6 +1,6 @@
 # Bricks & Steel – Construction Project Management SPA
 
-A full-stack Single Page Application (SPA) built with **Angular (front-end)** and **ASP.NET Core (.NET 8) + Entity Framework + MS SQL Server** (back-end), featuring JWT authentication, Identity-based user registration, roles (Agent & Supervisor), project application submission and review flows.`<br>`
+A full-stack Single Page Application (SPA) built with **Angular (front-end)** and **ASP.NET Core (.NET 8) + Entity Framework + MS SQL Server** (back-end), featuring JWT authentication, Identity-based user registration, roles (Agent & Supervisor), project application submission and review flows.<br>
 
 ---
 
