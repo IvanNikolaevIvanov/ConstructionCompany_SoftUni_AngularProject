@@ -1,8 +1,8 @@
-using ConstructionCompany.API.SeedDb;
+﻿using ConstructionCompany.API.SeedDb;
 using ConstructionCompany.Core.Contracts;
 using ConstructionCompany.Core.Services;
-using ConstructionCompany.Infrastructure.Data;
 using ConstructionCompany.Infrastructure.Data.Common;
+using ConstructionCompany.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +11,14 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddDbContext<ConstructionCompanyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ConstructionCompanyDbContext>()
     .AddDefaultTokenProviders();
+
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 var key = Encoding.UTF8.GetBytes(jwtKey);
@@ -55,9 +56,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-//Scoped Services
+
+builder.Services.AddAuthorization();
+
+
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IProjectApplicationService, ProjectApplicationService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -65,7 +70,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -75,6 +80,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();          
+
 
 app.Use(async (context, next) =>
 {
@@ -83,10 +90,11 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseAuthentication();
+app.UseAuthentication();       
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 using (var scope = app.Services.CreateScope())
 {
