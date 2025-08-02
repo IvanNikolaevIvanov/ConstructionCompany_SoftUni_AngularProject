@@ -67,7 +67,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp", builder =>
+    options.AddPolicy("AllowAngularDev", builder =>
     {
         builder.WithOrigins("http://localhost:4200")
                .AllowCredentials()
