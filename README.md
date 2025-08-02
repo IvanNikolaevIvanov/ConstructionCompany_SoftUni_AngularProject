@@ -1,6 +1,6 @@
 # Bricks & Steel – Construction Project Management SPA
 
-A full-stack Single Page Application (SPA) built with **Angular (front-end)** and **ASP.NET Core (.NET 8) + Entity Framework + MS SQL Server** (back-end), featuring JWT authentication, Identity-based user registration, roles (Agent & Supervisor), project application submission and review flows.
+A full-stack Single Page Application (SPA) built with **Angular (front-end)** and **ASP.NET Core (.NET 8) + Entity Framework + MS SQL Server** (back-end), featuring JWT authentication, Identity-based user registration, roles (Agent & Supervisor), project application submission and review flows.`<br>`
 
 ---
 
@@ -21,17 +21,17 @@ cd path\to\server\ConstructionCompanyAPI
 dotnet restore                        # Restore NuGet packages
 dotnet ef database update            # Apply migrations, seed roles/users ❗️
 dotnet run                           # Start backend on http://localhost:5000 or another port
-Use dotnet ef migrations add InitialCreate if no migrations exist, then dotnet ef database update.
-
-✍️ EF Core stores the migration history in the database 
-dotnet run builds and starts your app immediately (Kestrel server) 
-
-2. Frontend: Angular SPA (ConstructionCompany.Web)
-In a second terminal:
-cd path\to\client\ConstructionCompany.Web
+Use dotnet ef migrations add InitialCreate if no migrations exist, then dotnet ef database update.`<br>`
+`<br>`
+✍️ EF Core stores the migration history in the database`<br>` 
+dotnet run builds and starts your app immediately (Kestrel server)`<br>` 
+`<br>`
+2. Frontend: Angular SPA (ConstructionCompany.Web)`<br>`
+In a second terminal:`<br>`
+cd path\to\client\ConstructionCompany.Web`<br>`
 npm install                          # Install dependencies
-ng serve                             # Launch front end at http://localhost:4200
-ng serve serves the Angular app locally and automatically rebuilds on code changes
+ng serve                             # Launch front end at http://localhost:4200`<br>`
+ng serve serves the Angular app locally and automatically rebuilds on code changes`<br>`
 
 | Terminal # | Context     | Command(s)                                    | Purpose        |
 | ---------- | ----------- | --------------------------------------------- | -------------- |
