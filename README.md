@@ -36,7 +36,7 @@ npm start serves the Angular app locally using "ng serve --proxy-config proxy.co
 | Terminal # | Context     | Command(s)                                    | Purpose        |
 | ---------- | ----------- | --------------------------------------------- | -------------- |
 | **1**      | Server/API  | `cd …\ConstructionCompanyAPI`<br>`dotnet ...` | Run backend    |
-| **2**      | Client/SPA | `cd …\ConstructionCompany.Web`<br>`ng serve`  | Serve frontend |
+| **2**      | Client/SPA | `cd …\ConstructionCompany.Web`<br>`npm start`  | Serve frontend |
 
 
 ## 🧾 Folder Structure<br>
