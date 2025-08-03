@@ -30,8 +30,8 @@ dotnet run builds and starts your app immediately (Kestrel server)<br>
 In a second terminal:<br>
 cd path\to\client\ConstructionCompany.Web<br>
 npm install                          # Install dependencies<br>
-ng serve                             # Launch front end at http://localhost:4200<br>
-ng serve serves the Angular app locally and automatically rebuilds on code changes<br>
+npm start                            # Launch front end at http://localhost:4200<br>
+npm start serves the Angular app locally using "ng serve --proxy-config proxy.conf.json" and automatically rebuilds on code changes<br>
 
 | Terminal # | Context     | Command(s)                                    | Purpose        |
 | ---------- | ----------- | --------------------------------------------- | -------------- |
@@ -98,7 +98,7 @@ Open /src/environments/environment.ts (and .development.ts) and ensure it includ
 <br>
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7124/api'
+  apiUrl: '/api'
 };<br>
 Angular CLI automatically replaces environment.ts depending on build mode. <br>
 Microsoft Learn<br>
@@ -116,21 +116,21 @@ From BricksSteelSolutionRoot:<br>
 start cmd /k "cd ConstructionCompany.API & dotnet run"<br>
 in a separate terminal:<br>
 <br>
-cd client && ng serve --configuration=development<br>
+cd client && npm start<br>
 You should see the public landing page. Click Login/Register, register an account (default role = Agent), and perform login flows.<br>
 <br>
 🔐 Sample Credentials<br>
 Agents seeded:<br>
 <br>
-agent1@bricksandsteel.com / Pass123!<br>
+agent1@demo.com / Agent123!<br>
 <br>
-agent2@bricksandsteel.com / Pass123!<br>
+agent2@demo.com / Agent123!<br>
 <br>
 Supervisors seeded:<br>
 <br>
-supervisor1@bricksandsteel.com / Pass123!<br>
+supervisor1@demo / Supervisor123!<br>
 <br>
-supervisor2@bricksandsteel.com / Pass123!<br>
+supervisor2@demo / Supervisor123!<br>
 <br>
 🚪 Access URLs<br>
 Role	After Login Redirect<br>
