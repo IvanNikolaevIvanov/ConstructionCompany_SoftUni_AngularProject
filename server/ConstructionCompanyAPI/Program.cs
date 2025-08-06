@@ -34,8 +34,10 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.TokenHandlers.Clear();
-    options.TokenHandlers.Add(new JsonWebTokenHandler());
+    //options.TokenHandlers.Clear();
+    //options.TokenHandlers.Add(new JsonWebTokenHandler());
+    options.RequireHttpsMetadata = false; // Okay for HTTP dev
+    options.SaveToken = false;
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -49,42 +51,42 @@ builder.Services.AddAuthentication(options =>
     };
 
     
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            //if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.ContainsKey("jwt_token"))
-            //{
-            //    var token = context.Request.Cookies["jwt_token"];
-            //    // URL decode it
-            //    context.Token = System.Net.WebUtility.UrlDecode(token);
-            //    Console.WriteLine("Token from cookie (decoded): " + context.Token);
-            //}
-            var token = context.Request.Cookies["jwt_token"];
-            if (!string.IsNullOrEmpty(token))
-            {
-                context.Token = System.Net.WebUtility.UrlDecode(token);
-                Console.WriteLine($"Cookie token length: {token.Length}");
-                Console.WriteLine($"Token from cookie: {context.Token}");
-                Console.WriteLine($"Dot count: {context.Token.Count(c => c == '.')}");
-            }
-            else
-            {
-                Console.WriteLine("No jwt_token cookie found");
-            }
-            return Task.CompletedTask;
-        },
-        OnAuthenticationFailed = context =>
-        {
-            Console.WriteLine("JWT Authentication failed: " + context.Exception.Message);
-            return Task.CompletedTask;
-        },
-        OnChallenge = context =>
-        {
-            Console.WriteLine("JWT Challenge triggered: " + context.AuthenticateFailure?.Message);
-            return Task.CompletedTask;
-        }
-    };
+    //options.Events = new JwtBearerEvents
+    //{
+    //    OnMessageReceived = context =>
+    //    {
+    //        //if (string.IsNullOrEmpty(context.Token) && context.Request.Cookies.ContainsKey("jwt_token"))
+    //        //{
+    //        //    var token = context.Request.Cookies["jwt_token"];
+    //        //    // URL decode it
+    //        //    context.Token = System.Net.WebUtility.UrlDecode(token);
+    //        //    Console.WriteLine("Token from cookie (decoded): " + context.Token);
+    //        //}
+    //        var token = context.Request.Cookies["jwt_token"];
+    //        if (!string.IsNullOrEmpty(token))
+    //        {
+    //            context.Token = System.Net.WebUtility.UrlDecode(token);
+    //            Console.WriteLine($"Cookie token length: {token.Length}");
+    //            Console.WriteLine($"Token from cookie: {context.Token}");
+    //            Console.WriteLine($"Dot count: {context.Token.Count(c => c == '.')}");
+    //        }
+    //        else
+    //        {
+    //            Console.WriteLine("No jwt_token cookie found");
+    //        }
+    //        return Task.CompletedTask;
+    //    },
+    //    OnAuthenticationFailed = context =>
+    //    {
+    //        Console.WriteLine("JWT Authentication failed: " + context.Exception.Message);
+    //        return Task.CompletedTask;
+    //    },
+    //    OnChallenge = context =>
+    //    {
+    //        Console.WriteLine("JWT Challenge triggered: " + context.AuthenticateFailure?.Message);
+    //        return Task.CompletedTask;
+    //    }
+    //};
 });
 
 
@@ -94,8 +96,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials(); 
+              .AllowAnyMethod(); 
     });
 });
 
@@ -118,17 +119,19 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseCors("AllowAngularDev");
 app.UseAuthentication();
 app.UseAuthorization();
 
 // Debug incoming cookie
-app.Use(async (context, next) =>
-{
-    var cookie = context.Request.Headers["Cookie"].ToString();
-    Console.WriteLine($"Incoming Cookie header: {cookie}");
-    await next();
-});
+//app.Use(async (context, next) =>
+//{
+//    var cookie = context.Request.Headers["Cookie"].ToString();
+//    Console.WriteLine($"Incoming Cookie header: {cookie}");
+//    await next();
+//});
+
 
 app.MapControllers();
 

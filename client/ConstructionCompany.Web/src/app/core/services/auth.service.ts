@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   // Extracted values for components/guards
-  // readonly token = computed(() => this.loginData()?.token ?? null);
+  readonly token = computed(() => this.loginData()?.token ?? null);
 
   readonly role = computed(() => this.loginData()?.role);
 
@@ -42,11 +42,10 @@ export class AuthService {
     onError?: (errorMsg: string) => void,
   ): void {
     this.http
-      .post<LoginResponse>(
-        `${environment.apiUrl}/Auth/login`,
-        { email, password },
-        { withCredentials: true }, // ✅ Needed for cookies
-      )
+      .post<LoginResponse>(`http://localhost:5247/api/Auth/login`, {
+        email,
+        password,
+      })
       .subscribe({
         next: (res) => {
           this.loginData.set(res);
@@ -63,26 +62,23 @@ export class AuthService {
 
   // Clear auth
   logout(): void {
-    this.http
-      .post(`${environment.apiUrl}/Auth/logout`, {}, { withCredentials: true })
-      .subscribe({
-        next: () => {
-          this.loginData.set(null); // clear UI state
-        },
-        error: (err) => console.error('Logout failed', err),
-      });
+    this.loginData.set(null);
+    // this.http
+    //   .post(`${environment.apiUrl}/Auth/logout`, {}, { withCredentials: true })
+    //   .subscribe({
+    //     next: () => {
+    //       this.loginData.set(null); // clear UI state
+    //     },
+    //     error: (err) => console.error('Logout failed', err),
+    //   });
   }
 
   register(email: string, password: string, onSuccess?: () => void): void {
     this.http
-      .post<LoginResponse>(
-        `${environment.apiUrl}/Auth/register`,
-        {
-          email,
-          password,
-        },
-        { withCredentials: true },
-      )
+      .post<LoginResponse>(`${environment.apiUrl}/Auth/register`, {
+        email,
+        password,
+      })
       .subscribe({
         next: (res) => {
           this.loginData.set(res);
