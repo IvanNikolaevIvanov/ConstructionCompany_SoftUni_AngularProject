@@ -117,7 +117,7 @@ namespace ConstructionCompany.Core.Services
                                                     UsesSteel = app.UsesSteel,
                                                     UsesWood = app.UsesWood,
                                                 })
-                                                .TakeLast(10)
+                                                .Take(10)
                                                 .ToListAsync();
 
                 return appsToReturn;
