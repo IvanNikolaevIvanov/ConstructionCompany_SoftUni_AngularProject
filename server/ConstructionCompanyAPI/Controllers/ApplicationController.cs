@@ -22,7 +22,7 @@ namespace ConstructionCompany.API.Controllers
 
         //Agent
 
-        [HttpGet]
+        [HttpGet("GetCreatedApplications")]
         [Authorize(Roles = "Agent")]
         public async Task<IActionResult> GetCreatedApplications() 
         {
@@ -34,7 +34,7 @@ namespace ConstructionCompany.API.Controllers
             return Ok(listOfCreatedAppsByAgentId);
         }
 
-        [HttpGet]
+        [HttpGet("GetSubmittedApplications")]
         [Authorize(Roles = "Agent")]
         public async Task<IActionResult> GetSubmittedApplications() 
         {
