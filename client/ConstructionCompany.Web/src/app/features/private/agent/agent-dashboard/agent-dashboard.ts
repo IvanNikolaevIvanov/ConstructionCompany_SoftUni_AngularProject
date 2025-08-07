@@ -15,6 +15,7 @@ import { ProjectApplicationModel } from 'app/models';
 import { ApplicationService } from 'app/core/services';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'agent-dashboard',
@@ -30,7 +31,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './agent-dashboard.html',
   styleUrls: ['./agent-dashboard.scss'],
 })
-export class AgentDashboard implements OnInit {
+export class AgentDashboard implements OnInit, AfterViewInit {
   displayedCreatedColumns: string[] = [
     'title',
     'clientName',
@@ -56,10 +57,19 @@ export class AgentDashboard implements OnInit {
 
   isLoading = false;
 
-  constructor(private appService: ApplicationService) {}
+  constructor(
+    private appService: ApplicationService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadTables();
+  }
+
+  ngAfterViewInit(): void {
+    // Assign MatSort after the view is initialized
+    this.createdDataSource.sort = this.createdSort;
+    this.submittedDataSource.sort = this.submittedSort;
   }
 
   loadTables() {
@@ -72,10 +82,6 @@ export class AgentDashboard implements OnInit {
       next: ({ created, submitted }) => {
         this.createdDataSource.data = created;
         this.submittedDataSource.data = submitted;
-
-        // Assign sorting
-        this.createdDataSource.sort = this.createdSort;
-        this.submittedDataSource.sort = this.submittedSort;
 
         this.isLoading = false;
       },
