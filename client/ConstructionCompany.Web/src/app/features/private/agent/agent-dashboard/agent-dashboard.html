@@ -11,7 +11,7 @@
       <!-- Left Table: Newly Created -->
       <div class="col-md-6">
         <mat-card class="application-container">
-          <h4>Newly Created Applications</h4>
+          <h4>Created Applications</h4>
 
           <table
             mat-table
@@ -128,11 +128,11 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="agentId">
+            <ng-container matColumnDef="supervisorId">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Agent Id
+                Supervisor Id
               </th>
-              <td mat-cell *matCellDef="let app">{{ app.agentId }}</td>
+              <td mat-cell *matCellDef="let app">{{ app.supervisorId }}</td>
             </ng-container>
 
             <tr

@@ -45,7 +45,7 @@ export class AgentDashboard implements OnInit {
     'clientName',
     'price',
     'submittedAt',
-    'agentId',
+    'supervisorId',
   ];
 
   createdDataSource = new MatTableDataSource<ProjectApplicationModel>([]);

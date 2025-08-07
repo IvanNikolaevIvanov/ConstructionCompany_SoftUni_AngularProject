@@ -20,6 +20,32 @@ namespace ConstructionCompany.API.Controllers
             appService = _appService;
         }
 
+        //Agent
+
+        [HttpGet]
+        [Authorize(Roles = "Agent")]
+        public async Task<IActionResult> GetCreatedApplications() 
+        {
+            var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (agentId == null) return Unauthorized();
+
+            var listOfCreatedAppsByAgentId = await appService.GetCreatedApplicationsByAgentIdAsync(agentId);
+
+            return Ok(listOfCreatedAppsByAgentId);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Agent")]
+        public async Task<IActionResult> GetSubmittedApplications() 
+        {
+            var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (agentId == null) return Unauthorized();
+
+            var listOfSubmittedAppsByAgentId = await appService.GetSubmittedApplicationsByAgentIdAsync(agentId);
+
+            return Ok(listOfSubmittedAppsByAgentId);
+        };
+
         [HttpPost]
         [Authorize(Roles = "Agent")]
         [RequestSizeLimit(50_000_000)]
@@ -52,6 +78,7 @@ namespace ConstructionCompany.API.Controllers
                 }
             }
 
+            // TO DO !!!
             //if (filePaths.Any())
             //    await appService.SaveApplicationFilesAsync(appResult.Id, filePaths);
 
