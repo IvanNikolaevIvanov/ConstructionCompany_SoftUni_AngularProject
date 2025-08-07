@@ -61,6 +61,7 @@ namespace ConstructionCompany.Core.Services
             {
                 var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
                                                 .Where(app => app.AgentId == agentId && app.Status == 0)
+                                                .OrderByDescending(app => app.Id)
                                                 .Select(app => new ProjectApplicationDetailsModel()
                                                 {
                                                     Title = app.Title,
@@ -79,7 +80,7 @@ namespace ConstructionCompany.Core.Services
                                                     UsesSteel = app.UsesSteel,
                                                     UsesWood = app.UsesWood,
                                                 })
-                                                .TakeLast(10)
+                                                .Take(10)
                                                 .ToListAsync();
 
                 return appsToReturn;
@@ -97,6 +98,7 @@ namespace ConstructionCompany.Core.Services
             {
                 var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
                                                 .Where(app => app.AgentId == agentId && app.Status == ApplicationStatus.Submitted)
+                                                .OrderByDescending(app => app.Id)
                                                 .Select(app => new ProjectApplicationDetailsModel()
                                                 {
                                                     Title = app.Title,
