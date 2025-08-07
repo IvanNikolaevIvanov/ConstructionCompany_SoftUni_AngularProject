@@ -44,7 +44,7 @@ namespace ConstructionCompany.API.Controllers
             var listOfSubmittedAppsByAgentId = await appService.GetSubmittedApplicationsByAgentIdAsync(agentId);
 
             return Ok(listOfSubmittedAppsByAgentId);
-        };
+        }
 
         [HttpPost]
         [Authorize(Roles = "Agent")]
