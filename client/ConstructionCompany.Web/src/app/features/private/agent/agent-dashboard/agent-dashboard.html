@@ -1,37 +1,150 @@
-<div class="d-flex">
-  <div class="flex-grow-1 p-4">
-    <h2>Agent Dashboard</h2>
-    <div class="row">
-      <!-- Left Column: Draft (Created) Applications -->
-      <div class="col-12 col-lg-6 mb-4">
-        <h4>Created Applications</h4>
-        <!-- <div *ngIf="draftApps.length; else noDrafts">
-          <div *ngFor="let app of draftApps" class="card mb-2">
-            <div class="card-body">
-              <h5 class="card-title">{{ app.title }}</h5>
-              <p class="card-text">Status: {{ app.status }}</p>
-              <a [routerLink]="['/agent/edit', app.id]" class="btn btn-sm btn-secondary">Continue Editing</a>
-            </div>
-          </div>
-        </div> -->
-        <ng-template #noDrafts><p>Created applications.</p></ng-template>
+<div class="content mt-4 p-4">
+  <div class="container-fluid">
+    <h2 class="mb-4">Agent Dashboard</h2>
+
+    <!-- 🔹 Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <mat-spinner diameter="60"></mat-spinner>
+    </div>
+
+    <div class="row g-3">
+      <!-- Left Table: Newly Created -->
+      <div class="col-md-6">
+        <mat-card class="application-container">
+          <h4>Newly Created Applications</h4>
+
+          <table
+            mat-table
+            [dataSource]="createdDataSource"
+            matSort
+            #createdSort="matSort"
+            class="mat-elevation-z2 full-width-table"
+          >
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+              <td mat-cell *matCellDef="let app">{{ app.title }}</td>
+            </ng-container>
+
+            <!-- Client Column -->
+            <ng-container matColumnDef="clientName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+              <td mat-cell *matCellDef="let app">{{ app.clientName }}</td>
+            </ng-container>
+
+            <!-- Desription Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Desription
+              </th>
+              <td mat-cell *matCellDef="let app">{{ app.description }}</td>
+            </ng-container>
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+              <td mat-cell *matCellDef="let app">{{ app.price | currency }}</td>
+            </ng-container>
+
+            <!-- Bank Name Column -->
+            <ng-container matColumnDef="bankName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Bank Name
+              </th>
+              <td mat-cell *matCellDef="let app">{{ app.clientBank }}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let app">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="editApplication(app.id)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteApplication(app.id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="accent"
+                  (click)="submitApplication(app.id)"
+                >
+                  <mat-icon>send</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedCreatedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedCreatedColumns"
+            ></tr>
+          </table>
+        </mat-card>
       </div>
 
-      <!-- Right Column: Returned Applications -->
-      <div class="col-12 col-lg-6 mb-4">
-        <h4>Returned by Supervisor</h4>
-        <!-- <div *ngIf="returnedApps.length; else noReturned">
-          <div *ngFor="let app of returnedApps" class="card mb-2">
-            <div class="card-body">
-              <h5 class="card-title">{{ app.title }}</h5>
-              <p class="card-text">Feedback: {{ app.supervisorFeedbackText }}</p>
-              <a [routerLink]="['/agent/edit', app.id]" class="btn btn-sm btn-warning">Edit & Resubmit</a>
-            </div>
-          </div>
-        </div> -->
-        <ng-template #noReturned
-          ><p>No applications returned yet.</p></ng-template
-        >
+      <!-- Right Table: Submitted to Supervisor -->
+      <div class="col-md-6">
+        <mat-card class="application-container">
+          <h4>Submitted to Supervisor</h4>
+
+          <table
+            mat-table
+            [dataSource]="submittedDataSource"
+            matSort
+            #submittedSort="matSort"
+            class="mat-elevation-z2 full-width-table"
+          >
+            <!-- Same columns as above -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+              <td mat-cell *matCellDef="let app">{{ app.title }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="clientName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+              <td mat-cell *matCellDef="let app">{{ app.clientName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+              <td mat-cell *matCellDef="let app">{{ app.price | currency }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="submittedAt">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Submitted At
+              </th>
+              <td mat-cell *matCellDef="let app">
+                {{ app.submittedAt | date: "short" }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="agentId">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Agent Id
+              </th>
+              <td mat-cell *matCellDef="let app">{{ app.agentId }}</td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedSubmittedColumns"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedSubmittedColumns"
+            ></tr>
+          </table>
+        </mat-card>
       </div>
     </div>
   </div>

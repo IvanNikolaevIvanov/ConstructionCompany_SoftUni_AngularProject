@@ -7,7 +7,7 @@ export interface ProjectApplicationModel {
   id: number;
   title: string;
   description: string;
-  submittedAt: string;
+  submittedAt?: string;
   status: ApplicationStatus;
 
   // Client Info
