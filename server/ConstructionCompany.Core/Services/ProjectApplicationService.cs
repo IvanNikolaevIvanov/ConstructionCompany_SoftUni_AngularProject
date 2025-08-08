@@ -91,7 +91,7 @@ namespace ConstructionCompany.Core.Services
                     {
                         FileName = file.FileName,
                         FilePath = file.FilePath,
-                        UploadedAt = file.UploadedAt.ToString("yyyy-MM-ddTHH:mm:ss")
+                        UploadedAt = file.UploadedAt,
                     }).ToList() ?? new List<ApplicationFileModel>()
                 };
 
