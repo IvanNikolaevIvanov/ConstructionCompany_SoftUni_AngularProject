@@ -33,6 +33,5 @@ export interface ProjectApplicationModel {
   supervisorId?: string;
   supervisor?: ApplicationUserModel;
 
-  feedbacks: SupervisorFeedbackModel[];
   files: ApplicationFileModel[];
 }

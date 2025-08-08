@@ -114,6 +114,7 @@ namespace ConstructionCompany.Core.Services
                                                 .OrderByDescending(app => app.Id)
                                                 .Select(app => new ProjectApplicationDetailsModel()
                                                 {
+                                                    Id = app.Id,
                                                     Title = app.Title,
                                                     Description = app.Description,
                                                     ClientName = app.ClientName,
@@ -150,7 +151,8 @@ namespace ConstructionCompany.Core.Services
                                                 .Where(app => app.AgentId == agentId && app.Status == ApplicationStatus.Submitted)
                                                 .OrderByDescending(app => app.Id)
                                                 .Select(app => new ProjectApplicationDetailsModel()
-                                                {
+                                                { 
+                                                    Id = app.Id,
                                                     Title = app.Title,
                                                     Description = app.Description,
                                                     ClientName = app.ClientName,

@@ -111,8 +111,8 @@ export class CreateNewApplication implements OnInit {
           clientName: application.clientName,
           clientBank: application.clientBank,
           clientBankIban: application.clientBankIban,
-          price: application.price, // use formatted string if necessary
-          priceInWords: this.pricePipe.transform(application.price),
+          price: application.price,
+          priceInWords: application.priceInWords,
           usesConcrete: application.usesConcrete,
           usesBricks: application.usesBricks,
           usesSteel: application.usesSteel,

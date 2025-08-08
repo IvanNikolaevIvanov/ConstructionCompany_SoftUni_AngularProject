@@ -16,6 +16,7 @@ import { ApplicationService } from 'app/core/services';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
+import { SliceDescriptionPipe } from 'app/shared/pipes';
 
 @Component({
   selector: 'agent-dashboard',
@@ -27,7 +28,9 @@ import { Router } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    SliceDescriptionPipe,
   ],
+  providers: [SliceDescriptionPipe],
   templateUrl: './agent-dashboard.html',
   styleUrls: ['./agent-dashboard.scss'],
 })
@@ -93,7 +96,7 @@ export class AgentDashboard implements OnInit, AfterViewInit {
   }
 
   editApplication(id: number) {
-    this.router.navigate(['/agent/create-new-application']);
+    this.router.navigate(['/agent/application-form', id]);
   }
 
   deleteApplication(id: number) {
