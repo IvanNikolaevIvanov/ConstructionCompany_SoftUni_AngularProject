@@ -84,5 +84,32 @@ namespace ConstructionCompany.API.Controllers
 
             return Ok(new { appResult.Id, appResult.Title, Files = filePaths });
         }
+
+        [HttpGet("GetApplicationById/{id:int}")]
+        public async Task<ActionResult<ProjectApplicationDetailsModel>> GetApplicationById(int id)
+        {
+            var application = await appService.GetApplicationByIdAsync(id);
+            if (application == null)
+                return NotFound();
+
+            return Ok(application);
+        }
+
+        [HttpPost("UpdateApplication/{id:int}")]
+        public async Task<ActionResult> UpdateApplication([FromForm] ProjectApplicationDetailsModel model, [FromRoute] int id)
+        {
+            var application = await appService.GetApplicationByIdAsync(id);
+            if (application == null)
+                return NotFound();
+
+            var applicationId = await appService.UpdateApplicationAsync(model, id);
+
+            if (applicationId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(applicationId);
+        }
     }
 }

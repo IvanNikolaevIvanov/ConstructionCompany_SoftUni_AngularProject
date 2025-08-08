@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateNewApplication } from './create-new-application';
+import { CreateNewApplication } from './application-form';
 
 describe('CreateNewApplication', () => {
   let component: CreateNewApplication;
@@ -8,9 +8,8 @@ describe('CreateNewApplication', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateNewApplication]
-    })
-    .compileComponents();
+      imports: [CreateNewApplication],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CreateNewApplication);
     component = fixture.componentInstance;

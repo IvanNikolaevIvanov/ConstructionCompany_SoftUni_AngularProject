@@ -93,7 +93,7 @@ export class AgentDashboard implements OnInit, AfterViewInit {
   }
 
   editApplication(id: number) {
-    // Navigate or handle edit
+    this.router.navigate(['/agent/create-new-application']);
   }
 
   deleteApplication(id: number) {

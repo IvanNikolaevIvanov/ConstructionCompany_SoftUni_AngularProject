@@ -43,6 +43,13 @@ namespace ConstructionCompany.Infrastructure.Data.Common
             return await DbSet<T>().FindAsync(id);
         }
 
+        public async Task<IEnumerable<ApplicationFile>> GetFilesByApplicationId(int applicationId)
+        {
+            return await context.Set<ApplicationFile>()
+                .Where(f => f.ApplicationId == applicationId)
+                .ToListAsync();
+        }
+
         public async Task DeleteAsync<T>(object id) where T : class
         {
             T? entity = await GetByIdAsync<T>(id);

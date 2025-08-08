@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -9,16 +9,17 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ApplicationFileModel } from 'app/models';
+import { ApplicationFileModel, ProjectApplicationModel } from 'app/models';
 import { PriceIntoWordsPipe } from 'app/shared/pipes';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FileUpload } from '../file-upload/file-upload';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApplicationService } from 'app/core/services';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'create-new-application',
+  selector: 'application-form',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -30,14 +31,17 @@ import { ApplicationService } from 'app/core/services';
     provideNgxMask({ dropSpecialCharacters: false }),
     PriceIntoWordsPipe,
   ],
-  templateUrl: './create-new-application.html',
-  styleUrl: './create-new-application.scss',
+  templateUrl: './application-form.html',
+  styleUrl: './application-form.scss',
 })
-export class CreateNewApplication {
+export class CreateNewApplication implements OnInit {
   applicationForm: FormGroup;
   files: ApplicationFileModel[] = [];
   priceInWords: string = '';
   numericPrice: number | null = null; // store numeric price for the pipe
+  applicationId: number = 0;
+  isEdit = false;
+  pricePipe!: PriceIntoWordsPipe;
 
   banks: string[] = [
     'Bank of Cyprus',
@@ -51,7 +55,7 @@ export class CreateNewApplication {
     private fb: FormBuilder,
     private appService: ApplicationService,
     private router: Router,
-    pricePipe: PriceIntoWordsPipe,
+    private route: ActivatedRoute,
   ) {
     this.applicationForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
@@ -75,15 +79,56 @@ export class CreateNewApplication {
       usesWood: [false],
       usesGlass: [false],
     });
+  }
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      const idParam = params.get('id');
+      if (idParam) {
+        this.applicationId = +idParam;
+        this.isEdit = true;
+        this.loadApplication(this.applicationId);
+      }
+    });
 
     // Subscribe to price changes
     this.applicationForm.get('price')?.valueChanges.subscribe((value) => {
       this.numericPrice = this.convertPriceToNumber(value);
 
-      const words = pricePipe.transform(this.numericPrice || 0);
+      const words = this.pricePipe.transform(this.numericPrice || 0);
       this.applicationForm
         .get('priceInWords')
         ?.setValue(words, { emitEvent: false });
+    });
+  }
+
+  private loadApplication(id: number): void {
+    this.appService.getApplicationById(id).subscribe({
+      next: (application: ProjectApplicationModel) => {
+        this.applicationForm.patchValue({
+          title: application.title,
+          description: application.description,
+          clientName: application.clientName,
+          clientBank: application.clientBank,
+          clientBankIban: application.clientBankIban,
+          price: application.price, // use formatted string if necessary
+          priceInWords: this.pricePipe.transform(application.price),
+          usesConcrete: application.usesConcrete,
+          usesBricks: application.usesBricks,
+          usesSteel: application.usesSteel,
+          usesInsulation: application.usesInsulation,
+          usesWood: application.usesWood,
+          usesGlass: application.usesGlass,
+        });
+
+        this.numericPrice = application.price;
+        // Manage File Transfer
+        // this.files = application.files ?? [];
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Failed to load application', err);
+        alert('Could not load aplication data.');
+      },
     });
   }
 
@@ -246,17 +291,32 @@ export class CreateNewApplication {
 
     const formData: FormData = this.buildFormData();
 
-    this.appService.createApplication(formData).subscribe({
-      next: (res: any) => {
-        console.log('Application created:', res);
-        alert(`Application "${res.title}" created successfully!`);
-        // this.router.navigate(['/applications']);
-      },
-      error: (err) => {
-        console.error('Error saving application:', err);
-        alert('Failed to create application. Please try again.');
-      },
-    });
+    if (this.isEdit) {
+      this.appService
+        .updateApplication(this.applicationId, formData)
+        .subscribe({
+          next: (res: number) => {
+            alert(`Application with Id:"${res}" updated successfully!`);
+            this.router.navigate(['agent/dashboard']);
+          },
+          error: (err) => {
+            console.error('Error updating application:', err);
+            alert('Failed to update application. Please try again.');
+          },
+        });
+    } else {
+      this.appService.createApplication(formData).subscribe({
+        next: (res: any) => {
+          console.log('Application created:', res);
+          alert(`Application "${res.title}" created successfully!`);
+          this.router.navigate(['agent/dashboard']);
+        },
+        error: (err) => {
+          console.error('Error saving application:', err);
+          alert('Failed to create application. Please try again.');
+        },
+      });
+    }
   }
 
   private buildFormData(): FormData {

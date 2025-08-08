@@ -30,7 +30,13 @@ export const routes: Routes = [
         data: { roles: ['Agent'] },
       },
       {
-        path: 'agent/create-new-application',
+        path: 'agent/application-form',
+        component: CreateNewApplication,
+        canActivate: [authGuard],
+        data: { roles: ['Agent'] },
+      },
+      {
+        path: 'agent/application-form/:id',
         component: CreateNewApplication,
         canActivate: [authGuard],
         data: { roles: ['Agent'] },

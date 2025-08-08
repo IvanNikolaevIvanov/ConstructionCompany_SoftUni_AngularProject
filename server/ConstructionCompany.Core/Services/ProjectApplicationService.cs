@@ -54,6 +54,56 @@ namespace ConstructionCompany.Core.Services
            
         }
 
+        public async Task<ProjectApplicationDetailsModel> GetApplicationByIdAsync(int id)
+        {
+            try
+            {
+                var entity = await repository.GetByIdAsync<ProjectApplication>(id);
+
+                var entityFiles = await repository.GetFilesByApplicationId(id);
+
+                if (entity == null)
+                {
+                    throw new Exception("Application not found.");
+                }
+
+                var appToReturn = new ProjectApplicationDetailsModel()
+                {
+                    Title = entity.Title,
+                    Description = entity.Description,
+
+                    ClientName = entity.ClientName,
+                    ClientBank = entity.ClientBank,
+                    ClientBankIban = entity.ClientBankIban,
+
+                    Price = entity.Price,
+                    PriceInWords = entity.PriceInWords,
+
+                    UsesConcrete = entity.UsesConcrete,
+                    UsesBricks = entity.UsesBricks,
+                    UsesSteel = entity.UsesSteel,
+                    UsesInsulation = entity.UsesInsulation,
+                    UsesWood = entity.UsesWood,
+                    UsesGlass = entity.UsesGlass,
+
+                    Files = entityFiles?.Select(file => new ApplicationFileModel
+                    {
+                        FileName = file.FileName,
+                        Url = file.FilePath,
+                        UploadedAt = file.UploadedAt.ToString("yyyy-MM-ddTHH:mm:ss")
+                    }).ToList() ?? new List<ApplicationFileModel>()
+                };
+
+
+                return appToReturn;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<List<ProjectApplicationDetailsModel>> GetCreatedApplicationsByAgentIdAsync(string agentId)
         {
 
@@ -121,6 +171,54 @@ namespace ConstructionCompany.Core.Services
                                                 .ToListAsync();
 
                 return appsToReturn;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> UpdateApplicationAsync(ProjectApplicationDetailsModel model, int id)
+        {
+            try
+            {
+                var applicationToUpdate = await repository.GetByIdAsync<ProjectApplication>(id);
+
+                if (applicationToUpdate != null)
+                {
+                    applicationToUpdate.ClientBank = model.ClientBank;
+                    applicationToUpdate.ClientBankIban = model.ClientBankIban;
+                    applicationToUpdate.Price = model.Price;
+                    applicationToUpdate.PriceInWords = model.PriceInWords;
+                    applicationToUpdate.ClientName = model.ClientName;
+                    applicationToUpdate.Description = model.Description;
+                    applicationToUpdate.Title = model.Title;
+                    applicationToUpdate.UsesBricks = model.UsesBricks;
+                    applicationToUpdate.UsesGlass = model.UsesGlass;
+                    applicationToUpdate.UsesInsulation = model.UsesInsulation;
+                    applicationToUpdate.UsesWood = model.UsesWood;
+                    applicationToUpdate.UsesConcrete = model.UsesConcrete;
+
+                    //TODO Update Files Also
+                    //if (model.Files != null)
+                    //{
+                    //    applicationToUpdate.Files.Clear();
+                    //    foreach (var file in model.Files)
+                    //    {
+                    //        applicationToUpdate.Files.Add(file);
+                    //    }
+                    //}
+
+                    await repository.SaveChangesAsync();
+
+                    return applicationToUpdate.Id;
+                }
+                else
+                {
+                    return 0;
+                }
+
+
             }
             catch (Exception)
             {

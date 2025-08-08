@@ -11,8 +11,8 @@ export class ApplicationService {
   constructor(private http: HttpClient) {}
 
   //Agent
-  createApplication(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, formData);
+  createApplication(formData: FormData): Observable<ProjectApplicationModel> {
+    return this.http.post<ProjectApplicationModel>(`${this.apiUrl}`, formData);
   }
 
   // getApplications(): Observable<any[]> {
@@ -28,6 +28,19 @@ export class ApplicationService {
   getSubmittedApps(): Observable<ProjectApplicationModel[]> {
     return this.http.get<ProjectApplicationModel[]>(
       `${this.apiUrl}/GetSubmittedApplications`,
+    );
+  }
+
+  getApplicationById(id: number): Observable<ProjectApplicationModel> {
+    return this.http.get<ProjectApplicationModel>(
+      `${this.apiUrl}/GetApplicationById/${id}`,
+    );
+  }
+
+  updateApplication(id: number, formData: FormData): Observable<number> {
+    return this.http.post<number>(
+      `${this.apiUrl}/UpdateApplication/${id}`,
+      formData,
     );
   }
 }

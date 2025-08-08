@@ -16,5 +16,7 @@
 
         Task DeleteAsync<T>(T entity) where T : class;
 
+        Task<IEnumerable<ApplicationFile>> GetFilesByApplicationId(int applicationId);
+
     }
 }
