@@ -10,12 +10,4 @@ import { AuthService } from 'app/core/services/auth.service';
   templateUrl: './private-layout.html',
   styleUrl: './private-layout.scss',
 })
-export class PrivateLayout implements OnInit {
-  currentUserRole = '';
-
-  constructor(private auth: AuthService) {}
-
-  ngOnInit() {
-    this.currentUserRole = this.auth.role.toString();
-  }
-}
+export class PrivateLayout {}

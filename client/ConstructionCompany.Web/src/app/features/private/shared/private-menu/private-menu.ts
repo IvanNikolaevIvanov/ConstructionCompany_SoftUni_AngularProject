@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from 'app/core/services';
 
 @Component({
   selector: 'private-menu',
@@ -8,6 +9,13 @@ import { RouterLink } from '@angular/router';
   templateUrl: './private-menu.html',
   styleUrl: './private-menu.scss',
 })
-export class PrivateMenu {
-  @Input() role: string | undefined;
+export class PrivateMenu implements OnInit {
+  role: string | undefined;
+
+  constructor(private auth: AuthService) {}
+
+  ngOnInit() {
+    this.role = this.auth.role();
+    console.log(`User Role in Private Menu is: ${this.role}`);
+  }
 }
