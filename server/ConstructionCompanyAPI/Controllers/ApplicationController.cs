@@ -58,34 +58,17 @@ namespace ConstructionCompany.API.Controllers
 
             var appResult = await appService.CreateApplicationAsync(agentId, model);
 
-            var filePaths = new List<string>();
-
-            foreach (var file in files)
+            // Save Files
+            if (files != null && files.Count > 0)
             {
-                if (file.Length > 0)
-                {
-                    var uploadsFolder = Path.Combine("wwwroot", "uploads", appResult.Id.ToString());
-                    Directory.CreateDirectory(uploadsFolder);
-
-                    var filePath = Path.Combine(uploadsFolder, file.FileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-
-                    var relativePath = Path.Combine("uploads", appResult.Id.ToString(), file.FileName);
-                    filePaths.Add(relativePath);
-                }
+               await HandleFileSaving(appResult.Id, files);
             }
 
-            // TO DO !!!
-            //if (filePaths.Any())
-            //    await appService.SaveApplicationFilesAsync(appResult.Id, filePaths);
-
-            return Ok(new { appResult.Id, appResult.Title, Files = filePaths });
+            return Ok(new { appResult.Id, appResult.Title });
         }
 
         [HttpGet("GetApplicationById/{id:int}")]
+        [Authorize(Roles = "Agent")]
         public async Task<ActionResult<ProjectApplicationDetailsModel>> GetApplicationById(int id)
         {
             var application = await appService.GetApplicationByIdAsync(id);
@@ -96,12 +79,14 @@ namespace ConstructionCompany.API.Controllers
         }
 
         [HttpPost("UpdateApplication/{id:int}")]
-        public async Task<ActionResult> UpdateApplication([FromForm] ProjectApplicationDetailsModel model, [FromRoute] int id)
+        [Authorize(Roles = "Agent")]
+        public async Task<ActionResult> UpdateApplication([FromForm] ProjectApplicationDetailsModel model, [FromForm] List<IFormFile> files, [FromRoute] int id)
         {
             var application = await appService.GetApplicationByIdAsync(id);
             if (application == null)
                 return NotFound();
 
+            // Update application details
             var applicationId = await appService.UpdateApplicationAsync(model, id);
 
             if (applicationId == 0)
@@ -109,7 +94,66 @@ namespace ConstructionCompany.API.Controllers
                 return NotFound();
             }
 
+            // Handle new file uploads
+            // Removing Old Files
+            var oldFiles = await appService.GetFilesByApplicationId(id);
+            if (oldFiles != null && oldFiles.Count > 0)
+            {
+                foreach (var file in oldFiles)
+                {
+                    var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FilePath);
+                    if (System.IO.File.Exists(absolutePath))
+                    {
+                        System.IO.File.Delete(absolutePath);
+                    }
+                }
+
+                await appService.RemoveApplicationFilesAsync(oldFiles);
+            }
+
+            // New Files Saving
+            if (files != null && files.Count > 0)
+            {
+                await HandleFileSaving(applicationId, files);
+            }
+
             return Ok(applicationId);
+        }
+
+        private async Task HandleFileSaving(int appId, List<IFormFile> files)
+        {
+            if (files != null && files.Count != 0)
+            {
+                var filesToSave = new List<ApplicationFileModel>();
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine("wwwroot", "uploads", appId.ToString());
+                        if (!Directory.Exists(uploadsFolder))
+                            Directory.CreateDirectory(uploadsFolder);
+
+                        var filePath = Path.Combine(uploadsFolder, file.FileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        var relativePath = Path.Combine("uploads", appId.ToString(), file.FileName);
+                        var fileToSave = new ApplicationFileModel()
+                        {
+                            FileName = file.FileName,
+                            FilePath = relativePath,
+                            UploadedAt = DateTime.Now,
+                        };
+
+                        filesToSave.Add(fileToSave);
+                    }
+                }
+
+                if (filesToSave != null && filesToSave.Count > 0)
+                    await appService.SaveApplicationFilesAsync(appId, filesToSave);
+            }
         }
     }
 }

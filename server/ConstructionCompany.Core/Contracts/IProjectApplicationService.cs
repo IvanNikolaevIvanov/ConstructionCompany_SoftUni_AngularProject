@@ -13,5 +13,11 @@ namespace ConstructionCompany.Core.Contracts
       Task<ProjectApplicationDetailsModel> GetApplicationByIdAsync(int id);
 
       Task<int> UpdateApplicationAsync(ProjectApplicationDetailsModel model, int id);
+
+      Task SaveApplicationFilesAsync(int appId, List<ApplicationFileModel> files);
+
+      Task<List<ApplicationFileModel>> GetFilesByApplicationId(int appId);
+
+      Task RemoveApplicationFilesAsync(List<ApplicationFileModel> oldFiles);
     }
 }

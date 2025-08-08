@@ -3,6 +3,7 @@ using ConstructionCompany.Core.Models;
 using ConstructionCompany.Infrastructure.Data.Common;
 using ConstructionCompany.Infrastructure.Enumerations;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ConstructionCompany.Core.Services
 {
@@ -89,7 +90,7 @@ namespace ConstructionCompany.Core.Services
                     Files = entityFiles?.Select(file => new ApplicationFileModel
                     {
                         FileName = file.FileName,
-                        Url = file.FilePath,
+                        FilePath = file.FilePath,
                         UploadedAt = file.UploadedAt.ToString("yyyy-MM-ddTHH:mm:ss")
                     }).ToList() ?? new List<ApplicationFileModel>()
                 };
@@ -224,6 +225,77 @@ namespace ConstructionCompany.Core.Services
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task SaveApplicationFilesAsync(int appId, List<ApplicationFileModel> files)
+        {
+            try
+            {
+                foreach (var file in files)
+                {
+                    var fileToSave = new ApplicationFile()
+                    {
+                        ApplicationId = appId,
+                        FileName = file.FileName,
+                        FilePath = file.FilePath,
+                        UploadedAt = file.UploadedAt,
+                    };
+
+                    await repository.AddAsync<ApplicationFile>(fileToSave);
+                }
+
+                await repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<ApplicationFileModel>> GetFilesByApplicationId(int appId)
+        {
+            try
+            {
+                var filesInDB = await repository.GetFilesByApplicationId(appId);
+
+                var filesToReturn = new List<ApplicationFileModel>();
+
+                foreach (var file in filesInDB)
+                {
+                    var fileToSave = new ApplicationFileModel()
+                    {
+                        Id = file.Id,
+                        FileName = file.FileName,
+                        FilePath = file.FilePath,
+                        UploadedAt = file.UploadedAt,
+                    };
+                }
+
+                return filesToReturn;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task RemoveApplicationFilesAsync(List<ApplicationFileModel> oldFiles)
+        {
+            try
+            {
+                foreach (var file in oldFiles)
+                {
+                    await repository.DeleteAsync<ApplicationFile>(file.Id);
+                }
+                await repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
