@@ -61,12 +61,34 @@ namespace ConstructionCompany.Core.Services
             {
                 var entity = await repository.GetByIdAsync<ProjectApplication>(id);
 
-                var entityFiles = await repository.GetFilesByApplicationId(id);
-
                 if (entity == null)
                 {
                     throw new Exception("Application not found.");
                 }
+
+                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+                var entityFiles = await repository.GetFilesByApplicationId(id);
+
+                var filesToReturn = new List<FileModelDto>();
+
+                foreach (var file in entityFiles) 
+                {
+                    var fullPath = Path.Combine(uploadFolder, Path.GetFileName(file.FilePath));
+
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        var fileBytes = await System.IO.File.ReadAllBytesAsync(fullPath);
+                        var base64Content = Convert.ToBase64String(fileBytes);
+
+                        filesToReturn.Add(new FileModelDto
+                        {
+                            FileName = file.FileName,
+                            Base64Content = base64Content
+                        });
+                    }
+                }
+
 
                 var appToReturn = new ProjectApplicationDetailsModel()
                 {
@@ -87,12 +109,7 @@ namespace ConstructionCompany.Core.Services
                     UsesWood = entity.UsesWood,
                     UsesGlass = entity.UsesGlass,
 
-                    Files = entityFiles?.Select(file => new ApplicationFileModel
-                    {
-                        FileName = file.FileName,
-                        FilePath = file.FilePath,
-                        UploadedAt = file.UploadedAt,
-                    }).ToList() ?? new List<ApplicationFileModel>()
+                    Files = filesToReturn,
                 };
 
 

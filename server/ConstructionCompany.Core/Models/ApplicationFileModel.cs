@@ -1,10 +1,9 @@
 ﻿namespace ConstructionCompany.Core.Models
 {
-    public class ApplicationFileModel
+    public class FileModelDto
     {
-        public int Id { get; set; }
         public string FileName { get; set; } = string.Empty;
-        public string FilePath { get; set; } = string.Empty;
-        public DateTime UploadedAt { get; set; } = DateTime.Now;
+        public string Base64Content { get; set; } = string.Empty;
     }
+
 }

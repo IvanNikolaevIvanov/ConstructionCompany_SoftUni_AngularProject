@@ -123,7 +123,22 @@ export class CreateNewApplication implements OnInit {
 
         this.numericPrice = application.price;
         // Manage File Transfer
-        // this.files = application.files ?? [];
+        this.files = [];
+
+        application.files.forEach((f) => {
+          const byteCharacters = atob(f.base64Content!);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+
+          const fileFromServer = new File([byteArray], f.fileName);
+          this.files.push({
+            fileName: f.fileName,
+            file: fileFromServer,
+          });
+        });
       },
       error: (err: HttpErrorResponse) => {
         console.error('Failed to load application', err);

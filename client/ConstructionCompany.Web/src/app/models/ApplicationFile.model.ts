@@ -1,10 +1,10 @@
 export interface ApplicationFileModel {
   fileName: string;
   file: File;
+  base64Content?: string;
 }
 
 export interface ApplicationFileDetailsModel {
   fileName: string;
-  url: string;
-  uploadedAt: string;
+  filePath: string;
 }
