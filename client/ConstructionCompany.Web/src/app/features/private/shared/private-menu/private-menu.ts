@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'app/core/services';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'private-menu',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterModule],
   templateUrl: './private-menu.html',
   styleUrl: './private-menu.scss',
 })

@@ -42,7 +42,9 @@
       padding: 0.6rem 1rem !important;
       margin: 0;
       border-radius: 4px;
-      transition: background-color 0.2s, color 0.2s;
+      transition:
+        background-color 0.2s,
+        color 0.2s;
 
       &:hover {
         background-color: #e9ecef;
@@ -50,8 +52,8 @@
       }
 
       &.active {
-        background-color: #007bff !important;
-        color: #fff !important;
+        background-color: #cce5ff !important;
+        color: #007bff !important;
       }
     }
   }

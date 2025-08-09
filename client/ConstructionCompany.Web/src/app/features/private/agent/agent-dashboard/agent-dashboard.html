@@ -95,6 +95,10 @@
             <tr
               mat-row
               *matRowDef="let row; columns: displayedCreatedColumns"
+              (click)="onRowClick(row, 'created')"
+              [class.selected]="
+                selectedRow === row && selectedTable === 'created'
+              "
             ></tr>
           </table>
         </mat-card>
@@ -151,6 +155,10 @@
             <tr
               mat-row
               *matRowDef="let row; columns: displayedSubmittedColumns"
+              (click)="onRowClick(row, 'submitted')"
+              [class.selected]="
+                selectedRow === row && selectedTable === 'submitted'
+              "
             ></tr>
           </table>
         </mat-card>

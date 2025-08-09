@@ -55,6 +55,9 @@ export class AgentDashboard implements OnInit, AfterViewInit {
   createdDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
   submittedDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
 
+  selectedRow: ProjectApplicationModel | null = null;
+  selectedTable: 'created' | 'submitted' | null = null;
+
   @ViewChild('createdSort') createdSort!: MatSort;
   @ViewChild('submittedSort') submittedSort!: MatSort;
 
@@ -93,6 +96,11 @@ export class AgentDashboard implements OnInit, AfterViewInit {
         this.isLoading = false;
       },
     });
+  }
+
+  onRowClick(row: ProjectApplicationModel, table: 'created' | 'submitted') {
+    this.selectedRow = row;
+    this.selectedTable = table;
   }
 
   editApplication(id: number) {

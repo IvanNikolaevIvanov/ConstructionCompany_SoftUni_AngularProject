@@ -14,8 +14,11 @@ h4 {
 }
 
 tr:hover {
-  background-color: rgba(135, 206, 250, 0.7);
+  background-color: #cce5ff;
   cursor: pointer;
+}
+.selected {
+  background-color: #cce5ff !important; /* light blue highlight */
 }
 
 .text-nowrap {

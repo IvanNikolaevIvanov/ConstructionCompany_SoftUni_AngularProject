@@ -8,23 +8,49 @@
   <nav class="nav flex-column">
     <!-- Agent Menu -->
     <li *ngIf="role === 'Agent'" class="nav-item">
-      <a class="nav-link" routerLink="/agent/dashboard">Dashboard</a>
+      <a
+        class="nav-link"
+        routerLink="/agent/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Dashboard</a
+      >
     </li>
     <li *ngIf="role === 'Agent'" class="nav-item">
-      <a class="nav-link" routerLink="/agent/application-form"
+      <a
+        class="nav-link"
+        routerLink="/agent/application-form"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
         >Create New Project</a
       >
     </li>
 
     <!-- Supervisor Menu -->
     <li *ngIf="role === 'Supervisor'" class="nav-item">
-      <a class="nav-link" routerLink="/supervisor/dashboard">Dashboard</a>
+      <a
+        class="nav-link"
+        routerLink="/supervisor/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Dashboard</a
+      >
     </li>
     <li *ngIf="role === 'Supervisor'" class="nav-item">
-      <a class="nav-link" routerLink="/supervisor/pending">Pending Review</a>
+      <a
+        class="nav-link"
+        routerLink="/supervisor/pending"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Pending Review</a
+      >
     </li>
     <li *ngIf="role === 'Supervisor'" class="nav-item">
-      <a class="nav-link" routerLink="/supervisor/applications"
+      <a
+        class="nav-link"
+        routerLink="/supervisor/applications"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
         >All Applications</a
       >
     </li>
