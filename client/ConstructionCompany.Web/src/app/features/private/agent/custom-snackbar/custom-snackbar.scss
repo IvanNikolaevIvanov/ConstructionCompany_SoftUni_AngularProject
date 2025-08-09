@@ -1,0 +1,13 @@
+.snackbar-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-weight: 500;
+}
+mat-icon {
+  color: lightgreen;
+}
+.custom-snackbar {
+  background-color: #323232 !important;
+}

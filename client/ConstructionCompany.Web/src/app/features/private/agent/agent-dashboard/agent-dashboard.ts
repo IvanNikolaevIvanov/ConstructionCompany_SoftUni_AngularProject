@@ -17,6 +17,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { SliceDescriptionPipe } from 'app/shared/pipes';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialog } from 'app/features/private/agent/confirm-dialog/confirm-dialog';
+import { CustomSnackbar } from 'app/features/private/agent/custom-snackbar/custom-snackbar';
 
 @Component({
   selector: 'agent-dashboard',
@@ -66,6 +70,8 @@ export class AgentDashboard implements OnInit, AfterViewInit {
   constructor(
     private appService: ApplicationService,
     private router: Router,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -108,12 +114,47 @@ export class AgentDashboard implements OnInit, AfterViewInit {
   }
 
   deleteApplication(id: number) {
-    this.isLoading = true;
-    // this.appService.deleteApp(id).subscribe(() => this.loadTables());
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete this application?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.appService.deleteApplication(id).subscribe({
+          next: (res) => {
+            this.snackBar.openFromComponent(CustomSnackbar, {
+              data: { message: res.message, type: 'success' },
+              duration: 3000,
+              panelClass: ['custom-snackbar'],
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            this.loadTables();
+          },
+          error: (err) => {
+            this.snackBar.openFromComponent(CustomSnackbar, {
+              data: {
+                message: err.error?.message || 'Failed to delete application',
+                type: 'error',
+              },
+              duration: 3000,
+              panelClass: ['custom-snackbar'],
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+          },
+        });
+      }
+    });
   }
 
   submitApplication(id: number) {
-    this.isLoading = true;
-    // this.appService.submitApp(id).subscribe(() => this.loadTables());
+    // this.isLoading = true;
+    // this.appService.submitApplication(id).subscribe({
+    //   next:
+    // });
   }
 }

@@ -89,10 +89,10 @@ namespace ConstructionCompany.API.Controllers
 
         [HttpPost("UpdateApplication/{id:int}")]
         [Authorize(Roles = "Agent")]
-        public async Task<ActionResult> UpdateApplication([FromForm] ProjectApplicationDetailsModel model, [FromForm] List<IFormFile> files, [FromRoute] int id)
+        public async Task<IActionResult> UpdateApplication([FromForm] ProjectApplicationDetailsModel model, [FromForm] List<IFormFile> files, [FromRoute] int id)
         {
-            var application = await appService.GetApplicationByIdAsync(id);
-            if (application == null)
+            var ifExists = await appService.ApplicationExist(id);
+            if (ifExists == false)
                 return NotFound();
 
             // Update application details
@@ -127,6 +127,25 @@ namespace ConstructionCompany.API.Controllers
             }
 
             return Ok(applicationId);
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Agent")]
+        public async Task<IActionResult> DeleteApplication(int id)
+        {
+            var ifExists = await appService.ApplicationExist(id);
+            if (!ifExists)
+            {
+                return NotFound(new { success = false, message = $"Application with id: {id} not found." });
+            }
+
+            var result = await appService.DeleteApplicationAsync(id);
+            if (!result)
+            {
+                return StatusCode(500, new { success = false, message = "Failed to delete application due to server error." });
+            }
+            
+            return Ok(new { success = true, message = $"Application with id {id} deleted successfully." });
         }
 
         private async Task HandleFileSaving(int appId, List<IFormFile> files)

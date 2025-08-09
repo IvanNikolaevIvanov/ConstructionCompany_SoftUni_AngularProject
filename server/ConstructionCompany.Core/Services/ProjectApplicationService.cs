@@ -289,6 +289,8 @@ namespace ConstructionCompany.Core.Services
                         FilePath = file.FilePath,
                         UploadedAt = file.UploadedAt,
                     };
+
+                    filesToReturn.Add(fileToSave);
                 }
 
                 return filesToReturn;
@@ -315,6 +317,31 @@ namespace ConstructionCompany.Core.Services
 
                 throw;
             }
+        }
+
+        public async Task<bool> DeleteApplicationAsync(int id)
+        {
+            var application = await repository.GetByIdAsync<ProjectApplication>(id);
+            if (application == null)
+            {
+                return false;
+            }
+
+            await repository.DeleteAsync<ProjectApplication>(application);
+            var changes = await repository.SaveChangesAsync();
+
+            return changes > 0;
+        }
+
+        public async Task<bool> ApplicationExist(int id)
+        {
+            var application = await repository.GetByIdAsync<ProjectApplication>(id);
+            if (application == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

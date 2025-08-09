@@ -46,4 +46,8 @@ export class ApplicationService {
       formData,
     );
   }
+
+  deleteApplication(id: number): Observable<DeleteResponse> {
+    return this.http.delete<DeleteResponse>(`${this.apiUrl}/${id}`);
+  }
 }
