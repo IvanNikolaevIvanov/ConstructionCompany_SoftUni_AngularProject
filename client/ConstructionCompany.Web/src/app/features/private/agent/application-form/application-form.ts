@@ -41,7 +41,6 @@ export class CreateNewApplication implements OnInit {
   numericPrice: number | null = null; // store numeric price for the pipe
   applicationId: number = 0;
   isEdit = false;
-  pricePipe!: PriceIntoWordsPipe;
 
   banks: string[] = [
     'Bank of Cyprus',
@@ -56,6 +55,7 @@ export class CreateNewApplication implements OnInit {
     private appService: ApplicationService,
     private router: Router,
     private route: ActivatedRoute,
+    private pricePipe: PriceIntoWordsPipe,
   ) {
     this.applicationForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],

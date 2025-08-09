@@ -45,9 +45,11 @@ namespace ConstructionCompany.Infrastructure.Data.Common
 
         public async Task<IEnumerable<ApplicationFile>> GetFilesByApplicationId(int applicationId)
         {
-            return await context.Set<ApplicationFile>()
+            var listToReturn = await context.Set<ApplicationFile>()
                 .Where(f => f.ApplicationId == applicationId)
                 .ToListAsync();
+
+            return listToReturn;
         }
 
         public async Task DeleteAsync<T>(object id) where T : class

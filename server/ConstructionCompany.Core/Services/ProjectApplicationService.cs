@@ -66,7 +66,7 @@ namespace ConstructionCompany.Core.Services
                     throw new Exception("Application not found.");
                 }
 
-                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", entity.Id.ToString());
 
                 var entityFiles = await repository.GetFilesByApplicationId(id);
 

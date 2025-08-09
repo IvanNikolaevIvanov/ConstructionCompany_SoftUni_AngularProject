@@ -46,13 +46,22 @@ namespace ConstructionCompany.API.Controllers
             return Ok(listOfSubmittedAppsByAgentId);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         [Authorize(Roles = "Agent")]
         [RequestSizeLimit(50_000_000)]
         public async Task<IActionResult> Create(
             [FromForm] ProjectApplicationModel model,
             [FromForm] List<IFormFile> files)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                .Where(e => e.Value.Errors.Count > 0)
+                .Select(e => new { Field = e.Key, Errors = e.Value.Errors.Select(er => er.ErrorMessage) });
+                return BadRequest(errors);
+            }
+
+
             var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (agentId == null) return Unauthorized();
 

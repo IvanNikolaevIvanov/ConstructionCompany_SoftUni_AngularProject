@@ -12,7 +12,10 @@ export class ApplicationService {
 
   //Agent
   createApplication(formData: FormData): Observable<ProjectApplicationModel> {
-    return this.http.post<ProjectApplicationModel>(`${this.apiUrl}`, formData);
+    return this.http.post<ProjectApplicationModel>(
+      `${this.apiUrl}/Create`,
+      formData,
+    );
   }
 
   // getApplications(): Observable<any[]> {
