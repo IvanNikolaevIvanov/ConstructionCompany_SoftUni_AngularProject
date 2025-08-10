@@ -22,17 +22,17 @@ export class ApplicationService {
   //   return this.http.get<any[]>(this.apiUrl);
   // }
 
-  getCreatedApps(): Observable<ProjectApplicationModel[]> {
-    return this.http.get<ProjectApplicationModel[]>(
-      `${this.apiUrl}/GetCreatedApplications`,
-    );
-  }
+  // getCreatedApps(): Observable<ProjectApplicationModel[]> {
+  //   return this.http.get<ProjectApplicationModel[]>(
+  //     `${this.apiUrl}/GetCreatedApplications`,
+  //   );
+  // }
 
-  getSubmittedApps(): Observable<ProjectApplicationModel[]> {
-    return this.http.get<ProjectApplicationModel[]>(
-      `${this.apiUrl}/GetSubmittedApplications`,
-    );
-  }
+  // getSubmittedApps(): Observable<ProjectApplicationModel[]> {
+  //   return this.http.get<ProjectApplicationModel[]>(
+  //     `${this.apiUrl}/GetSubmittedApplications`,
+  //   );
+  // }
 
   getApplicationsByStatus(
     statusId: number,
