@@ -10,6 +10,11 @@
 *.userosscache
 *.sln.docstates
 
+# Ignore everything inside uploads except the .gitkeep file
+server/ConstructionCompanyAPI/wwwroot/uploads/*
+!server/ConstructionCompanyAPI/wwwroot/uploads/.gitkeep
+
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -178,7 +183,6 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
-
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
