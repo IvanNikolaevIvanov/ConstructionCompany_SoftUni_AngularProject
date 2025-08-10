@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ProjectApplicationModel } from 'app/models';
+import { ApplicationUserModel, ProjectApplicationModel } from 'app/models';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -47,7 +47,24 @@ export class ApplicationService {
     );
   }
 
-  deleteApplication(id: number): Observable<DeleteResponse> {
-    return this.http.delete<DeleteResponse>(`${this.apiUrl}/${id}`);
+  deleteApplication(id: number): Observable<ServerResponse> {
+    return this.http.delete<ServerResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  getSupervisors(): Observable<ApplicationUserModel[]> {
+    return this.http.get<ApplicationUserModel[]>(
+      `${this.apiUrl}/GetSupervisors`,
+    );
+  }
+
+  submitApplication(
+    appId: number,
+    supervisorId: string,
+  ): Observable<ServerResponse> {
+    return this.http.post<ServerResponse>(
+      `${this.apiUrl}/SubmitApplication/${appId}`,
+      JSON.stringify(supervisorId),
+      { headers: { 'Content-Type': 'application/json' } },
+    );
   }
 }

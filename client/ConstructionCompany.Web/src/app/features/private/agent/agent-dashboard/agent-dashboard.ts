@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialog } from 'app/features/private/agent/confirm-dialog/confirm-dialog';
 import { CustomSnackbar } from 'app/features/private/agent/custom-snackbar/custom-snackbar';
+import { SelectSupervisor } from '../select-supervisor/select-supervisor';
 
 @Component({
   selector: 'agent-dashboard',
@@ -152,9 +153,35 @@ export class AgentDashboard implements OnInit, AfterViewInit {
   }
 
   submitApplication(id: number) {
-    // this.isLoading = true;
-    // this.appService.submitApplication(id).subscribe({
-    //   next:
-    // });
+    const dialogRef = this.dialog.open(SelectSupervisor);
+    dialogRef.afterClosed().subscribe((selected) => {
+      if (selected) {
+        console.log('Supervisor selected:', selected);
+        this.appService.submitApplication(id, selected).subscribe({
+          next: (res) => {
+            this.snackBar.openFromComponent(CustomSnackbar, {
+              data: { message: res.message, type: 'success' },
+              duration: 3000,
+              panelClass: ['custom-snackbar'],
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            this.loadTables();
+          },
+          error: (err) => {
+            this.snackBar.openFromComponent(CustomSnackbar, {
+              data: {
+                message: err.error?.message || 'Failed to submit application',
+                type: 'error',
+              },
+              duration: 3000,
+              panelClass: ['custom-snackbar'],
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+          },
+        });
+      }
+    });
   }
 }

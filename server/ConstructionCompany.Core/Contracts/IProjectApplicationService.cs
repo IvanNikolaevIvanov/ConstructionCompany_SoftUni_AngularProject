@@ -23,5 +23,11 @@ namespace ConstructionCompany.Core.Contracts
         Task<bool> DeleteApplicationAsync(int id);
 
         Task<bool> ApplicationExist(int id);
+
+        Task<List<ApplicationUserModel>> GetSupervisorsAsync();
+
+        Task<bool> SubmitApplicationAsync(int appId, string supervisorId);
+
+        Task<bool> SupervisorExists(string supervisorId);
     }
 }

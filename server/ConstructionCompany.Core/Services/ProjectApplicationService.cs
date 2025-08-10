@@ -2,8 +2,10 @@
 using ConstructionCompany.Core.Models;
 using ConstructionCompany.Infrastructure.Data.Common;
 using ConstructionCompany.Infrastructure.Enumerations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Channels;
 
 namespace ConstructionCompany.Core.Services
 {
@@ -219,16 +221,6 @@ namespace ConstructionCompany.Core.Services
                     applicationToUpdate.UsesWood = model.UsesWood;
                     applicationToUpdate.UsesConcrete = model.UsesConcrete;
 
-                    //TODO Update Files Also
-                    //if (model.Files != null)
-                    //{
-                    //    applicationToUpdate.Files.Clear();
-                    //    foreach (var file in model.Files)
-                    //    {
-                    //        applicationToUpdate.Files.Add(file);
-                    //    }
-                    //}
-
                     await repository.SaveChangesAsync();
 
                     return applicationToUpdate.Id;
@@ -321,27 +313,102 @@ namespace ConstructionCompany.Core.Services
 
         public async Task<bool> DeleteApplicationAsync(int id)
         {
-            var application = await repository.GetByIdAsync<ProjectApplication>(id);
-            if (application == null)
+            try
             {
-                return false;
+                var application = await repository.GetByIdAsync<ProjectApplication>(id);
+                if (application == null)
+                {
+                    return false;
+                }
+
+                await repository.DeleteAsync<ProjectApplication>(application);
+                var changes = await repository.SaveChangesAsync();
+
+                return changes > 0;
             }
+            catch (Exception)
+            {
 
-            await repository.DeleteAsync<ProjectApplication>(application);
-            var changes = await repository.SaveChangesAsync();
-
-            return changes > 0;
+                throw;
+            }
+            
         }
 
         public async Task<bool> ApplicationExist(int id)
         {
-            var application = await repository.GetByIdAsync<ProjectApplication>(id);
-            if (application == null)
+            try
             {
+                var application = await repository.GetByIdAsync<ProjectApplication>(id);
+                if (application == null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+        }
+
+        public async Task<List<ApplicationUserModel>> GetSupervisorsAsync()
+        {
+            try
+            {
+                var supervisors = await repository.GetSupervisorsAsync();
+
+                var supervisorsToReturn = new List<ApplicationUserModel>();
+                foreach (var supervisor in supervisors)
+                {
+                    var model = new ApplicationUserModel()
+                    {
+                        Id = supervisor.Id,
+                        FirstName = supervisor.FirstName,
+                        LastName = supervisor.LastName,
+                        Email = supervisor.Email,
+                    };
+
+                    supervisorsToReturn.Add(model);
+                }
+
+                return supervisorsToReturn;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> SubmitApplicationAsync(int appId, string supervisorId)
+        {
+            try
+            {
+                var applicationToSubmit = await repository.GetByIdAsync<ProjectApplication>(appId);
+                if (applicationToSubmit != null)
+                {
+                    applicationToSubmit.Status = ApplicationStatus.Submitted;
+                    applicationToSubmit.SupervisorId = supervisorId;
+                    await repository.SaveChangesAsync();
+                    return true;
+                }
+
                 return false;
             }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-            return true;
+        public async Task<bool> SupervisorExists(string supervisorId)
+        {
+            var supervisor = await repository.GetByIdAsync<ApplicationUser>(supervisorId);
+
+            return supervisor != null;
         }
     }
 }

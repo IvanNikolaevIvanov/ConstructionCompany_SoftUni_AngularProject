@@ -20,15 +20,15 @@ namespace ConstructionCompany.API.SeedDb
             }
 
             // Seed users
-            await CreateUserAsync(userManager, "agent1@demo.com", "Agent123!", "Agent");
-            await CreateUserAsync(userManager, "agent2@demo.com", "Agent123!", "Agent");
+            await CreateUserAsync(userManager, "agent1@demo.com", "Agent123!", "Agent", "John", "Doe");
+            await CreateUserAsync(userManager, "agent2@demo.com", "Agent123!", "Agent", "Jane", "Smith");
 
-            await CreateUserAsync(userManager, "supervisor1@demo.com", "Supervisor123!", "Supervisor");
-            await CreateUserAsync(userManager, "supervisor2@demo.com", "Supervisor123!", "Supervisor");
+            await CreateUserAsync(userManager, "supervisor1@demo.com", "Supervisor123!", "Supervisor", "Donald", "Trump");
+            await CreateUserAsync(userManager, "supervisor2@demo.com", "Supervisor123!", "Supervisor", "Vladimir", "Putin");
 
         }
 
-        private static async Task CreateUserAsync(UserManager<ApplicationUser> userManager, string email, string password, string role)
+        private static async Task CreateUserAsync(UserManager<ApplicationUser> userManager, string email, string password, string role, string firstName, string lastName)
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
@@ -37,7 +37,9 @@ namespace ConstructionCompany.API.SeedDb
                 {
                     UserName = email,
                     Email = email,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FirstName = firstName,
+                    LastName = lastName
                 };
 
                 var result = await userManager.CreateAsync(newUser, password);

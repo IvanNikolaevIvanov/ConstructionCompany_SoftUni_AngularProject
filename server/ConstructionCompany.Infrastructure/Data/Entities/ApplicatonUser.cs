@@ -2,5 +2,6 @@
 
 public class ApplicationUser : IdentityUser
 {
-    // Add additional fields if needed
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
 }

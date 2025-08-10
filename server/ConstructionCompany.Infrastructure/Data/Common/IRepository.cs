@@ -18,5 +18,7 @@
 
         Task<IEnumerable<ApplicationFile>> GetFilesByApplicationId(int applicationId);
 
+        Task<IEnumerable<ApplicationUser>> GetSupervisorsAsync();
+
     }
 }

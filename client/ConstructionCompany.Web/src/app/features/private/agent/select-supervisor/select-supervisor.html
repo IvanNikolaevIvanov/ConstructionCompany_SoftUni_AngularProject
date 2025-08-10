@@ -1,0 +1,23 @@
+<div class="mat-dialog-container">
+  <h2 mat-dialog-title class="dialog-title">Select Supervisor</h2>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Supervisor</mat-label>
+    <mat-select [(value)]="selectedSupervisor">
+      <mat-option *ngFor="let sup of supervisors$ | async" [value]="sup">
+        {{ sup.firstName }} {{ sup.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="dialog-actions">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      (click)="onSelect()"
+      [disabled]="!selectedSupervisor"
+    >
+      Select
+    </button>
+  </div>
+</div>

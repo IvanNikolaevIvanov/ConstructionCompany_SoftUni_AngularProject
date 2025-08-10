@@ -1,0 +1,26 @@
+.dialog-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.mat-dialog-container {
+  display: block;
+  min-width: 300px;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto; /* enable scroll if content too tall */
+  box-sizing: border-box;
+  padding: 1rem;
+}

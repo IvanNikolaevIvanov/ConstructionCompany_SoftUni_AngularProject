@@ -148,6 +148,53 @@ namespace ConstructionCompany.API.Controllers
             return Ok(new { success = true, message = $"Application with id {id} deleted successfully." });
         }
 
+        [HttpGet("GetSupervisors")]
+        [Authorize(Roles = "Agent")]
+        public async Task<ActionResult<ApplicationUserModel>> GetSupervisors()
+        {
+            try
+            {
+                var list = await appService.GetSupervisorsAsync();
+
+                return Ok(list);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost("SubmitApplication/{id:int}")]
+        [Authorize(Roles = "Agent")]
+        public async Task<IActionResult> SubmitApplication([FromRoute] int id, [FromBody] string supervisorId)
+        {
+            try
+            {
+                var ifAppExists = await appService.ApplicationExist(id);
+                if (ifAppExists == false)
+                    return NotFound($"Application with id: {id} not found.");
+
+                var isSupervisorExists = await appService.SupervisorExists(supervisorId);
+                if (isSupervisorExists == false)
+                    return NotFound($"Supervisor with id: {supervisorId} not found.");
+
+                var result = await appService.SubmitApplicationAsync(id, supervisorId);
+                if (!result)
+                {
+                    return StatusCode(500, new { success = false, message = "Failed to submit application due to server error." });
+                }
+
+                return Ok(new { success = true, message = $"Application with id {id} submitted successfully." });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         private async Task HandleFileSaving(int appId, List<IFormFile> files)
         {
             if (files != null && files.Count != 0)

@@ -1,5 +1,6 @@
 export interface ApplicationUserModel {
   id: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
 }

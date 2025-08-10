@@ -1,7 +1,7 @@
 .dialog-title {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #d32f2f; // red tone for danger
+  color: #d32f2f;
 }
 
 .dialog-content {
@@ -12,7 +12,7 @@
 
 .dialog-actions {
   margin-top: 1rem;
-
+  padding: 8px 16px;
   button {
     min-width: 90px;
   }
@@ -20,5 +20,5 @@
 
 .mat-dialog-container {
   border-radius: 12px;
-  padding: 20px;
+  padding: 10px 20px;
 }
