@@ -6,6 +6,8 @@ namespace ConstructionCompany.Core.Contracts
     {
         Task<ProjectApplication> CreateApplicationAsync(string agentId, ProjectApplicationModel model);
 
+        Task<List<ProjectApplicationDetailsModel>> GetApplicationsByByStatusAndAgentIdAsync(int statusId, string agentId);
+
         Task<List<ProjectApplicationDetailsModel>> GetCreatedApplicationsByAgentIdAsync(string agentId);
 
         Task<List<ProjectApplicationDetailsModel>> GetSubmittedApplicationsByAgentIdAsync(string agentId);

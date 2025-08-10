@@ -34,6 +34,14 @@ export class ApplicationService {
     );
   }
 
+  getApplicationsByStatus(
+    statusId: number,
+  ): Observable<ProjectApplicationModel[]> {
+    return this.http.get<ProjectApplicationModel[]>(
+      `${this.apiUrl}/GetApplicationsByStatus/${statusId}`,
+    );
+  }
+
   getApplicationById(id: number): Observable<ProjectApplicationModel> {
     return this.http.get<ProjectApplicationModel>(
       `${this.apiUrl}/GetApplicationById/${id}`,

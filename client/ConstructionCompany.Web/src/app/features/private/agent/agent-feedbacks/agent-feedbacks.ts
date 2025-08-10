@@ -1,32 +1,29 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { ProjectApplicationModel } from 'app/models';
-import { ApplicationService } from 'app/core/services';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { forkJoin } from 'rxjs';
-import { Router } from '@angular/router';
-import { SliceDescriptionPipe } from 'app/shared/pipes';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmDialog } from 'app/features/private/agent/confirm-dialog/confirm-dialog';
-import { CustomSnackbar } from 'app/features/private/agent/custom-snackbar/custom-snackbar';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { ApplicationService } from 'app/core/services';
+import { ProjectApplicationModel } from 'app/models';
+import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
+import { CustomSnackbar } from '../custom-snackbar/custom-snackbar';
 import { SelectSupervisor } from '../select-supervisor/select-supervisor';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { SliceDescriptionPipe } from 'app/shared/pipes';
+import { Observable } from 'rxjs';
 import { ApplicationStatus } from 'app/enums/enums';
 
 @Component({
-  selector: 'agent-dashboard',
+  selector: 'agent-feedbacks',
   imports: [
+    MatProgressSpinnerModule,
+    MatCard,
+    MatIconModule,
     CommonModule,
     MatTableModule,
     MatSortModule,
@@ -37,36 +34,22 @@ import { ApplicationStatus } from 'app/enums/enums';
     SliceDescriptionPipe,
   ],
   providers: [SliceDescriptionPipe],
-  templateUrl: './agent-dashboard.html',
-  styleUrls: ['./agent-dashboard.scss'],
+  templateUrl: './agent-feedbacks.html',
+  styleUrl: './agent-feedbacks.scss',
 })
-export class AgentDashboard implements OnInit, AfterViewInit {
-  displayedCreatedColumns: string[] = [
+export class AgentFeedbacks implements OnInit {
+  displayedApplicationsColumns: string[] = [
     'title',
     'clientName',
     'description',
-    'price',
-    'clientBank',
-    'actions',
-  ];
-
-  displayedSubmittedColumns: string[] = [
-    'title',
-    'clientName',
     'price',
     'submittedAt',
     'supervisorName',
   ];
 
-  createdDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
-  submittedDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
-
+  applicationsDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
   selectedRow: ProjectApplicationModel | null = null;
-  selectedTable: 'created' | 'submitted' | null = null;
-
-  @ViewChild('createdSort') createdSort!: MatSort;
-  @ViewChild('submittedSort') submittedSort!: MatSort;
-
+  @ViewChild('applicationsSort') applicationsSort!: MatSort;
   isLoading = false;
 
   constructor(
@@ -80,39 +63,30 @@ export class AgentDashboard implements OnInit, AfterViewInit {
     this.loadTables();
   }
 
-  ngAfterViewInit(): void {
-    // Assign MatSort after the view is initialized
-    this.createdDataSource.sort = this.createdSort;
-    this.submittedDataSource.sort = this.submittedSort;
-  }
-
   loadTables() {
     this.isLoading = true;
 
-    forkJoin({
-      created: this.appService.getApplicationsByStatus(
-        ApplicationStatus.Created,
-      ),
-      submitted: this.appService.getApplicationsByStatus(
-        ApplicationStatus.Submitted,
-      ),
-    }).subscribe({
-      next: ({ created, submitted }) => {
-        this.createdDataSource.data = created;
-        this.submittedDataSource.data = submitted;
-
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error Loading applications', err);
-        this.isLoading = false;
-      },
-    });
+    this.appService
+      .getApplicationsByStatus(ApplicationStatus.ReturnedBySupervisor)
+      .subscribe({
+        next: (res) => {
+          this.applicationsDataSource.data == res;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error Loading applications', err);
+          this.isLoading = false;
+        },
+      });
   }
 
-  onRowClick(row: ProjectApplicationModel, table: 'created' | 'submitted') {
+  ngAfterViewInit(): void {
+    // Assign MatSort after the view is initialized
+    this.applicationsDataSource.sort = this.applicationsSort;
+  }
+
+  onRowClick(row: ProjectApplicationModel) {
     this.selectedRow = row;
-    this.selectedTable = table;
   }
 
   editApplication(id: number) {

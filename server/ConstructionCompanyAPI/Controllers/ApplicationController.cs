@@ -34,6 +34,18 @@ namespace ConstructionCompany.API.Controllers
             return Ok(listOfCreatedAppsByAgentId);
         }
 
+        [HttpGet("GetApplicationsByStatus/{statusId:int}")]
+        [Authorize(Roles = "Agent")]
+        public async Task<IActionResult> GetApplicationsByStatus(int statusId)
+        {
+            var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (agentId == null) return Unauthorized();
+
+            var listAppsByStatusAndAgentId = await appService.GetApplicationsByByStatusAndAgentIdAsync(statusId, agentId);
+
+            return Ok(listAppsByStatusAndAgentId);
+        }
+
         [HttpGet("GetSubmittedApplications")]
         [Authorize(Roles = "Agent")]
         public async Task<IActionResult> GetSubmittedApplications() 

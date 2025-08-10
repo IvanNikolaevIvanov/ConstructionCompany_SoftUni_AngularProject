@@ -25,6 +25,15 @@
         >Create New Project</a
       >
     </li>
+    <li *ngIf="role === 'Agent'" class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/agent/agent-feedbacks"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Feedbacks</a
+      >
+    </li>
 
     <!-- Supervisor Menu -->
     <li *ngIf="role === 'Supervisor'" class="nav-item">
