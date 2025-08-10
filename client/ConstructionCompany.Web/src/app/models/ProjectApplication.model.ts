@@ -31,7 +31,7 @@ export interface ProjectApplicationModel {
   agentId: string;
   agent: ApplicationUserModel;
   supervisorId?: string;
-  supervisor?: ApplicationUserModel;
+  supervisorName?: string;
 
   files: ApplicationFileModel[];
 }

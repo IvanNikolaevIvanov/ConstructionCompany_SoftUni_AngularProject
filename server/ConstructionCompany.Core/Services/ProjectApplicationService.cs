@@ -181,7 +181,8 @@ namespace ConstructionCompany.Core.Services
                                                     Price = app.Price,
                                                     PriceInWords = app.PriceInWords,
                                                     SupervisorId = app.SupervisorId,
-                                                    SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
+                                                    SubmittedAt = app.SubmittedAt.ToString(),
+                                                    //SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
                                                     UsesBricks = app.UsesBricks,
                                                     UsesConcrete = app.UsesConcrete,
                                                     UsesGlass = app.UsesGlass,
@@ -191,6 +192,21 @@ namespace ConstructionCompany.Core.Services
                                                 })
                                                 .Take(10)
                                                 .ToListAsync();
+
+                //Get Supervisors for each app
+                foreach (var app in appsToReturn)
+                {
+                    var supervisor = new ApplicationUser();
+                    if (app.SupervisorId != null)
+                    {
+                        supervisor = await repository.GetByIdAsync<ApplicationUser>(app.SupervisorId);
+                    }
+                   
+                    if (supervisor != null)
+                    {
+                        app.SupervisorName = $"{supervisor.FirstName} {supervisor.LastName}";
+                    }
+                }
 
                 return appsToReturn;
             }
@@ -392,6 +408,7 @@ namespace ConstructionCompany.Core.Services
                 {
                     applicationToSubmit.Status = ApplicationStatus.Submitted;
                     applicationToSubmit.SupervisorId = supervisorId;
+                    applicationToSubmit.SubmittedAt = DateTime.Now;
                     await repository.SaveChangesAsync();
                     return true;
                 }

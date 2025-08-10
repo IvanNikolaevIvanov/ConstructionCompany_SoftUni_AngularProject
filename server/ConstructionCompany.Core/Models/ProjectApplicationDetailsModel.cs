@@ -27,6 +27,8 @@
 
         public string? SupervisorId { get; set; }
         public string SupervisorName { get; set; } = string.Empty;
+
+        public string SubmittedAt {  get; set; } = string.Empty;
         
         public ICollection<FileModelDto> Files { get; set; } = new List<FileModelDto>();
 

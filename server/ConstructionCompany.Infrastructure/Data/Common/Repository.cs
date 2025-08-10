@@ -1,4 +1,5 @@
 ﻿using ConstructionCompany.Infrastructure.Data;
+using ConstructionCompany.Infrastructure.Enumerations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -93,7 +94,6 @@ namespace ConstructionCompany.Infrastructure.Data.Common
 
                 throw;
             }
-            
         }
     }
 }
