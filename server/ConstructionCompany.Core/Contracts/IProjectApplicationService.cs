@@ -33,5 +33,9 @@ namespace ConstructionCompany.Core.Contracts
         Task<bool> SupervisorExists(string supervisorId);
 
         Task<List<SupervisorFeedbackDto>> GetApplicationFeedbacks(int applicationId);
+
+        //Supervisor
+
+        Task<List<ProjectApplicationDetailsModel>> GetSupervisorApplicationsByStatus(int statusId, string supervisorId);
     }
 }

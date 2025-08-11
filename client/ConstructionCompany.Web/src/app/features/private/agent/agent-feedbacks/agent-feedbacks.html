@@ -113,6 +113,12 @@
           <div class="p-4" *ngIf="!selectedRow">
             <p>Select an application to view its feedbacks.</p>
           </div>
+          <div
+            class="p-4"
+            *ngIf="selectedRow && !this.feedbacksDataSource.data.some"
+          >
+            <p>There are no feedbacks for this application yet.</p>
+          </div>
           <div *ngIf="isFeedbacksLoading">
             <mat-spinner diameter="40"></mat-spinner> Loading feedbacks...
           </div>

@@ -87,4 +87,13 @@ export class ApplicationService {
       `${this.apiUrl}/GetFeedbacksByApplicationId/${applicationId}`,
     );
   }
+
+  // Supervisor
+  GetSupervisorApplicationsByStatus(
+    statusId: number,
+  ): Observable<ProjectApplicationModel[]> {
+    return this.http.get<ProjectApplicationModel[]>(
+      `${this.apiUrl}/GetSupervisorApplicationsByStatus/${statusId}`,
+    );
+  }
 }

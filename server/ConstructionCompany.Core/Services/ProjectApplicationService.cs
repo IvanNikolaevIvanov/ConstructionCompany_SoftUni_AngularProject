@@ -206,7 +206,7 @@ namespace ConstructionCompany.Core.Services
                             supervisor = await repository.GetByIdAsync<ApplicationUser>(app.SupervisorId);
                         }
 
-                        if (supervisor != null)
+                        if (supervisor != null && !string.IsNullOrEmpty(supervisor.Id))
                         {
                             app.SupervisorName = $"{supervisor.FirstName} {supervisor.LastName}";
                         }
@@ -486,7 +486,7 @@ namespace ConstructionCompany.Core.Services
             var supervisor = await repository.GetByIdAsync<ApplicationUser>(supervisorId);
             return supervisor != null;
         }
-            public async Task<List<SupervisorFeedbackDto>> GetApplicationFeedbacks(int applicationId)
+        public async Task<List<SupervisorFeedbackDto>> GetApplicationFeedbacks(int applicationId)
         {
 
             try
@@ -521,6 +521,64 @@ namespace ConstructionCompany.Core.Services
                 
 
                 return feedbacksToReturn;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        // Supervisor
+            public async Task<List<ProjectApplicationDetailsModel>> GetSupervisorApplicationsByStatus(int statusId, string supervisorId) 
+        { 
+
+            try
+            {
+                var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
+                                                .Where(app => app.SupervisorId == supervisorId && ((int)app.Status) == statusId)
+                                                .OrderByDescending(app => app.Id)
+                                                .Select(app => new ProjectApplicationDetailsModel()
+                                                {
+                                                    Id = app.Id,
+                                                    Title = app.Title,
+                                                    Description = app.Description,
+                                                    ClientName = app.ClientName,
+                                                    ClientBank = app.ClientBank,
+                                                    ClientBankIban = app.ClientBankIban,
+                                                    Price = app.Price,
+                                                    PriceInWords = app.PriceInWords,
+                                                    AgentId = app.AgentId,
+                                                    SupervisorId = app.SupervisorId,
+                                                    SubmittedAt = app.SubmittedAt.ToString(),
+                                                    UsesBricks = app.UsesBricks,
+                                                    UsesConcrete = app.UsesConcrete,
+                                                    UsesGlass = app.UsesGlass,
+                                                    UsesInsulation = app.UsesInsulation,
+                                                    UsesSteel = app.UsesSteel,
+                                                    UsesWood = app.UsesWood,
+                                                })
+                                                .Take(10)
+                                                .ToListAsync();
+
+               
+                    //Get Agents for each app
+                    foreach (var app in appsToReturn)
+                    {
+                        var agent = new ApplicationUser();
+                        if (app.AgentId != null)
+                        {
+                            agent = await repository.GetByIdAsync<ApplicationUser>(app.AgentId);
+                        }
+
+                        if (agent != null && !string.IsNullOrEmpty(agent.Id))
+                        {
+                            app.AgentName = $"{agent.FirstName} {agent.LastName}";
+                        }
+                    }
+                
+
+                return appsToReturn;
             }
             catch (Exception)
             {

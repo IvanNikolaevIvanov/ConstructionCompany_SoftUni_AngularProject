@@ -25,6 +25,9 @@
         public bool UsesWood { get; set; }
         public bool UsesGlass { get; set; }
 
+
+        public string? AgentId { get; set; }
+        public string AgentName { get; set; } = string.Empty;
         public string? SupervisorId { get; set; }
         public string SupervisorName { get; set; } = string.Empty;
 
