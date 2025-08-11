@@ -1,0 +1,14 @@
+<div class="mat-dialog-container">
+  <h2 mat-dialog-title class="dialog-title">Supervisor Feedback</h2>
+
+  <mat-dialog-content class="dialog-content">
+    <p><strong>Author:</strong> {{ data.author }}</p>
+    <p><strong>Date:</strong> {{ data.date | date: "short" }}</p>
+    <p><strong>Message:</strong></p>
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-flat-button color="primary" (click)="onConfirm()">OK</button>
+  </mat-dialog-actions>
+</div>

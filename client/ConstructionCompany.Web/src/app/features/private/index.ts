@@ -2,5 +2,6 @@ export * from './shared/private-layout/private-layout';
 export * from './agent/agent-dashboard/agent-dashboard';
 export * from './agent/application-form/application-form';
 export * from './agent/file-upload/file-upload';
+export * from './agent/feedback-component/feedback-component';
 export * from './supervisor/supervisor-dashboard/supervisor-dashboard';
 export * from './agent/agent-feedbacks/agent-feedbacks';

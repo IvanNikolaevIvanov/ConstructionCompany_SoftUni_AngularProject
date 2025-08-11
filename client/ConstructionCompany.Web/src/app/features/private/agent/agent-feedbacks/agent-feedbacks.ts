@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SliceDescriptionPipe } from 'app/shared/pipes';
 import { Observable } from 'rxjs';
 import { ApplicationStatus } from 'app/enums/enums';
+import { FeedbackComponent } from '../feedback-component/feedback-component';
 
 @Component({
   selector: 'agent-feedbacks',
@@ -42,15 +43,15 @@ export class AgentFeedbacks implements OnInit {
     'title',
     'clientName',
     'description',
-    'price',
     'submittedAt',
-    'supervisorName',
+    'actions',
   ];
 
   applicationsDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
   feedbacksDataSource = new MatTableDataSource<SupervisorFeedbackModel>([]);
   isFeedbacksLoading = false;
   selectedRow: ProjectApplicationModel | null = null;
+  selectedFeedback?: SupervisorFeedbackModel;
   selectedApplication?: ProjectApplicationModel;
   @ViewChild('applicationsSort') applicationsSort!: MatSort;
   isLoading = false;
@@ -83,7 +84,7 @@ export class AgentFeedbacks implements OnInit {
       });
   }
 
-  loadFeedbacks(aplicationId: number) {
+  loadFeedbacks(applicationId: number) {
     this.isFeedbacksLoading = true;
     this.appService.getFeedbacksByApplication(applicationId).subscribe({
       next: (res) => {
@@ -105,6 +106,17 @@ export class AgentFeedbacks implements OnInit {
   onRowClick(row: ProjectApplicationModel) {
     this.selectedRow = row;
     this.loadFeedbacks(row.id);
+  }
+
+  onFeedbackClick(row: SupervisorFeedbackModel) {
+    this.selectedFeedback = row;
+    const dialogRef = this.dialog.open(FeedbackComponent, {
+      data: {
+        author: this.selectedFeedback.authorName ?? '',
+        message: this.selectedFeedback.text ?? '',
+        date: this.selectedFeedback.createdAt ?? '',
+      },
+    });
   }
 
   editApplication(id: number) {
