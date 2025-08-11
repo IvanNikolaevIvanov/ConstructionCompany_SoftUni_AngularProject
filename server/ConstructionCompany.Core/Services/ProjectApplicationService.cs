@@ -486,8 +486,6 @@ namespace ConstructionCompany.Core.Services
             var supervisor = await repository.GetByIdAsync<ApplicationUser>(supervisorId);
             return supervisor != null;
         }
-
-        
             public async Task<List<SupervisorFeedbackDto>> GetApplicationFeedbacks(int applicationId)
         {
 
