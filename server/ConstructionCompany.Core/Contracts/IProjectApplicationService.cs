@@ -31,5 +31,7 @@ namespace ConstructionCompany.Core.Contracts
         Task<bool> SubmitApplicationAsync(int appId, string supervisorId);
 
         Task<bool> SupervisorExists(string supervisorId);
+
+        Task<List<SupervisorFeedbackDto>> GetApplicationFeedbacks(int applicationId);
     }
 }

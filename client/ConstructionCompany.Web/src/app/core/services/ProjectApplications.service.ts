@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApplicationUserModel, ProjectApplicationModel } from 'app/models';
+import {
+  ApplicationUserModel,
+  ProjectApplicationModel,
+  SupervisorFeedbackModel,
+} from 'app/models';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -73,6 +77,14 @@ export class ApplicationService {
       `${this.apiUrl}/SubmitApplication/${appId}`,
       JSON.stringify(supervisorId),
       { headers: { 'Content-Type': 'application/json' } },
+    );
+  }
+
+  getFeedbacksByApplication(
+    applicationId: number,
+  ): Observable<SupervisorFeedbackModel[]> {
+    return this.http.get<SupervisorFeedbackModel[]>(
+      `${this.apiUrl}/GetFeedbacksByApplicationId/${applicationId}`,
     );
   }
 }

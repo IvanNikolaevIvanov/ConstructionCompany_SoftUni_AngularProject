@@ -22,41 +22,50 @@ namespace ConstructionCompany.API.Controllers
 
         //Agent
 
-        [HttpGet("GetCreatedApplications")]
-        [Authorize(Roles = "Agent")]
-        public async Task<IActionResult> GetCreatedApplications() 
-        {
-            var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (agentId == null) return Unauthorized();
+        //[HttpGet("GetCreatedApplications")]
+        //[Authorize(Roles = "Agent")]
+        //public async Task<IActionResult> GetCreatedApplications() 
+        //{
+        //    var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    if (agentId == null) return Unauthorized();
 
-            var listOfCreatedAppsByAgentId = await appService.GetCreatedApplicationsByAgentIdAsync(agentId);
+        //    var listOfCreatedAppsByAgentId = await appService.GetCreatedApplicationsByAgentIdAsync(agentId);
 
-            return Ok(listOfCreatedAppsByAgentId);
-        }
+        //    return Ok(listOfCreatedAppsByAgentId);
+        //}
 
         [HttpGet("GetApplicationsByStatus/{statusId:int}")]
         [Authorize(Roles = "Agent")]
         public async Task<IActionResult> GetApplicationsByStatus(int statusId)
         {
-            var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (agentId == null) return Unauthorized();
+            try
+            {
+                var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (agentId == null) return Unauthorized();
 
-            var listAppsByStatusAndAgentId = await appService.GetApplicationsByByStatusAndAgentIdAsync(statusId, agentId);
+                var listAppsByStatusAndAgentId = await appService.GetApplicationsByByStatusAndAgentIdAsync(statusId, agentId);
 
-            return Ok(listAppsByStatusAndAgentId);
+                return Ok(listAppsByStatusAndAgentId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
-        [HttpGet("GetSubmittedApplications")]
-        [Authorize(Roles = "Agent")]
-        public async Task<IActionResult> GetSubmittedApplications() 
-        {
-            var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (agentId == null) return Unauthorized();
+        //[HttpGet("GetSubmittedApplications")]
+        //[Authorize(Roles = "Agent")]
+        //public async Task<IActionResult> GetSubmittedApplications() 
+        //{
+        //    var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    if (agentId == null) return Unauthorized();
 
-            var listOfSubmittedAppsByAgentId = await appService.GetSubmittedApplicationsByAgentIdAsync(agentId);
+        //    var listOfSubmittedAppsByAgentId = await appService.GetSubmittedApplicationsByAgentIdAsync(agentId);
 
-            return Ok(listOfSubmittedAppsByAgentId);
-        }
+        //    return Ok(listOfSubmittedAppsByAgentId);
+        //}
 
         [HttpPost("Create")]
         [Authorize(Roles = "Agent")]
@@ -205,7 +214,27 @@ namespace ConstructionCompany.API.Controllers
                 throw;
             }
         }
+        
+        [HttpGet("GetFeedbacksByApplicationId/{applicationId:int}")]
+        [Authorize(Roles = "Agent")]
+        public async Task<IActionResult> GetFeedbacksByApplicationId(int applicationId)
+        {
+            try
+            {
+                var appExists = await appService.ApplicationExist(applicationId);
+                if (appExists == false) return NotFound();
 
+                var applicationFeedbacks = await appService.GetApplicationFeedbacks(applicationId);
+
+                return Ok(applicationFeedbacks);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
 
         private async Task HandleFileSaving(int appId, List<IFormFile> files)
         {

@@ -6,7 +6,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ApplicationService } from 'app/core/services';
-import { ProjectApplicationModel } from 'app/models';
+import { ProjectApplicationModel, SupervisorFeedbackModel } from 'app/models';
 import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 import { CustomSnackbar } from '../custom-snackbar/custom-snackbar';
 import { SelectSupervisor } from '../select-supervisor/select-supervisor';
@@ -48,7 +48,10 @@ export class AgentFeedbacks implements OnInit {
   ];
 
   applicationsDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
+  feedbacksDataSource = new MatTableDataSource<SupervisorFeedbackModel>([]);
+  isFeedbacksLoading = false;
   selectedRow: ProjectApplicationModel | null = null;
+  selectedApplication?: ProjectApplicationModel;
   @ViewChild('applicationsSort') applicationsSort!: MatSort;
   isLoading = false;
 
@@ -80,6 +83,20 @@ export class AgentFeedbacks implements OnInit {
       });
   }
 
+  loadFeedbacks(aplicationId: number) {
+    this.isFeedbacksLoading = true;
+    this.appService.getFeedbacksByApplication(applicationId).subscribe({
+      next: (res) => {
+        this.feedbacksDataSource.data = res;
+        this.isFeedbacksLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading feedbacks', err);
+        this.isFeedbacksLoading = false;
+      },
+    });
+  }
+
   ngAfterViewInit(): void {
     // Assign MatSort after the view is initialized
     this.applicationsDataSource.sort = this.applicationsSort;
@@ -87,6 +104,7 @@ export class AgentFeedbacks implements OnInit {
 
   onRowClick(row: ProjectApplicationModel) {
     this.selectedRow = row;
+    this.loadFeedbacks(row.id);
   }
 
   editApplication(id: number) {

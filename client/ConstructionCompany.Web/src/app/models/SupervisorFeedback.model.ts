@@ -2,8 +2,9 @@ import { ApplicationUserModel } from './ApplicationUser.model';
 
 export interface SupervisorFeedbackModel {
   id: number;
-  content: string;
+  text: string;
   createdAt: string;
-  supervisorId: string;
-  supervisor: ApplicationUserModel;
+  applicationId: number;
+  authorId: string; // supervisor id
+  authorName?: string; // supervisor name
 }

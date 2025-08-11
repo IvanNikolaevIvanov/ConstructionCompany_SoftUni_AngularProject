@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Channels;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConstructionCompany.Core.Services
 {
@@ -124,44 +125,44 @@ namespace ConstructionCompany.Core.Services
             }
         }
 
-        public async Task<List<ProjectApplicationDetailsModel>> GetCreatedApplicationsByAgentIdAsync(string agentId)
-        {
+        //public async Task<List<ProjectApplicationDetailsModel>> GetCreatedApplicationsByAgentIdAsync(string agentId)
+        //{
 
-            try
-            {
-                var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
-                                                .Where(app => app.AgentId == agentId && app.Status == 0)
-                                                .OrderByDescending(app => app.Id)
-                                                .Select(app => new ProjectApplicationDetailsModel()
-                                                {
-                                                    Id = app.Id,
-                                                    Title = app.Title,
-                                                    Description = app.Description,
-                                                    ClientName = app.ClientName,
-                                                    ClientBank = app.ClientBank,
-                                                    ClientBankIban = app.ClientBankIban,
-                                                    Price = app.Price,
-                                                    PriceInWords = app.PriceInWords,
-                                                    SupervisorId = app.SupervisorId,
-                                                    SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
-                                                    UsesBricks = app.UsesBricks,
-                                                    UsesConcrete = app.UsesConcrete,
-                                                    UsesGlass = app.UsesGlass,
-                                                    UsesInsulation = app.UsesInsulation,
-                                                    UsesSteel = app.UsesSteel,
-                                                    UsesWood = app.UsesWood,
-                                                })
-                                                .Take(10)
-                                                .ToListAsync();
+        //    try
+        //    {
+        //        var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
+        //                                        .Where(app => app.AgentId == agentId && app.Status == 0)
+        //                                        .OrderByDescending(app => app.Id)
+        //                                        .Select(app => new ProjectApplicationDetailsModel()
+        //                                        {
+        //                                            Id = app.Id,
+        //                                            Title = app.Title,
+        //                                            Description = app.Description,
+        //                                            ClientName = app.ClientName,
+        //                                            ClientBank = app.ClientBank,
+        //                                            ClientBankIban = app.ClientBankIban,
+        //                                            Price = app.Price,
+        //                                            PriceInWords = app.PriceInWords,
+        //                                            SupervisorId = app.SupervisorId,
+        //                                            SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
+        //                                            UsesBricks = app.UsesBricks,
+        //                                            UsesConcrete = app.UsesConcrete,
+        //                                            UsesGlass = app.UsesGlass,
+        //                                            UsesInsulation = app.UsesInsulation,
+        //                                            UsesSteel = app.UsesSteel,
+        //                                            UsesWood = app.UsesWood,
+        //                                        })
+        //                                        .Take(10)
+        //                                        .ToListAsync();
 
-                return appsToReturn;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+        //        return appsToReturn;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
            
-        }
+        //}
 
         public async Task<List<ProjectApplicationDetailsModel>> GetApplicationsByByStatusAndAgentIdAsync(int statusId, string agentId)
         {
@@ -222,58 +223,58 @@ namespace ConstructionCompany.Core.Services
         }
         
 
-        public async Task<List<ProjectApplicationDetailsModel>> GetSubmittedApplicationsByAgentIdAsync(string agentId)
-        {
-            try
-            {
-                var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
-                                                .Where(app => app.AgentId == agentId && app.Status == ApplicationStatus.Submitted)
-                                                .OrderByDescending(app => app.Id)
-                                                .Select(app => new ProjectApplicationDetailsModel()
-                                                { 
-                                                    Id = app.Id,
-                                                    Title = app.Title,
-                                                    Description = app.Description,
-                                                    ClientName = app.ClientName,
-                                                    ClientBank = app.ClientBank,
-                                                    ClientBankIban = app.ClientBankIban,
-                                                    Price = app.Price,
-                                                    PriceInWords = app.PriceInWords,
-                                                    SupervisorId = app.SupervisorId,
-                                                    SubmittedAt = app.SubmittedAt.ToString(),
-                                                    //SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
-                                                    UsesBricks = app.UsesBricks,
-                                                    UsesConcrete = app.UsesConcrete,
-                                                    UsesGlass = app.UsesGlass,
-                                                    UsesInsulation = app.UsesInsulation,
-                                                    UsesSteel = app.UsesSteel,
-                                                    UsesWood = app.UsesWood,
-                                                })
-                                                .Take(10)
-                                                .ToListAsync();
+        //public async Task<List<ProjectApplicationDetailsModel>> GetSubmittedApplicationsByAgentIdAsync(string agentId)
+        //{
+        //    try
+        //    {
+        //        var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
+        //                                        .Where(app => app.AgentId == agentId && app.Status == ApplicationStatus.Submitted)
+        //                                        .OrderByDescending(app => app.Id)
+        //                                        .Select(app => new ProjectApplicationDetailsModel()
+        //                                        { 
+        //                                            Id = app.Id,
+        //                                            Title = app.Title,
+        //                                            Description = app.Description,
+        //                                            ClientName = app.ClientName,
+        //                                            ClientBank = app.ClientBank,
+        //                                            ClientBankIban = app.ClientBankIban,
+        //                                            Price = app.Price,
+        //                                            PriceInWords = app.PriceInWords,
+        //                                            SupervisorId = app.SupervisorId,
+        //                                            SubmittedAt = app.SubmittedAt.ToString(),
+        //                                            //SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
+        //                                            UsesBricks = app.UsesBricks,
+        //                                            UsesConcrete = app.UsesConcrete,
+        //                                            UsesGlass = app.UsesGlass,
+        //                                            UsesInsulation = app.UsesInsulation,
+        //                                            UsesSteel = app.UsesSteel,
+        //                                            UsesWood = app.UsesWood,
+        //                                        })
+        //                                        .Take(10)
+        //                                        .ToListAsync();
 
-                //Get Supervisors for each app
-                foreach (var app in appsToReturn)
-                {
-                    var supervisor = new ApplicationUser();
-                    if (app.SupervisorId != null)
-                    {
-                        supervisor = await repository.GetByIdAsync<ApplicationUser>(app.SupervisorId);
-                    }
+        //        //Get Supervisors for each app
+        //        foreach (var app in appsToReturn)
+        //        {
+        //            var supervisor = new ApplicationUser();
+        //            if (app.SupervisorId != null)
+        //            {
+        //                supervisor = await repository.GetByIdAsync<ApplicationUser>(app.SupervisorId);
+        //            }
                    
-                    if (supervisor != null)
-                    {
-                        app.SupervisorName = $"{supervisor.FirstName} {supervisor.LastName}";
-                    }
-                }
+        //            if (supervisor != null)
+        //            {
+        //                app.SupervisorName = $"{supervisor.FirstName} {supervisor.LastName}";
+        //            }
+        //        }
 
-                return appsToReturn;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //        return appsToReturn;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         public async Task<int> UpdateApplicationAsync(ProjectApplicationDetailsModel model, int id)
         {
@@ -483,8 +484,51 @@ namespace ConstructionCompany.Core.Services
         public async Task<bool> SupervisorExists(string supervisorId)
         {
             var supervisor = await repository.GetByIdAsync<ApplicationUser>(supervisorId);
-
             return supervisor != null;
+        }
+
+        
+            public async Task<List<SupervisorFeedbackDto>> GetApplicationFeedbacks(int applicationId)
+        {
+
+            try
+            {
+                var feedbacksToReturn = await repository.AllReadOnly<SupervisorFeedback>()
+                                                .Where(fb => fb.ApplicationId == applicationId)
+                                                .OrderBy(fb => fb.Id)
+                                                .Select(fb => new SupervisorFeedbackDto()
+                                                {
+                                                    Id = fb.Id,
+                                                    Text = fb.Text,
+                                                    CreatedAt = fb.CreatedAt.ToShortDateString(),
+                                                    ApplicationId = fb.ApplicationId,
+                                                    AuthorId = fb.AuthorId,
+                                                })
+                                                .ToListAsync();
+
+                
+                    foreach (var fb in feedbacksToReturn)
+                    {
+                        var supervisor = new ApplicationUser();
+                        if (fb.AuthorId != null)
+                        {
+                            supervisor = await repository.GetByIdAsync<ApplicationUser>(fb.AuthorId);
+                        }
+
+                        if (supervisor != null)
+                        {
+                            fb.AuthorName = $"{supervisor.FirstName} {supervisor.LastName}";
+                        }
+                    }
+                
+
+                return feedbacksToReturn;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }
