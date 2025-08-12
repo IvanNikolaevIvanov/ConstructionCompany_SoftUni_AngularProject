@@ -96,4 +96,10 @@ export class ApplicationService {
       `${this.apiUrl}/GetSupervisorApplicationsByStatus/${statusId}`,
     );
   }
+
+  printApplication(appId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/PrintApplication/${appId}`, {
+      responseType: 'blob',
+    });
+  }
 }

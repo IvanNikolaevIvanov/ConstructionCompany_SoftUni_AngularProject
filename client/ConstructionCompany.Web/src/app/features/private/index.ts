@@ -6,3 +6,4 @@ export * from './agent/feedback-component/feedback-component';
 export * from './agent/agent-feedbacks/agent-feedbacks';
 export * from './supervisor/supervisor-dashboard/supervisor-dashboard';
 export * from './supervisor/all-applications/all-applications';
+export * from './supervisor/application-details/application-details';

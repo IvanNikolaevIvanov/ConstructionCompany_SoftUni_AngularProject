@@ -4,6 +4,8 @@ using ConstructionCompany.Infrastructure.Data.Common;
 using ConstructionCompany.Infrastructure.Enumerations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 using System;
 using System.Threading.Channels;
 using static System.Net.Mime.MediaTypeNames;
@@ -111,6 +113,9 @@ namespace ConstructionCompany.Core.Services
                     UsesInsulation = entity.UsesInsulation,
                     UsesWood = entity.UsesWood,
                     UsesGlass = entity.UsesGlass,
+
+                    AgentId = entity.AgentId,
+                    SupervisorId = entity.SupervisorId,
 
                     Files = filesToReturn,
                 };
@@ -585,6 +590,88 @@ namespace ConstructionCompany.Core.Services
                 throw;
             }
 
+        }
+
+        public async Task<byte[]> PrintApplication(int appId)
+        {
+            try
+            {
+                var arrayToReturn = new byte[0];
+                var appToPrint = await repository.GetByIdAsync<ProjectApplication>(appId);
+                if (appToPrint == null)
+                {
+                    throw new InvalidOperationException($"Application with ID {appId} not found.");
+                }
+
+                var agent = await repository.GetByIdAsync<ApplicationUser>(appToPrint.AgentId);
+                var supervisor = await repository.GetByIdAsync<ApplicationUser>(appToPrint.SupervisorId);
+
+                using var document = new PdfDocument();
+                var page = document.AddPage();
+                var gfx = XGraphics.FromPdfPage(page);
+                var font = new XFont("Verdana", 12);
+
+                double y = 50;
+                const double lineHeight = 20;
+
+                gfx.DrawString($"Application ID: {appToPrint.Id} Title: {appToPrint.Title}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Agent: {agent.FirstName} {agent.LastName} Supervisor: {supervisor.FirstName} {supervisor.LastName}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Submitted At: {appToPrint.SubmittedAt:yyyy-MM-dd}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Status: {appToPrint.Status}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Client Name: {appToPrint.ClientName}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Client Bank: {appToPrint.ClientBank}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Client IBAN: {appToPrint.ClientBankIban}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Price: {appToPrint.Price:C2}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Price (in words): {appToPrint.PriceInWords}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Uses Concrete: {(appToPrint.UsesConcrete ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Uses Bricks: {(appToPrint.UsesBricks ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Uses Steel: {(appToPrint.UsesSteel ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Uses Insulation: {(appToPrint.UsesInsulation ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Uses Wood: {(appToPrint.UsesWood ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                gfx.DrawString($"Uses Glass: {(appToPrint.UsesGlass ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                y += lineHeight;
+
+                using var stream = new MemoryStream();
+                document.Save(stream, false);
+                stream.Position = 0;
+
+                arrayToReturn = stream.ToArray();
+
+                return arrayToReturn;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

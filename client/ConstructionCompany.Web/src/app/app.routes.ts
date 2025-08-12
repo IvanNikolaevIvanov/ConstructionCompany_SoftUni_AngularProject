@@ -5,6 +5,7 @@ import {
   AgentDashboard,
   AgentFeedbacks,
   AllApplications,
+  ApplicationDetails,
   CreateNewApplication,
   FileUpload,
   PrivateLayout,
@@ -59,6 +60,12 @@ export const routes: Routes = [
       {
         path: 'supervisor/all-applications',
         component: AllApplications,
+        canActivate: [authGuard],
+        data: { roles: ['Supervisor'] },
+      },
+      {
+        path: 'supervisor/application-details',
+        component: ApplicationDetails,
         canActivate: [authGuard],
         data: { roles: ['Supervisor'] },
       },

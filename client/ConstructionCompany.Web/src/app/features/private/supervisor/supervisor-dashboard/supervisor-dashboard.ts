@@ -50,7 +50,6 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
 
   selectedRow?: ProjectApplicationModel;
   selectedFeedback?: SupervisorFeedbackModel;
-  selectedApplication?: ProjectApplicationModel;
 
   @ViewChild('applicationsSort') applicationsSort!: MatSort;
 
@@ -119,7 +118,11 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
     });
   }
 
-  viewDetails(appId: number) {}
+  viewDetails(appId: number) {
+    this.router.navigate(['supervisor/application-details'], {
+      state: { application: this.selectedRow },
+    });
+  }
 
   returnWithFeedback(appId: number) {}
 

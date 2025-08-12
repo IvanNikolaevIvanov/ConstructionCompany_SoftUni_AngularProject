@@ -4,6 +4,10 @@ using ConstructionCompany.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
+using System;
+using System.IO;
 using System.Security.Claims;
 
 namespace ConstructionCompany.API.Controllers
@@ -295,6 +299,27 @@ namespace ConstructionCompany.API.Controllers
                 throw;
             }
 
+        }
+
+        [HttpGet("PrintApplication/{appId:int}")]
+        [Authorize(Roles = "Supervisor")]
+        public async Task<IActionResult> PrintApplication(int appId)
+        {
+            try
+            {
+                var appExists = await appService.ApplicationExist(appId);
+                if (appExists == false) return NotFound();
+
+                var fileToReturn = await appService.PrintApplication(appId);
+
+                return File(fileToReturn, "application/pdf", $"Application-{appId}.pdf"); 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }
