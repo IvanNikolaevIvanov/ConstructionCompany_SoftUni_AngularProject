@@ -35,15 +35,15 @@ namespace ConstructionCompany.API.Controllers
         //}
 
         [HttpGet("GetApplicationsByStatus/{statusId:int}")]
-        [Authorize(Roles = "Agent,Supervisor")]
+        [Authorize(Roles = "Agent")]
         public async Task<IActionResult> GetApplicationsByStatus(int statusId)
         {
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (userId == null) return Unauthorized();
+                var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (agentId == null) return Unauthorized();
 
-                var listAppsByStatusAndAgentId = await appService.GetApplicationsByByStatusAndAgentIdAsync(statusId, userId);
+                var listAppsByStatusAndAgentId = await appService.GetApplicationsByByStatusAndAgentIdAsync(statusId, agentId);
 
                 return Ok(listAppsByStatusAndAgentId);
             }
@@ -216,7 +216,7 @@ namespace ConstructionCompany.API.Controllers
         }
         
         [HttpGet("GetFeedbacksByApplicationId/{applicationId:int}")]
-        [Authorize(Roles = "Agent")]
+        [Authorize(Roles = "Agent,Supervisor")]
         public async Task<IActionResult> GetFeedbacksByApplicationId(int applicationId)
         {
             try
@@ -270,6 +270,31 @@ namespace ConstructionCompany.API.Controllers
                 if (filesToSave != null && filesToSave.Count > 0)
                     await appService.SaveApplicationFilesAsync(appId, filesToSave);
             }
+        }
+
+        // End of Agent
+
+        // Supervisor
+
+        [HttpGet("GetSupervisorApplicationsByStatus/{statusId:int}")]
+        [Authorize(Roles = "Supervisor")]
+        public async Task<IActionResult> GetSupervisorApplicationsByStatus(int statusId)
+        {
+            try
+            {
+                var supervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (supervisorId == null) return Unauthorized();
+
+                var listAppsByStatusAndSupervisorId = await appService.GetSupervisorApplicationsByStatus(statusId, supervisorId);
+
+                return Ok(listAppsByStatusAndSupervisorId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 }

@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationStatus } from 'app/enums/enums';
 import { FeedbackComponent } from '../../agent/feedback-component/feedback-component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'supervisor-dashboard',
@@ -24,6 +25,7 @@ import { FeedbackComponent } from '../../agent/feedback-component/feedback-compo
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatTabsModule,
     MatProgressSpinnerModule,
     SliceDescriptionPipe,
   ],
@@ -75,7 +77,7 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
       .GetSupervisorApplicationsByStatus(ApplicationStatus.Submitted)
       .subscribe({
         next: (res) => {
-          this.applicationsDataSource.data == res;
+          this.applicationsDataSource.data = res;
           this.isLoading = false;
         },
         error: (err) => {
@@ -88,6 +90,8 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
   onRowClick(row: ProjectApplicationModel) {
     this.selectedRow = row;
     this.loadFeedbacks(row.id);
+
+    console.log(`Selected row is: ${this.selectedRow}`);
   }
 
   loadFeedbacks(applicationId: number) {

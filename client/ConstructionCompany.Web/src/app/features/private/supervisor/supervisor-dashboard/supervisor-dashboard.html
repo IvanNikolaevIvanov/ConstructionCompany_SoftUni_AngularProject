@@ -2,155 +2,281 @@
   <div class="container-fluid">
     <h2 class="mb-4">Supervisor Dashboard</h2>
 
-    <!-- 🔹 Loading Overlay -->
-    <div class="loading-overlay" *ngIf="isLoading">
+    <!-- Loading Overlay -->
+    <div
+      class="loading-overlay"
+      *ngIf="isLoading"
+      style="
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+      "
+    >
       <mat-spinner diameter="60"></mat-spinner>
     </div>
 
     <div class="row g-3">
-      <!-- Left Table: Newly Created -->
-      <div class="col-md-7">
+      <!-- Left Table: My Applications -->
+      <div class="col-12 col-md-7">
         <mat-card class="application-container">
-          <h4>My Applications</h4>
+          <h4>Pending Review</h4>
 
-          <table
-            mat-table
-            [dataSource]="applicationsDataSource"
-            matSort
-            #createdSort="matSort"
-            class="mat-elevation-z2 full-width-table"
-          >
-            <!-- Title Column -->
-            <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Title:</th>
-              <td mat-cell *matCellDef="let app">{{ app.title }}</td>
-            </ng-container>
-
-            <!-- Client Column -->
-            <ng-container matColumnDef="clientName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Client:</th>
-              <td mat-cell *matCellDef="let app">{{ app.clientName }}</td>
-            </ng-container>
-
-            <!-- Desription Column -->
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Desription:
-              </th>
-              <td mat-cell *matCellDef="let app">
-                {{ app.description | sliceDescription }}
-              </td>
-            </ng-container>
-
-            <!-- Price Column -->
-            <ng-container matColumnDef="price">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Price:</th>
-              <td mat-cell *matCellDef="let app">{{ app.price | currency }}</td>
-            </ng-container>
-
-            <!-- Bank Name Column -->
-            <ng-container matColumnDef="clientBank">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Bank Name:
-              </th>
-              <td mat-cell *matCellDef="let app">{{ app.clientBank }}</td>
-            </ng-container>
-
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>Actions:</th>
-              <td mat-cell *matCellDef="let app">
-                <button
-                  mat-icon-button
-                  color="primary"
-                  (click)="viewDetails(app.id)"
-                  title="Edit"
+          <div class="table-responsive">
+            <table
+              mat-table
+              [dataSource]="applicationsDataSource"
+              matSort
+              #createdSort="matSort"
+              class="mat-elevation-z2 full-width-table"
+            >
+              <!-- Title Column -->
+              <ng-container matColumnDef="title">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  scope="col"
                 >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  color="warn"
-                  (click)="returnWithFeedback(app.id)"
-                  title="Delete"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  color="accent"
-                  (click)="approve(app.id)"
-                  title="Submit"
-                >
-                  <mat-icon>send</mat-icon>
-                </button>
-              </td>
-            </ng-container>
+                  Title:
+                </th>
+                <td mat-cell *matCellDef="let app">{{ app.title }}</td>
+              </ng-container>
 
-            <tr
-              mat-header-row
-              id="headerRow"
-              *matHeaderRowDef="displayedApplicationsColumns"
-            ></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: displayedApplicationsColumns"
-              (click)="onRowClick(row)"
-              [class.selected]="selectedRow === row"
-            ></tr>
-          </table>
+              <!-- Client Column -->
+              <ng-container matColumnDef="clientName">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  scope="col"
+                >
+                  Client:
+                </th>
+                <td mat-cell *matCellDef="let app">{{ app.clientName }}</td>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="description">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  scope="col"
+                >
+                  Description:
+                </th>
+                <td mat-cell *matCellDef="let app">
+                  {{ app.description | sliceDescription }}
+                </td>
+              </ng-container>
+
+              <!-- Price Column -->
+              <ng-container matColumnDef="price">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  scope="col"
+                >
+                  Price:
+                </th>
+                <td mat-cell *matCellDef="let app">
+                  {{ app.price | currency }}
+                </td>
+              </ng-container>
+
+              <!-- Bank Name Column -->
+              <ng-container matColumnDef="clientBank">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  scope="col"
+                >
+                  Bank Name:
+                </th>
+                <td mat-cell *matCellDef="let app">{{ app.clientBank }}</td>
+              </ng-container>
+
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef scope="col">Actions:</th>
+                <td mat-cell *matCellDef="let app">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="viewDetails(app.id)"
+                    title="Details"
+                    aria-label="View details"
+                  >
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="returnWithFeedback(app.id)"
+                    title="Return"
+                    aria-label="Return application"
+                  >
+                    <mat-icon>undo</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="accent"
+                    (click)="approve(app.id)"
+                    title="Approve"
+                    aria-label="Approve application"
+                  >
+                    <mat-icon>check_circle</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedApplicationsColumns"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedApplicationsColumns"
+                (click)="onRowClick(row)"
+                [ngClass]="{ selected: selectedRow === row }"
+                style="cursor: pointer"
+              ></tr>
+            </table>
+          </div>
         </mat-card>
       </div>
 
-      <!-- Right Table: Supervisor Feedbacks -->
-      <div class="col-md-5">
+      <!-- Right Section: Application Details and Feedbacks -->
+      <div class="col-12 col-md-5">
         <mat-card class="application-container">
-          <h4>Supervisor Feedbacks</h4>
-          <div class="p-4" *ngIf="!selectedRow">
-            <p>Select an application to view its feedbacks.</p>
+          <h4>Application Details & Feedbacks</h4>
+
+          <div *ngIf="!selectedRow" class="alert alert-info">
+            Select an application to view its details and feedbacks.
           </div>
-          <div
-            class="p-4"
-            *ngIf="selectedRow && !this.feedbacksDataSource.data.some"
-          >
-            <p>There are no feedbacks for this application yet.</p>
-          </div>
-          <div *ngIf="isFeedbacksLoading">
-            <mat-spinner diameter="40"></mat-spinner> Loading feedbacks...
-          </div>
-          <table
-            *ngIf="!isFeedbacksLoading && selectedRow"
-            mat-table
-            [dataSource]="feedbacksDataSource"
-            class="mat-elevation-z2 full-width-table"
-          >
-            <ng-container matColumnDef="createdAt">
-              <th mat-header-cell *matHeaderCellDef>Date</th>
-              <td mat-cell *matCellDef="let fb">
-                {{ fb.createdAt | date: "short" }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="supervisor">
-              <th mat-header-cell *matHeaderCellDef>Supervisor</th>
-              <td mat-cell *matCellDef="let fb">{{ fb.authorName }}</td>
-            </ng-container>
-            <ng-container matColumnDef="comment">
-              <th mat-header-cell *matHeaderCellDef>Comment</th>
-              <td mat-cell *matCellDef="let fb">
-                {{ fb.text | sliceDescription }}
-              </td>
-            </ng-container>
-            <tr
-              mat-header-row
-              *matHeaderRowDef="['createdAt', 'authorName', 'text']"
-            ></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: ['createdAt', 'authorName', 'text']"
-              (click)="onFeedbackClick(row)"
-              [class.selected]="selectedFeedback === row"
-            ></tr>
-          </table>
+
+          <mat-tab-group *ngIf="selectedRow">
+            <!-- Tab 1: Application Details -->
+            <mat-tab label="Application Details">
+              <div
+                *ngIf="selectedRow"
+                class="app-details-vertical"
+                style="padding: 1rem"
+              >
+                <div class="detail-row">
+                  <label class="detail-label">Title:</label>
+                  <div class="detail-value">{{ selectedRow.title }}</div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Description:</label>
+                  <div class="detail-value">
+                    {{ selectedRow.description | sliceDescription: 60 }}
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Price:</label>
+                  <div class="detail-value">
+                    {{ selectedRow.price | currency }}
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Price In Words:</label>
+                  <div class="detail-value">
+                    {{ selectedRow.priceInWords }}
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Client Name:</label>
+                  <div class="detail-value">{{ selectedRow.clientName }}</div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Client Bank:</label>
+                  <div class="detail-value">{{ selectedRow.clientBank }}</div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Client IBAN:</label>
+                  <div class="detail-value">
+                    {{ selectedRow.clientBankIban }}
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Date Of Submission:</label>
+                  <div class="detail-value">
+                    {{ selectedRow.submittedAt | date: "shortDate" }}
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <label class="detail-label">Agent:</label>
+                  <div class="detail-value">
+                    {{ selectedRow.agentName }}
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+
+            <!-- Tab 2: Feedbacks -->
+            <mat-tab label="Feedbacks">
+              <div *ngIf="isFeedbacksLoading" class="text-center p-3">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>Loading feedbacks...</p>
+              </div>
+              <div
+                *ngIf="selectedRow && feedbacksDataSource.data.length === 0"
+                class="p-3"
+              >
+                <p>There are no feedbacks for this application yet.</p>
+              </div>
+              <div
+                class="table-responsive"
+                *ngIf="
+                  !isFeedbacksLoading &&
+                  selectedRow &&
+                  feedbacksDataSource.data.length > 0
+                "
+              >
+                <table
+                  mat-table
+                  [dataSource]="feedbacksDataSource"
+                  class="mat-elevation-z2 full-width-table table table-striped table-hover"
+                >
+                  <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td mat-cell *matCellDef="let fb">
+                      {{ fb.createdAt | date: "short" }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="authorName">
+                    <th mat-header-cell *matHeaderCellDef>Supervisor</th>
+                    <td mat-cell *matCellDef="let fb">{{ fb.authorName }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="text">
+                    <th mat-header-cell *matHeaderCellDef>Comment</th>
+                    <td mat-cell *matCellDef="let fb">
+                      {{ fb.text | sliceDescription }}
+                    </td>
+                  </ng-container>
+                  <tr
+                    mat-header-row
+                    *matHeaderRowDef="['createdAt', 'authorName', 'text']"
+                  ></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="
+                      let row;
+                      columns: ['createdAt', 'authorName', 'text']
+                    "
+                    (click)="onFeedbackClick(row)"
+                    [class.selected]="selectedFeedback === row"
+                    style="cursor: pointer"
+                  ></tr>
+                </table>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
         </mat-card>
       </div>
     </div>

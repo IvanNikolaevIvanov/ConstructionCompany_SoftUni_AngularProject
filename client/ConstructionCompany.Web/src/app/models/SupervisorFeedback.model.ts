@@ -6,5 +6,5 @@ export interface SupervisorFeedbackModel {
   createdAt: string;
   applicationId: number;
   authorId: string; // supervisor id
-  authorName?: string; // supervisor name
+  authorName: string; // supervisor name
 }

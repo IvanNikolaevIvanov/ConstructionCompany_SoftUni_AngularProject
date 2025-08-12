@@ -17,8 +17,9 @@ tr:hover {
   background-color: #cce5ff;
   cursor: pointer;
 }
+
 .selected {
-  background-color: #cce5ff !important; /* light blue highlight */
+  background-color: #cce5ff !important;
 }
 
 .text-nowrap {
@@ -50,4 +51,43 @@ button mat-icon {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+:host ::ng-deep .mat-tab-label-active {
+  background-color: #f8f9fa;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+}
+
+.app-details-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.detail-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.detail-label {
+  flex: 0 0 35%;
+  font-weight: 700;
+  color: #333;
+}
+.detail-value {
+  flex: 1 1 60%;
+  color: #555;
+}
+@media (max-width: 576px) {
+  .detail-label {
+    flex-basis: 100%;
+    margin-bottom: 0.25rem;
+  }
+  .detail-value {
+    flex-basis: 100%;
+  }
 }

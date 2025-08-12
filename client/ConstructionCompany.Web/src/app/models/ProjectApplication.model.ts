@@ -7,7 +7,7 @@ export interface ProjectApplicationModel {
   id: number;
   title: string;
   description: string;
-  submittedAt?: string;
+  submittedAt: string;
   status: ApplicationStatus;
 
   // Client Info
@@ -29,7 +29,7 @@ export interface ProjectApplicationModel {
 
   // Relationships
   agentId: string;
-  agent: ApplicationUserModel;
+  agentName: string;
   supervisorId?: string;
   supervisorName?: string;
 

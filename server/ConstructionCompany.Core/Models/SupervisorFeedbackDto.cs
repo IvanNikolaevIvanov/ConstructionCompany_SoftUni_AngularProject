@@ -14,6 +14,6 @@ namespace ConstructionCompany.Core.Models
 
         public string AuthorId { get; set; } = string.Empty;
 
-        public string? AuthorName { get; set; }    // Optional: flattening related data
+        public string? AuthorName { get; set; }    
     }
 }
