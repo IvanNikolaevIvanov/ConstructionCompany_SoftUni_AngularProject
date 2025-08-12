@@ -11,6 +11,7 @@ import {
 } from './features/private';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { NotFound } from './shared/components';
 
 // add lazy loading for the components
 export const routes: Routes = [
@@ -57,5 +58,5 @@ export const routes: Routes = [
     ],
   },
 
-  { path: '**', redirectTo: 'login' },
+  { path: '**', component: NotFound },
 ];
