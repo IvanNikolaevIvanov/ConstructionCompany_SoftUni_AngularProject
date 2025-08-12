@@ -48,16 +48,7 @@
     <li *ngIf="role === 'Supervisor'" class="nav-item">
       <a
         class="nav-link"
-        routerLink="/supervisor/pending"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Pending Review</a
-      >
-    </li>
-    <li *ngIf="role === 'Supervisor'" class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="/supervisor/applications"
+        routerLink="/supervisor/all-applications"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         >All Applications</a

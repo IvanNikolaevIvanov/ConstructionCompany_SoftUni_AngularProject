@@ -4,6 +4,7 @@ import { authGuard } from './guards/auth.guard';
 import {
   AgentDashboard,
   AgentFeedbacks,
+  AllApplications,
   CreateNewApplication,
   FileUpload,
   PrivateLayout,
@@ -52,6 +53,12 @@ export const routes: Routes = [
       {
         path: 'supervisor/dashboard',
         component: SupervisorDashboard,
+        canActivate: [authGuard],
+        data: { roles: ['Supervisor'] },
+      },
+      {
+        path: 'supervisor/all-applications',
+        component: AllApplications,
         canActivate: [authGuard],
         data: { roles: ['Supervisor'] },
       },
