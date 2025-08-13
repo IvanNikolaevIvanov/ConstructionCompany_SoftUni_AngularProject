@@ -1,13 +1,32 @@
-.snackbar-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  font-weight: 500;
-}
 mat-icon {
   color: lightgreen;
 }
 .custom-snackbar {
   background-color: #323232 !important;
+}
+.snackbar-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: white;
+  font-size: 0.95rem;
+  /* Color schemes by type */
+  &.success .snackbar-icon {
+    color: #4caf50; // Material green
+  }
+
+  &.error .snackbar-icon {
+    color: #f44336; // Material red
+  }
+
+  &.warning .snackbar-icon {
+    color: #ff9800; // Material orange
+  }
+  .snackbar-icon {
+    font-size: 20px;
+  }
+
+  .snackbar-message {
+    flex: 1;
+  }
 }

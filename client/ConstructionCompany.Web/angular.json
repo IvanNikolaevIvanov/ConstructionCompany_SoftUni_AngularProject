@@ -33,7 +33,8 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/lightgallery/css/lightgallery-bundle.min.css",
               "src/styles.css",
-              "node_modules/jarallax/dist/jarallax.css"
+              "node_modules/jarallax/dist/jarallax.css",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

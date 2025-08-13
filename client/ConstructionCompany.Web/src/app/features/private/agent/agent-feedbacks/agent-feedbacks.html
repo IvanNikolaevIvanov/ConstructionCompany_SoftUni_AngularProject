@@ -134,11 +134,11 @@
                 {{ fb.createdAt | date: "short" }}
               </td>
             </ng-container>
-            <ng-container matColumnDef="supervisor">
+            <ng-container matColumnDef="authorName">
               <th mat-header-cell *matHeaderCellDef>Supervisor</th>
               <td mat-cell *matCellDef="let fb">{{ fb.authorName }}</td>
             </ng-container>
-            <ng-container matColumnDef="comment">
+            <ng-container matColumnDef="text">
               <th mat-header-cell *matHeaderCellDef>Comment</th>
               <td mat-cell *matCellDef="let fb">
                 {{ fb.text | sliceDescription }}

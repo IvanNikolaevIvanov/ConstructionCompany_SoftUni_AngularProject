@@ -1,7 +1,7 @@
 .dialog-title {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #333;
+  color: #1976d2; /* Material primary blue */
 }
 
 mat-form-field {
@@ -17,10 +17,26 @@ mat-form-field {
 
 .mat-dialog-container {
   display: block;
-  min-width: 300px;
-  max-width: 400px;
+  width: 100%;
+  max-width: 90vw; /* never overflow the viewport */
+  min-width: 500px;
   max-height: 80vh;
-  overflow-y: auto; /* enable scroll if content too tall */
+  overflow-y: auto;
   box-sizing: border-box;
   padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .mat-dialog-container {
+    max-width: 600px; /* nice size for desktop */
+  }
+}
+
+.mat-primary {
+  background-color: #1976d2 !important; /* Material primary blue background */
+  color: #fff !important; /* White text */
+}
+
+.mat-primary:hover {
+  background-color: #115293 !important; /* Darker blue on hover */
 }

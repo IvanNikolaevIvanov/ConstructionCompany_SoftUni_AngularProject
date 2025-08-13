@@ -10,9 +10,9 @@
     </mat-select>
   </mat-form-field>
   <div class="dialog-actions">
-    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
     <button
-      mat-button
+      mat-flat-button
       color="primary"
       (click)="onSelect()"
       [disabled]="!selectedSupervisor"

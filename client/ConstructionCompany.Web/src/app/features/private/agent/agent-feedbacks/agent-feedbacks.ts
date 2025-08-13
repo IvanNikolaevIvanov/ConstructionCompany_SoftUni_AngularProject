@@ -22,6 +22,7 @@ import { FeedbackComponent } from '../feedback-component/feedback-component';
 @Component({
   selector: 'agent-feedbacks',
   imports: [
+    CommonModule,
     MatProgressSpinnerModule,
     MatCard,
     MatIconModule,
@@ -74,7 +75,7 @@ export class AgentFeedbacks implements OnInit {
       .getApplicationsByStatus(ApplicationStatus.ReturnedBySupervisor)
       .subscribe({
         next: (res) => {
-          this.applicationsDataSource.data == res;
+          this.applicationsDataSource.data = res;
           this.isLoading = false;
         },
         error: (err) => {

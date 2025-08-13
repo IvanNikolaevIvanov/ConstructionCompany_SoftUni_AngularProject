@@ -10,7 +10,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './custom-snackbar.scss',
 })
 export class CustomSnackbar {
+  icon: string;
+
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: { message: string; type: string },
-  ) {}
+  ) {
+    const iconsMap: Record<string, string> = {
+      success: 'check_circle',
+      error: 'error',
+      warning: 'warning',
+    };
+    this.icon = iconsMap[data.type] || 'info';
+  }
 }

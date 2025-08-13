@@ -22,3 +22,12 @@
   border-radius: 12px;
   padding: 10px 20px;
 }
+
+.mat-warn {
+  background-color: #d32f2f !important; /* For raised button background */
+  color: #fff !important; /* White text */
+}
+
+.mat-warn:hover {
+  background-color: #b71c1c !important; /* Darker on hover */
+}

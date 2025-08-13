@@ -1,7 +1,20 @@
+.mat-dialog-container {
+  display: block;
+  width: 500px;
+  max-width: 90vw;
+  max-height: 80vh;
+  min-height: 200px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: white;
+}
+
 .dialog-title {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #333;
+  color: #1976d2;
 }
 
 mat-form-field {
@@ -14,19 +27,34 @@ mat-form-field {
   justify-content: flex-end;
   gap: 1rem;
 }
-.mat-dialog-container {
-  display: block;
-  width: 100%;
-  max-width: 90vw; /* never overflow the viewport */
-  min-width: 300px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-sizing: border-box;
-  padding: 1rem;
+
+.mat-select-panel {
+  background-color: white !important;
 }
 
-@media (min-width: 768px) {
-  .mat-dialog-container {
-    max-width: 600px; /* nice size for desktop */
-  }
+.mat-select {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  border-radius: 4px;
+}
+
+.mat-select:hover {
+  background-color: #bbdefb;
+}
+
+.mat-select .mat-select-trigger {
+  color: #0d47a1;
+}
+
+button.mat-raised-button.mat-primary {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+button.mat-raised-button.mat-primary:hover {
+  background-color: #115293 !important;
+}
+
+.mat-warn {
+  color: #d32f2f !important; /* White text */
 }
