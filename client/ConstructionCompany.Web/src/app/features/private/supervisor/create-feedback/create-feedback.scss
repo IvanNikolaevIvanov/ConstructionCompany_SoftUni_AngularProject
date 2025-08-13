@@ -1,7 +1,7 @@
 .dialog-title {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #ff2888;
+  color: #d32f2f; // Material warn red
 }
 
 mat-form-field {
@@ -30,4 +30,13 @@ mat-form-field {
   .mat-dialog-container {
     max-width: 600px; /* nice size for desktop */
   }
+}
+
+.mat-warn {
+  background-color: #d32f2f !important; /* For raised button background */
+  color: #fff !important; /* White text */
+}
+
+.mat-warn:hover {
+  background-color: #b71c1c !important; /* Darker on hover */
 }

@@ -324,7 +324,7 @@ namespace ConstructionCompany.API.Controllers
         }
         [HttpPost("ReturnApplication/{appId:int}")]
         [Authorize(Roles = "Supervisor")]
-        public async Task<IActionResult> ReturnApplication(int appId, string feedbackText)
+        public async Task<IActionResult> ReturnApplication([FromRoute] int appId, [FromBody] string feedbackText)
         {
             try
             {

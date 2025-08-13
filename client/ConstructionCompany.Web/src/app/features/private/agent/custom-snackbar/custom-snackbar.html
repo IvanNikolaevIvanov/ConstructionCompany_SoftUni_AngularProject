@@ -1,4 +1,6 @@
 <div class="snackbar-content">
-  <mat-icon>check_circle</mat-icon>
+  <mat-icon *ngIf="data.type === 'success'">check_circle</mat-icon>
+  <mat-icon *ngIf="data.type === 'error'">error</mat-icon>
+  <mat-icon *ngIf="data.type === 'warning'">warning</mat-icon>
   <span>{{ data.message }}</span>
 </div>
