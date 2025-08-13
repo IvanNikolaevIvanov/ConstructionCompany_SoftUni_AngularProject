@@ -9,6 +9,7 @@ using PdfSharpCore.Pdf;
 using System;
 using System.IO;
 using System.Security.Claims;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConstructionCompany.API.Controllers
 {
@@ -313,6 +314,29 @@ namespace ConstructionCompany.API.Controllers
                 var fileToReturn = await appService.PrintApplication(appId);
 
                 return File(fileToReturn, "application/pdf", $"Application-{appId}.pdf"); 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+        [HttpPost("ReturnApplication/{appId:int}")]
+        [Authorize(Roles = "Supervisor")]
+        public async Task<IActionResult> ReturnApplication(int appId, string feedbackText)
+        {
+            try
+            {
+                var supervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (supervisorId == null) return Unauthorized();
+
+                var appExists = await appService.ApplicationExist(appId);
+                if (appExists == false) return NotFound();
+
+                var result = await this.appService.ReturnApplication(appId, feedbackText);
+
+                return Ok(result);
             }
             catch (Exception)
             {

@@ -15,6 +15,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApplicationStatus } from 'app/enums/enums';
 import { FeedbackComponent } from '../../agent/feedback-component/feedback-component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { CreateFeedback } from '../create-feedback/create-feedback';
+import id from '@angular/common/locales/id';
+import { CustomSnackbar } from '../../agent/custom-snackbar/custom-snackbar';
 
 @Component({
   selector: 'supervisor-dashboard',
@@ -118,13 +121,47 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
     });
   }
 
-  viewDetails(appId: number) {
+  viewDetails() {
     this.router.navigate(['supervisor/application-details'], {
       state: { application: this.selectedRow },
     });
   }
 
-  returnWithFeedback(appId: number) {}
+  returnWithFeedback() {
+    const dialogRef = this.dialog.open(CreateFeedback);
+    dialogRef.afterClosed().subscribe((feedbackText) => {
+      console.log('Feedback text:', feedbackText);
+      this.appService
+        .returnApplication(this.selectedRow!.id, feedbackText)
+        .subscribe({
+          next: (res) => {
+            this.snackBar.openFromComponent(CustomSnackbar, {
+              data: {
+                message: `Application was returned with feedback: ${res}`,
+                type: 'success',
+              },
+              duration: 3000,
+              panelClass: ['custom-snackbar'],
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            this.loadTables();
+          },
+          error: (err) => {
+            this.snackBar.openFromComponent(CustomSnackbar, {
+              data: {
+                message: err.error?.message || 'Failed to return feedback',
+                type: 'error',
+              },
+              duration: 3000,
+              panelClass: ['custom-snackbar'],
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+          },
+        });
+    });
+  }
 
   approve(appId: number) {}
 }

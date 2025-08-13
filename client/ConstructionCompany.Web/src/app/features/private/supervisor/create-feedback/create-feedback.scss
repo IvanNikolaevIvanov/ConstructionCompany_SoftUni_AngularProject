@@ -1,7 +1,7 @@
 .dialog-title {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #333;
+  color: #ff2888;
 }
 
 mat-form-field {
@@ -14,11 +14,12 @@ mat-form-field {
   justify-content: flex-end;
   gap: 1rem;
 }
+
 .mat-dialog-container {
   display: block;
   width: 100%;
   max-width: 90vw; /* never overflow the viewport */
-  min-width: 300px;
+  min-width: 500px;
   max-height: 80vh;
   overflow-y: auto;
   box-sizing: border-box;

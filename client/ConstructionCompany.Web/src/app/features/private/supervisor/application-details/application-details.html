@@ -1,12 +1,162 @@
 <div class="content mt-4 p-4">
   <div class="container-fluid">
-    <h2 class="mb-4">Application Details</h2>
+    <h2>Application Details</h2>
 
-    <div>
-      <p>{{ application?.title }}</p>
+    <div *ngIf="application" class="row" style="padding: 1rem">
+      <!-- Left side: info display -->
+      <div class="col-md-8" style="margin-bottom: 1rem">
+        <div class="detail-row">
+          <label class="detail-label">Title:</label>
+          <div class="detail-value">{{ application.title }}</div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Description:</label>
+          <div class="detail-value">
+            {{ application.description }}
+          </div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Price:</label>
+          <div class="detail-value">€{{ application.price }}</div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Price In Words:</label>
+          <div class="detail-value">{{ application.priceInWords }}</div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Client Name:</label>
+          <div class="detail-value">{{ application.clientName }}</div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Client Bank:</label>
+          <div class="detail-value">{{ application.clientBank }}</div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Client IBAN:</label>
+          <div class="detail-value">{{ application.clientBankIban }}</div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Date Of Submission:</label>
+          <div class="detail-value">
+            {{ application.submittedAt }}
+          </div>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Agent:</label>
+          <div class="detail-value">{{ application.agentName }}</div>
+        </div>
+        <div class="checkbox-container">
+          <div class="row mt-3">
+            <div class="col-md-4 form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input large-checkbox"
+                id="usesConcrete"
+                formControlName="usesConcrete"
+                [checked]="application.usesConcrete"
+                disabled
+              />
+              <label class="check-label" for="usesConcrete"
+                >Uses Concrete</label
+              >
+            </div>
+
+            <div class="col-md-4 form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input large-checkbox"
+                id="usesBricks"
+                formControlName="usesBricks"
+                [checked]="application.usesBricks"
+                disabled
+              />
+              <label class="check-label" for="usesBricks">Uses Bricks</label>
+            </div>
+
+            <div class="col-md-4 form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input large-checkbox"
+                id="usesSteel"
+                formControlName="usesSteel"
+                [checked]="application.usesSteel"
+                disabled
+              />
+              <label class="check-label" for="usesSteel">Uses Steel</label>
+            </div>
+
+            <div class="col-md-4 form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input large-checkbox"
+                id="usesInsulation"
+                formControlName="usesInsulation"
+                [checked]="application.usesInsulation"
+                disabled
+              />
+              <label class="check-label" for="usesInsulation"
+                >Uses Insulation</label
+              >
+            </div>
+
+            <div class="col-md-4 form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input large-checkbox"
+                id="usesWood"
+                formControlName="usesWood"
+                [checked]="application.usesWood"
+                disabled
+              />
+              <label class="check-label" for="usesWood">Uses Wood</label>
+            </div>
+
+            <div class="col-md-4 form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input large-checkbox"
+                id="usesGlass"
+                formControlName="usesGlass"
+                [checked]="application.usesGlass"
+                disabled
+              />
+              <label class="check-label" for="usesGlass">Uses Glass</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right side: files list -->
+      <div class="col-md-4" id="upload-section" style="margin-bottom: 1rem">
+        <h5>Attached Files</h5>
+        <ng-container *ngIf="application?.files?.length; else noFiles">
+          <ul class="list-group">
+            <li
+              class="list-group-item d-flex align-items-center"
+              *ngFor="let file of files"
+            >
+              <i class="bi bi-file-earmark-fill me-2"></i>
+              <!-- Bootstrap icon, optional -->
+              <a
+                [href]="file.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="{{ file.fileName }}"
+                class="flex-grow-1"
+              >
+                {{ file.fileName }}
+              </a>
+            </li>
+          </ul>
+        </ng-container>
+        <ng-template #noFiles>
+          <p>No files attached.</p>
+        </ng-template>
+      </div>
+      <div>
+        <button type="button" class="btn btn-info" (click)="printApplication()">
+          Print
+        </button>
+      </div>
     </div>
-    <button type="button" class="btn btn-info" (click)="printApplication()">
-      Print
-    </button>
   </div>
 </div>

@@ -4,9 +4,13 @@ using ConstructionCompany.Infrastructure.Data.Common;
 using ConstructionCompany.Infrastructure.Enumerations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System;
+using System.Globalization;
 using System.Threading.Channels;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -21,6 +25,7 @@ namespace ConstructionCompany.Core.Services
             this.repository = _repository;
         }
 
+        // Agent
         public async Task<ProjectApplication> CreateApplicationAsync(
         string agentId,
         ProjectApplicationModel model)
@@ -97,9 +102,10 @@ namespace ConstructionCompany.Core.Services
 
                 var appToReturn = new ProjectApplicationDetailsModel()
                 {
+                    Id = entity.Id,
                     Title = entity.Title,
                     Description = entity.Description,
-
+                    SubmittedAt = entity.SubmittedAt.ToShortDateString(),
                     ClientName = entity.ClientName,
                     ClientBank = entity.ClientBank,
                     ClientBankIban = entity.ClientBankIban,
@@ -540,31 +546,19 @@ namespace ConstructionCompany.Core.Services
 
             try
             {
-                var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
+                var appsInDb = await repository.AllReadOnly<ProjectApplication>()
                                                 .Where(app => app.SupervisorId == supervisorId && ((int)app.Status) == statusId)
                                                 .OrderByDescending(app => app.Id)
-                                                .Select(app => new ProjectApplicationDetailsModel()
-                                                {
-                                                    Id = app.Id,
-                                                    Title = app.Title,
-                                                    Description = app.Description,
-                                                    ClientName = app.ClientName,
-                                                    ClientBank = app.ClientBank,
-                                                    ClientBankIban = app.ClientBankIban,
-                                                    Price = app.Price,
-                                                    PriceInWords = app.PriceInWords,
-                                                    AgentId = app.AgentId,
-                                                    SupervisorId = app.SupervisorId,
-                                                    SubmittedAt = app.SubmittedAt.ToString(),
-                                                    UsesBricks = app.UsesBricks,
-                                                    UsesConcrete = app.UsesConcrete,
-                                                    UsesGlass = app.UsesGlass,
-                                                    UsesInsulation = app.UsesInsulation,
-                                                    UsesSteel = app.UsesSteel,
-                                                    UsesWood = app.UsesWood,
-                                                })
                                                 .Take(10)
                                                 .ToListAsync();
+                var appsToReturn = new List<ProjectApplicationDetailsModel>();
+
+                foreach (var app in appsInDb)
+                {
+                    var appToAdd = await this.GetApplicationByIdAsync(app.Id);
+                    appsToReturn.Add(appToAdd);
+                }
+
 
                
                     //Get Agents for each app
@@ -606,64 +600,66 @@ namespace ConstructionCompany.Core.Services
                 var agent = await repository.GetByIdAsync<ApplicationUser>(appToPrint.AgentId);
                 var supervisor = await repository.GetByIdAsync<ApplicationUser>(appToPrint.SupervisorId);
 
-                using var document = new PdfDocument();
-                var page = document.AddPage();
-                var gfx = XGraphics.FromPdfPage(page);
-                var font = new XFont("Verdana", 12);
+                arrayToReturn = GenerateDocument(appToPrint, $"{agent.FirstName} {agent.LastName}", $"{supervisor.FirstName} {supervisor.LastName}");
 
-                double y = 50;
-                const double lineHeight = 20;
+                //using var document = new PdfDocument();
+                //var page = document.AddPage();
+                //var gfx = XGraphics.FromPdfPage(page);
+                //var font = new XFont("Verdana", 12);
 
-                gfx.DrawString($"Application ID: {appToPrint.Id} Title: {appToPrint.Title}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //double y = 50;
+                //const double lineHeight = 40;
 
-                gfx.DrawString($"Agent: {agent.FirstName} {agent.LastName} Supervisor: {supervisor.FirstName} {supervisor.LastName}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Application ID: {appToPrint.Id} Title: {appToPrint.Title}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Submitted At: {appToPrint.SubmittedAt:yyyy-MM-dd}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Agent: {agent.FirstName} {agent.LastName} Supervisor: {supervisor.FirstName} {supervisor.LastName}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Status: {appToPrint.Status}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Submitted At: {appToPrint.SubmittedAt:yyyy-MM-dd}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Client Name: {appToPrint.ClientName}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Status: {appToPrint.Status}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Client Bank: {appToPrint.ClientBank}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Client Name: {appToPrint.ClientName}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Client IBAN: {appToPrint.ClientBankIban}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Client Bank: {appToPrint.ClientBank}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Price: {appToPrint.Price:C2}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Client IBAN: {appToPrint.ClientBankIban}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Price (in words): {appToPrint.PriceInWords}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Price: {appToPrint.Price:C2}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Uses Concrete: {(appToPrint.UsesConcrete ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Price (in words): {appToPrint.PriceInWords}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Uses Bricks: {(appToPrint.UsesBricks ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Uses Concrete: {(appToPrint.UsesConcrete ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Uses Steel: {(appToPrint.UsesSteel ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Uses Bricks: {(appToPrint.UsesBricks ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Uses Insulation: {(appToPrint.UsesInsulation ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Uses Steel: {(appToPrint.UsesSteel ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Uses Wood: {(appToPrint.UsesWood ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Uses Insulation: {(appToPrint.UsesInsulation ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                gfx.DrawString($"Uses Glass: {(appToPrint.UsesGlass ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
-                y += lineHeight;
+                //gfx.DrawString($"Uses Wood: {(appToPrint.UsesWood ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                using var stream = new MemoryStream();
-                document.Save(stream, false);
-                stream.Position = 0;
+                //gfx.DrawString($"Uses Glass: {(appToPrint.UsesGlass ? "Yes" : "No")}", font, XBrushes.Black, new XPoint(40, y));
+                //y += lineHeight;
 
-                arrayToReturn = stream.ToArray();
+                //using var stream = new MemoryStream();
+                //document.Save(stream, false);
+                //stream.Position = 0;
+
+                //arrayToReturn = stream.ToArray();
 
                 return arrayToReturn;
             }
@@ -672,6 +668,109 @@ namespace ConstructionCompany.Core.Services
 
                 throw;
             }
+        }
+
+        public async Task<int> ReturnApplication(int appId, string feedbackText)
+        {
+            try
+            {
+                var applicationToReturn = await repository.GetByIdAsync<ProjectApplication>(appId);
+                var supervisor = await repository.GetByIdAsync<ApplicationUser>(applicationToReturn.SupervisorId);
+
+                var feedbackToSave = new SupervisorFeedback()
+                {
+                    ApplicationId = appId,
+                    AuthorId = supervisor.Id,
+                    CreatedAt = DateTime.Now,
+                    Text = feedbackText,
+                };
+
+                await repository.AddAsync<SupervisorFeedback>(feedbackToSave);
+
+                applicationToReturn.Status = ApplicationStatus.ReturnedBySupervisor;
+                await repository.SaveChangesAsync();
+
+                return feedbackToSave.Id;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private byte[] GenerateDocument(ProjectApplication appToPrint, string agentName, string supervisorName)
+        {
+            var documentToRetun = new byte[0];
+
+            // Initialize the document
+            var document = new Document();
+            document.Info.Title = "Application Details";
+            document.Info.Subject = "Detailed information about the application";
+            document.Info.Author = "Your Company";
+
+            // Set the document culture to ensure proper formatting
+            document.Culture = CultureInfo.InvariantCulture;
+
+            // Define the default font style
+            var style = document.Styles[StyleNames.Normal];
+            style.Font.Name = "Verdana";
+            style.Font.Size = Unit.FromPoint(12);
+
+            // Add a section to the document
+            var section = document.AddSection();
+
+            // Add a heading
+            var heading = section.AddParagraph("Application Details");
+            heading.Format.Font.Size = Unit.FromPoint(16);
+            heading.Format.Font.Bold = true;
+            heading.Format.Alignment = ParagraphAlignment.Center;
+            heading.Format.SpaceAfter = Unit.FromPoint(12);
+
+            // Add application details
+            AddDetailParagraph(section, "Application ID:", appToPrint.Id.ToString());
+            AddDetailParagraph(section, "Title:", appToPrint.Title);
+            AddDetailParagraph(section, "Agent:", $"{agentName}");
+            AddDetailParagraph(section, "Supervisor:", $"{supervisorName}");
+            AddDetailParagraph(section, "Submitted At:", appToPrint.SubmittedAt.ToString("yyyy-MM-dd"));
+            AddDetailParagraph(section, "Status:", appToPrint.Status.ToString());
+            AddDetailParagraph(section, "Client Name:", appToPrint.ClientName);
+            AddDetailParagraph(section, "Client Bank:", appToPrint.ClientBank);
+            AddDetailParagraph(section, "Client IBAN:", appToPrint.ClientBankIban);
+            AddDetailParagraph(section, "Price:", appToPrint.Price.ToString("C2"));
+            AddDetailParagraph(section, "Price (in words):", appToPrint.PriceInWords);
+            AddDetailParagraph(section, "Uses Concrete:", appToPrint.UsesConcrete ? "Yes" : "No");
+            AddDetailParagraph(section, "Uses Bricks:", appToPrint.UsesBricks ? "Yes" : "No");
+            AddDetailParagraph(section, "Uses Steel:", appToPrint.UsesSteel ? "Yes" : "No");
+            AddDetailParagraph(section, "Uses Insulation:", appToPrint.UsesInsulation ? "Yes" : "No");
+            AddDetailParagraph(section, "Uses Wood:", appToPrint.UsesWood ? "Yes" : "No");
+            AddDetailParagraph(section, "Uses Glass:", appToPrint.UsesGlass ? "Yes" : "No");
+
+            // Render the document to a PDF
+            var pdfRenderer = new PdfDocumentRenderer(true);
+            pdfRenderer.Document = document;
+            pdfRenderer.RenderDocument();
+
+            // Save the document to a file
+            using (var ms = new MemoryStream())
+            {
+                pdfRenderer.PdfDocument.Save(ms, false);
+                return ms.ToArray();
+            }
+        }
+
+        private void AddDetailParagraph(Section section, string label, string value)
+        {
+            var paragraph = section.AddParagraph();
+            paragraph.AddFormattedText($"{label} ", TextFormat.Bold);
+
+            // Add value with underline and grey highlight
+            var formattedValue = paragraph.AddFormattedText(value);
+
+            // Underline
+            formattedValue.Underline = Underline.Single;
+
+            paragraph.Format.SpaceAfter = Unit.FromPoint(6);
         }
     }
 }

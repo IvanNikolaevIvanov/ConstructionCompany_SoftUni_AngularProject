@@ -7,3 +7,4 @@ export * from './agent/agent-feedbacks/agent-feedbacks';
 export * from './supervisor/supervisor-dashboard/supervisor-dashboard';
 export * from './supervisor/all-applications/all-applications';
 export * from './supervisor/application-details/application-details';
+export * from './supervisor/create-feedback/create-feedback';

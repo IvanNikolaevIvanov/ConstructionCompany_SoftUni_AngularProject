@@ -102,4 +102,14 @@ export class ApplicationService {
       responseType: 'blob',
     });
   }
+
+  returnApplication(appId: number, feedbackText: string): Observable<number> {
+    return this.http.post<number>(
+      `${this.apiUrl}/ReturnApplication/${appId}`,
+      feedbackText,
+      {
+        headers: { 'Content-Type': 'text/plain' },
+      },
+    );
+  }
 }

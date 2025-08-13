@@ -39,5 +39,7 @@ namespace ConstructionCompany.Core.Contracts
         Task<List<ProjectApplicationDetailsModel>> GetSupervisorApplicationsByStatus(int statusId, string supervisorId);
 
         Task<byte[]> PrintApplication(int appId);
+
+        Task<int> ReturnApplication(int appId, string feedbackText)
     }
 }

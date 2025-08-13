@@ -8,10 +8,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using PdfSharp.Fonts;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Setting font resolver for generating pdf file
+GlobalFontSettings.FontResolver = new CustomFontResolver();
 
 builder.Services.AddDbContext<ConstructionCompanyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -141,5 +144,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await DbSeeder.SeedAsync(services);
 }
+
+
 
 app.Run();
