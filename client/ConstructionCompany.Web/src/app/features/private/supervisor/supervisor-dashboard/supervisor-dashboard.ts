@@ -180,6 +180,7 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
+        this.selectedRow = undefined;
         this.loadTables();
       },
       error: (err) => {
