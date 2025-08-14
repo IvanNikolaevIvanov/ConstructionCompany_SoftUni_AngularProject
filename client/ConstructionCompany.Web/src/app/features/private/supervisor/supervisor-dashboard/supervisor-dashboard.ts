@@ -130,6 +130,9 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
   returnWithFeedback() {
     const dialogRef = this.dialog.open(CreateFeedback);
     dialogRef.afterClosed().subscribe((feedbackText) => {
+      if (!feedbackText) {
+        return;
+      }
       console.log('Feedback text:', feedbackText);
       this.appService
         .returnApplication(this.selectedRow!.id, feedbackText)
@@ -142,7 +145,7 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
               },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
             this.loadTables();
@@ -155,7 +158,7 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
               },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
           },

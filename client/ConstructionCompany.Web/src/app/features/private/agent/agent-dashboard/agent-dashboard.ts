@@ -135,7 +135,7 @@ export class AgentDashboard implements OnInit, AfterViewInit {
               data: { message: res.message, type: 'success' },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
             this.loadTables();
@@ -148,7 +148,7 @@ export class AgentDashboard implements OnInit, AfterViewInit {
               },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
           },
@@ -168,7 +168,7 @@ export class AgentDashboard implements OnInit, AfterViewInit {
               data: { message: res.message, type: 'success' },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
             this.loadTables();
@@ -181,7 +181,7 @@ export class AgentDashboard implements OnInit, AfterViewInit {
               },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
           },

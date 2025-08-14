@@ -140,7 +140,7 @@ export class AgentFeedbacks implements OnInit {
               data: { message: res.message, type: 'success' },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
             this.loadTables();
@@ -153,7 +153,7 @@ export class AgentFeedbacks implements OnInit {
               },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
           },
@@ -173,7 +173,7 @@ export class AgentFeedbacks implements OnInit {
               data: { message: res.message, type: 'success' },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
             this.loadTables();
@@ -186,7 +186,7 @@ export class AgentFeedbacks implements OnInit {
               },
               duration: 3000,
               panelClass: ['custom-snackbar'],
-              horizontalPosition: 'right',
+              horizontalPosition: 'center',
               verticalPosition: 'top',
             });
           },

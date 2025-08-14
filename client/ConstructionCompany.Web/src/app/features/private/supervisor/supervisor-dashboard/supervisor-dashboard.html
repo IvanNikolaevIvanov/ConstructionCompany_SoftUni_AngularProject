@@ -82,7 +82,7 @@
                 >
                   Price:
                 </th>
-                <td mat-cell *matCellDef="let app">
+                <td mat-cell *matCellDef="let app" class="price-wrap">
                   {{ app.price | currency }}
                 </td>
               </ng-container>
@@ -103,7 +103,7 @@
               <!-- Actions Column -->
               <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef scope="col">Actions:</th>
-                <td mat-cell *matCellDef="let app">
+                <td mat-cell *matCellDef="let app" class="text-nowrap">
                   <button
                     mat-icon-button
                     color="primary"

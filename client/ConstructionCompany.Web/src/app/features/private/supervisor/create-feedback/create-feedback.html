@@ -11,17 +11,13 @@
         placeholder="Enter your feedback here"
       ></textarea>
     </mat-form-field>
+    <p id="mat-error" *ngIf="submitted && !feedbackText.trim()">
+      Feedback cannot be empty.
+    </p>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <button mat-button (click)="onCancel()">Cancel</button>
-    <button
-      mat-raised-button
-      color="warn"
-      (click)="onSubmit()"
-      [disabled]="!feedbackText.trim()"
-    >
-      Submit
-    </button>
+    <button mat-raised-button color="warn" (click)="onSubmit()">Submit</button>
   </mat-dialog-actions>
 </div>

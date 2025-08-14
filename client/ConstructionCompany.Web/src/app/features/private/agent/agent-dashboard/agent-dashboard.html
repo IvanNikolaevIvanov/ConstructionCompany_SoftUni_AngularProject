@@ -9,7 +9,7 @@
 
     <div class="row g-3">
       <!-- Left Table: Newly Created -->
-      <div class="col-md-7">
+      <div class="col-12 col-md-7">
         <mat-card class="application-container">
           <h4>Created Applications</h4>
 
@@ -59,7 +59,7 @@
             <!-- Actions Column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Actions:</th>
-              <td mat-cell *matCellDef="let app">
+              <td mat-cell *matCellDef="let app" class="text-nowrap">
                 <button
                   mat-icon-button
                   color="primary"
@@ -105,7 +105,7 @@
       </div>
 
       <!-- Right Table: Submitted to Supervisor -->
-      <div class="col-md-5">
+      <div class="col-12 col-md-5">
         <mat-card class="application-container">
           <h4>Submitted to Supervisor</h4>
 

@@ -22,22 +22,6 @@ export class ApplicationService {
     );
   }
 
-  // getApplications(): Observable<any[]> {
-  //   return this.http.get<any[]>(this.apiUrl);
-  // }
-
-  // getCreatedApps(): Observable<ProjectApplicationModel[]> {
-  //   return this.http.get<ProjectApplicationModel[]>(
-  //     `${this.apiUrl}/GetCreatedApplications`,
-  //   );
-  // }
-
-  // getSubmittedApps(): Observable<ProjectApplicationModel[]> {
-  //   return this.http.get<ProjectApplicationModel[]>(
-  //     `${this.apiUrl}/GetSubmittedApplications`,
-  //   );
-  // }
-
   getApplicationsByStatus(
     statusId: number,
   ): Observable<ProjectApplicationModel[]> {
@@ -109,5 +93,13 @@ export class ApplicationService {
       JSON.stringify(feedbackText),
       { headers: { 'Content-Type': 'application/json' } },
     );
+  }
+
+  approveApplication(appId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/ApproveApplication/${appId}`);
+  }
+
+  finalizeApplication(appId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/FinalizeApplication/${appId}`);
   }
 }

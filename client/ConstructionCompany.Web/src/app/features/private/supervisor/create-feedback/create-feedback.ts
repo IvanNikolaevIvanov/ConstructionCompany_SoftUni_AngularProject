@@ -28,10 +28,17 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class CreateFeedback {
   feedbackText = '';
+  submitted = false;
 
   constructor(public dialogRef: MatDialogRef<CreateFeedback>) {}
 
   onSubmit() {
+    this.submitted = true;
+
+    if (!this.feedbackText.trim()) {
+      return;
+    }
+
     this.dialogRef.close(this.feedbackText);
   }
 

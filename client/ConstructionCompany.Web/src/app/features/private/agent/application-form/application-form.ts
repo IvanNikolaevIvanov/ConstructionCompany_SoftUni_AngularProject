@@ -69,7 +69,14 @@ export class CreateNewApplication implements OnInit {
       ],
       clientName: ['', [Validators.required, Validators.maxLength(50)]],
       clientBank: ['', [Validators.required]],
-      clientBankIban: ['', Validators.maxLength(34)],
+      clientBankIban: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(34),
+          Validators.maxLength(34),
+        ],
+      ],
       price: ['', [Validators.required, this.priceFormatValidator]],
       priceInWords: [''],
       usesConcrete: [false],
@@ -288,8 +295,14 @@ export class CreateNewApplication implements OnInit {
   }
 
   get clientIBANErrorMessage(): string {
+    if (this.clientBankIban?.errors?.['minlength']) {
+      return "Client's IBAN should be exactly 34 characters!";
+    }
     if (this.clientBankIban?.errors?.['maxlength']) {
       return "Client's IBAN should not exceed 34 characters!";
+    }
+    if (this.clientBankIban?.errors?.['required']) {
+      return "Client's IBAN is required!";
     }
     return '';
   }

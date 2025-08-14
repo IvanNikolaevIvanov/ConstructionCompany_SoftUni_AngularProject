@@ -3,6 +3,7 @@
   border-radius: 0.5rem;
   background-color: #f8f9fa;
   padding-top: 1rem;
+  overflow-x: auto;
 }
 
 h4 {
@@ -25,6 +26,11 @@ tr:hover {
 .text-nowrap {
   white-space: nowrap;
 }
+
+// .mat-column-price {
+//   white-space: normal !important; /* allow wrapping */
+//   word-break: break-word !important; /* break long values if needed */
+// }
 
 /* 🎨 Button Color Overrides */
 button[color="primary"] mat-icon {
