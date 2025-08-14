@@ -699,6 +699,24 @@ namespace ConstructionCompany.Core.Services
             }
         }
 
+        public async Task<int> ApproveApplication(int appId)
+        {
+            try
+            {
+                var applicationToApprove = await repository.GetByIdAsync<ProjectApplication>(appId);
+
+                applicationToApprove.Status = ApplicationStatus.Approved;
+                await repository.SaveChangesAsync();
+
+                return applicationToApprove.Id;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         private byte[] GenerateDocument(ProjectApplication appToPrint, string agentName, string supervisorName)
         {
             var documentToRetun = new byte[0];
