@@ -98,4 +98,12 @@ export class ApplicationService {
   approveApplication(appId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/ApproveApplication/${appId}`);
   }
+
+  getAllApplicationsByStatus(
+    statusId: number,
+  ): Observable<ProjectApplicationModel[]> {
+    return this.http.get<ProjectApplicationModel[]>(
+      `${this.apiUrl}/getAllApplicationsByStatus/${statusId}`,
+    );
+  }
 }

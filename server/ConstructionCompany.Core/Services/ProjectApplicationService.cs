@@ -232,60 +232,6 @@ namespace ConstructionCompany.Core.Services
             }
 
         }
-        
-
-        //public async Task<List<ProjectApplicationDetailsModel>> GetSubmittedApplicationsByAgentIdAsync(string agentId)
-        //{
-        //    try
-        //    {
-        //        var appsToReturn = await repository.AllReadOnly<ProjectApplication>()
-        //                                        .Where(app => app.AgentId == agentId && app.Status == ApplicationStatus.Submitted)
-        //                                        .OrderByDescending(app => app.Id)
-        //                                        .Select(app => new ProjectApplicationDetailsModel()
-        //                                        { 
-        //                                            Id = app.Id,
-        //                                            Title = app.Title,
-        //                                            Description = app.Description,
-        //                                            ClientName = app.ClientName,
-        //                                            ClientBank = app.ClientBank,
-        //                                            ClientBankIban = app.ClientBankIban,
-        //                                            Price = app.Price,
-        //                                            PriceInWords = app.PriceInWords,
-        //                                            SupervisorId = app.SupervisorId,
-        //                                            SubmittedAt = app.SubmittedAt.ToString(),
-        //                                            //SupervisorName = app.Supervisor != null && !string.IsNullOrEmpty(app.Supervisor.UserName) ? app.Supervisor.UserName : string.Empty,
-        //                                            UsesBricks = app.UsesBricks,
-        //                                            UsesConcrete = app.UsesConcrete,
-        //                                            UsesGlass = app.UsesGlass,
-        //                                            UsesInsulation = app.UsesInsulation,
-        //                                            UsesSteel = app.UsesSteel,
-        //                                            UsesWood = app.UsesWood,
-        //                                        })
-        //                                        .Take(10)
-        //                                        .ToListAsync();
-
-        //        //Get Supervisors for each app
-        //        foreach (var app in appsToReturn)
-        //        {
-        //            var supervisor = new ApplicationUser();
-        //            if (app.SupervisorId != null)
-        //            {
-        //                supervisor = await repository.GetByIdAsync<ApplicationUser>(app.SupervisorId);
-        //            }
-                   
-        //            if (supervisor != null)
-        //            {
-        //                app.SupervisorName = $"{supervisor.FirstName} {supervisor.LastName}";
-        //            }
-        //        }
-
-        //        return appsToReturn;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
 
         public async Task<int> UpdateApplicationAsync(ProjectApplicationDetailsModel model, int id)
         {
@@ -715,6 +661,67 @@ namespace ConstructionCompany.Core.Services
 
                 throw;
             }
+        }
+
+        public async Task<List<ProjectApplicationDetailsModel>> GetAllApplicationsByStatus(int statusId)
+        {
+
+            try
+            {
+                var appsInDb = await repository.AllReadOnly<ProjectApplication>()
+                                                .Where(app => ((int)app.Status) == statusId)
+                                                .OrderByDescending(app => app.Id)
+                                                .ToListAsync();
+                var appsToReturn = new List<ProjectApplicationDetailsModel>();
+
+                foreach (var app in appsInDb)
+                {
+                    var appToAdd = await this.GetApplicationByIdAsync(app.Id);
+                    appsToReturn.Add(appToAdd);
+                }
+
+                //Get Agents for each app
+                foreach (var app in appsToReturn)
+                {
+                    var agent = new ApplicationUser();
+                    if (app.AgentId != null)
+                    {
+                        agent = await repository.GetByIdAsync<ApplicationUser>(app.AgentId);
+                    }
+
+                    if (agent != null && !string.IsNullOrEmpty(agent.Id))
+                    {
+                        app.AgentName = $"{agent.FirstName} {agent.LastName}";
+                    }
+                }
+
+                if (statusId > 0)
+                {
+                    //Get Supervisors for each app
+                    foreach (var app in appsToReturn)
+                    {
+                        var supervisor = new ApplicationUser();
+                        if (app.SupervisorId != null)
+                        {
+                            supervisor = await repository.GetByIdAsync<ApplicationUser>(app.SupervisorId);
+                        }
+
+                        if (supervisor != null && !string.IsNullOrEmpty(supervisor.Id))
+                        {
+                            app.SupervisorName = $"{supervisor.FirstName} {supervisor.LastName}";
+                        }
+                    }
+                }
+
+
+
+                return appsToReturn;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         private byte[] GenerateDocument(ProjectApplication appToPrint, string agentName, string supervisorName)

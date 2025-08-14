@@ -43,5 +43,7 @@ namespace ConstructionCompany.Core.Contracts
         Task<int> ReturnApplication(int appId, string feedbackText);
 
         Task<int> ApproveApplication(int appId);
+
+        Task<List<ProjectApplicationDetailsModel>> GetAllApplicationsByStatus(int statusId);
     }
 }

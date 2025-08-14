@@ -1,0 +1,101 @@
+.application-container {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa;
+  padding-top: 1rem;
+  overflow-x: auto;
+}
+
+h4 {
+  padding-left: 1rem;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+tr:hover {
+  background-color: #cce5ff;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #cce5ff !important;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+// .mat-column-price {
+//   white-space: normal !important; /* allow wrapping */
+//   word-break: break-word !important; /* break long values if needed */
+// }
+
+/* 🎨 Button Color Overrides */
+button[color="primary"] mat-icon {
+  color: #007bff; /* Blue - edit */
+}
+button[color="warn"] mat-icon {
+  color: #dc3545; /* Red - delete */
+}
+button[color="accent"] mat-icon {
+  color: #28a745; /* Green - submit */
+}
+button mat-icon {
+  transition: color 0.3s ease;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transform: translate(-50%, -50%);
+}
+
+:host ::ng-deep .mat-tab-label-active {
+  background-color: #f8f9fa;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+}
+
+.app-details-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.detail-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.detail-label {
+  flex: 0 0 35%;
+  font-weight: 700;
+  color: #333;
+}
+.detail-value {
+  flex: 1 1 60%;
+  color: #555;
+}
+
+@media (max-width: 576px) {
+  .detail-label {
+    flex-basis: 100%;
+    margin-bottom: 0.25rem;
+  }
+  .detail-value {
+    flex-basis: 100%;
+  }
+}

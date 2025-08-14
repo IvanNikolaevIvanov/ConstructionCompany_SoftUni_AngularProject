@@ -344,5 +344,26 @@ namespace ConstructionCompany.API.Controllers
                 throw;
             }
         }
+
+        [HttpGet("GetAllApplicationsByStatus/{statusId:int}")]
+        [Authorize(Roles = "Supervisor")]
+        public async Task<IActionResult> GetAllApplicationsByStatus(int statusId)
+        {
+            try
+            {
+                var supervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (supervisorId == null) return Unauthorized();
+
+                var listAllAppsByStatus = await appService.GetAllApplicationsByStatus(statusId);
+
+                return Ok(listAllAppsByStatus);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
     }
 }
