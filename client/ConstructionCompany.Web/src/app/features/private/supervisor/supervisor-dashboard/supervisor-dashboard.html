@@ -3,17 +3,7 @@
     <h2 class="mb-4">Supervisor Dashboard</h2>
 
     <!-- Loading Overlay -->
-    <div
-      class="loading-overlay"
-      *ngIf="isLoading"
-      style="
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-      "
-    >
+    <div class="loading-overlay" *ngIf="isLoading">
       <mat-spinner diameter="60"></mat-spinner>
     </div>
 
@@ -28,7 +18,7 @@
               mat-table
               [dataSource]="applicationsDataSource"
               matSort
-              #createdSort="matSort"
+              #applicationsSort="matSort"
               class="mat-elevation-z2 full-width-table"
             >
               <!-- Title Column -->
