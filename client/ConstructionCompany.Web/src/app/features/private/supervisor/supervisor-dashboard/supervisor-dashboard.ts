@@ -166,5 +166,34 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
     });
   }
 
-  approve(appId: number) {}
+  approve(appId: number) {
+    console.log('Approve clicked for id:', appId);
+    this.appService.approveApplication(appId).subscribe({
+      next: (res) => {
+        this.snackBar.openFromComponent(CustomSnackbar, {
+          data: {
+            message: `Application was approved!`,
+            type: 'success',
+          },
+          duration: 3000,
+          panelClass: ['custom-snackbar'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        this.loadTables();
+      },
+      error: (err) => {
+        this.snackBar.openFromComponent(CustomSnackbar, {
+          data: {
+            message: err.error?.message || 'Failed to approve application',
+            type: 'error',
+          },
+          duration: 3000,
+          panelClass: ['custom-snackbar'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      },
+    });
+  }
 }

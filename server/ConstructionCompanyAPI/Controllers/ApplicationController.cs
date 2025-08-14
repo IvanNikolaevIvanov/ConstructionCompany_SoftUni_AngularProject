@@ -27,18 +27,6 @@ namespace ConstructionCompany.API.Controllers
 
         //Agent
 
-        //[HttpGet("GetCreatedApplications")]
-        //[Authorize(Roles = "Agent")]
-        //public async Task<IActionResult> GetCreatedApplications() 
-        //{
-        //    var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (agentId == null) return Unauthorized();
-
-        //    var listOfCreatedAppsByAgentId = await appService.GetCreatedApplicationsByAgentIdAsync(agentId);
-
-        //    return Ok(listOfCreatedAppsByAgentId);
-        //}
-
         [HttpGet("GetApplicationsByStatus/{statusId:int}")]
         [Authorize(Roles = "Agent")]
         public async Task<IActionResult> GetApplicationsByStatus(int statusId)
@@ -59,18 +47,6 @@ namespace ConstructionCompany.API.Controllers
             }
             
         }
-
-        //[HttpGet("GetSubmittedApplications")]
-        //[Authorize(Roles = "Agent")]
-        //public async Task<IActionResult> GetSubmittedApplications() 
-        //{
-        //    var agentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (agentId == null) return Unauthorized();
-
-        //    var listOfSubmittedAppsByAgentId = await appService.GetSubmittedApplicationsByAgentIdAsync(agentId);
-
-        //    return Ok(listOfSubmittedAppsByAgentId);
-        //}
 
         [HttpPost("Create")]
         [Authorize(Roles = "Agent")]
@@ -344,6 +320,29 @@ namespace ConstructionCompany.API.Controllers
                 throw;
             }
             
+        }
+
+        [HttpGet("ApproveApplication/{appId:int}")]
+        [Authorize(Roles = "Supervisor")]
+        public async Task<IActionResult> ApproveApplication([FromRoute] int appId)
+        {
+            try
+            {
+                var supervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (supervisorId == null) return Unauthorized();
+
+                var appExists = await appService.ApplicationExist(appId);
+                if (appExists == false) return NotFound();
+
+                var result = await this.appService.ApproveApplication(appId);
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

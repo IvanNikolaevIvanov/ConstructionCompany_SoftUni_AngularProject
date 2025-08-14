@@ -98,8 +98,4 @@ export class ApplicationService {
   approveApplication(appId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/ApproveApplication/${appId}`);
   }
-
-  finalizeApplication(appId: number): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/FinalizeApplication/${appId}`);
-  }
 }

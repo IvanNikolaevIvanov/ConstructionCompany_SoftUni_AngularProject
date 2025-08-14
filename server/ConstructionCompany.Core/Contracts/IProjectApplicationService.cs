@@ -41,5 +41,7 @@ namespace ConstructionCompany.Core.Contracts
         Task<byte[]> PrintApplication(int appId);
 
         Task<int> ReturnApplication(int appId, string feedbackText);
+
+        Task<int> ApproveApplication(int appId);
     }
 }
