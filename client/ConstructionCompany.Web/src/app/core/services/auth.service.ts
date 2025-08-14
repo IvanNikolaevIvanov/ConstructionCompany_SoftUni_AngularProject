@@ -34,6 +34,8 @@ export class AuthService {
 
   readonly isLoggedIn = computed(() => this.loginData() !== null);
 
+  readonly userId = computed(() => this.loginData()?.userId);
+
   /** Login using cookie-based JWT */
   login(
     email: string,

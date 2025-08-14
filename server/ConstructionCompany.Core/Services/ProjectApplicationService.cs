@@ -1,5 +1,6 @@
 ﻿using ConstructionCompany.Core.Contracts;
 using ConstructionCompany.Core.Models;
+using ConstructionCompany.Core.Utilities;
 using ConstructionCompany.Infrastructure.Data.Common;
 using ConstructionCompany.Infrastructure.Enumerations;
 using Microsoft.AspNetCore.Identity;
@@ -663,25 +664,36 @@ namespace ConstructionCompany.Core.Services
             }
         }
 
-        public async Task<List<ProjectApplicationDetailsModel>> GetAllApplicationsByStatus(int statusId)
+        public async Task<PagedResult<ProjectApplicationDetailsModel>> GetAllApplicationsByStatus(int statusId, int page, int size)
         {
 
             try
             {
-                var appsInDb = await repository.AllReadOnly<ProjectApplication>()
-                                                .Where(app => ((int)app.Status) == statusId)
-                                                .OrderByDescending(app => app.Id)
-                                                .ToListAsync();
-                var appsToReturn = new List<ProjectApplicationDetailsModel>();
+                IQueryable<ProjectApplication> query = repository.AllReadOnly<ProjectApplication>();
 
-                foreach (var app in appsInDb)
+                if (statusId != (int)ApplicationStatus.All)
+                    query = query.Where(app => (int)app.Status == statusId);
+
+                query = query.OrderByDescending(app => app.Id);
+
+                var totalCount = await query.CountAsync();
+
+                var pagedEntities = await query
+                                 .Skip((page - 1) * size)
+                                 .Take(size)
+                                 .ToListAsync();
+
+                var detailsList = new List<ProjectApplicationDetailsModel>();
+
+                foreach (var entity in pagedEntities)
                 {
-                    var appToAdd = await this.GetApplicationByIdAsync(app.Id);
-                    appsToReturn.Add(appToAdd);
+                    var details = await this.GetApplicationByIdAsync(entity.Id);
+                    detailsList.Add(details);
                 }
+                
 
                 //Get Agents for each app
-                foreach (var app in appsToReturn)
+                foreach (var app in detailsList)
                 {
                     var agent = new ApplicationUser();
                     if (app.AgentId != null)
@@ -698,7 +710,7 @@ namespace ConstructionCompany.Core.Services
                 if (statusId > 0)
                 {
                     //Get Supervisors for each app
-                    foreach (var app in appsToReturn)
+                    foreach (var app in detailsList)
                     {
                         var supervisor = new ApplicationUser();
                         if (app.SupervisorId != null)
@@ -715,7 +727,7 @@ namespace ConstructionCompany.Core.Services
 
 
 
-                return appsToReturn;
+                return new PagedResult<ProjectApplicationDetailsModel>(detailsList, totalCount, page, size);
             }
             catch (Exception)
             {
@@ -723,6 +735,8 @@ namespace ConstructionCompany.Core.Services
             }
 
         }
+
+
 
         private byte[] GenerateDocument(ProjectApplication appToPrint, string agentName, string supervisorName)
         {

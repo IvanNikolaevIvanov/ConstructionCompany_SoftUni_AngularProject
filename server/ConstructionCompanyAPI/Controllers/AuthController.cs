@@ -99,7 +99,8 @@ namespace ConstructionCompany.API.Controllers
             {
                 token,
                 expires = DateTime.UtcNow.AddHours(1),
-                role = roles.FirstOrDefault()
+                role = roles.FirstOrDefault(),
+                userId = user.Id
             });
         }
 

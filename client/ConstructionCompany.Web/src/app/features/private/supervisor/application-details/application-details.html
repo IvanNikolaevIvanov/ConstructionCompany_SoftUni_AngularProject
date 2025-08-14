@@ -152,9 +152,12 @@
           <p>No files attached.</p>
         </ng-template>
       </div>
-      <div>
+      <div class="d-flex gap-2">
         <button type="button" class="btn btn-info" (click)="printApplication()">
-          Print
+          <mat-icon>print</mat-icon> Print
+        </button>
+        <button type="button" class="btn btn-danger" (click)="backClick()">
+          <mat-icon>arrow_back</mat-icon> Back
         </button>
       </div>
     </div>

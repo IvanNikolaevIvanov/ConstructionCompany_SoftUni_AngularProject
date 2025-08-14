@@ -345,16 +345,16 @@ namespace ConstructionCompany.API.Controllers
             }
         }
 
-        [HttpGet("GetAllApplicationsByStatus/{statusId:int}")]
+        [HttpGet("GetAllApplicationsByStatus/{statusId:int}/{page:int}/{size:int}")]
         [Authorize(Roles = "Supervisor")]
-        public async Task<IActionResult> GetAllApplicationsByStatus(int statusId)
+        public async Task<IActionResult> GetAllApplicationsByStatus(int statusId, int page, int size)
         {
             try
             {
                 var supervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (supervisorId == null) return Unauthorized();
 
-                var listAllAppsByStatus = await appService.GetAllApplicationsByStatus(statusId);
+                var listAllAppsByStatus = await appService.GetAllApplicationsByStatus(statusId, page, size);
 
                 return Ok(listAllAppsByStatus);
             }

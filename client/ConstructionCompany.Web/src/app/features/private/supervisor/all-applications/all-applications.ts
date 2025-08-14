@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { SliceDescriptionPipe } from 'app/shared/pipes';
@@ -14,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ProjectApplicationModel } from 'app/models';
-import { ApplicationService } from 'app/core/services';
+import { ApplicationService, AuthService } from 'app/core/services';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +18,11 @@ import { CreateFeedback } from '../create-feedback/create-feedback';
 import { CustomSnackbar } from '../../agent/custom-snackbar/custom-snackbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 
 @Component({
   selector: 'all-applications',
@@ -39,6 +38,7 @@ import { MatSelectModule } from '@angular/material/select';
     SliceDescriptionPipe,
     MatFormFieldModule,
     MatSelectModule,
+    MatPaginatorModule,
   ],
   templateUrl: './all-applications.html',
   styleUrl: './all-applications.scss',
@@ -50,6 +50,9 @@ export class AllApplications implements OnInit, AfterViewInit {
     'description',
     'price',
     'clientBank',
+    'status',
+    'agentName',
+    'supervisorName',
     'actions',
   ];
 
@@ -71,42 +74,104 @@ export class AllApplications implements OnInit, AfterViewInit {
   applicationsDataSource = new MatTableDataSource<ProjectApplicationModel>([]);
   selectedRow?: ProjectApplicationModel;
 
+  pageSize: number = 5;
+  pageIndex: number = 0;
+  totalItems: number = 0;
+
   @ViewChild('applicationsSort') applicationsSort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private appService: ApplicationService,
+    private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    this.loadTables(this.status);
+    const state = history.state;
+
+    if (state && state.status !== undefined) {
+      // Restore previous state if coming back from details page
+      this.pageIndex = state.pageIndex ?? 0;
+      this.pageSize = state.pageSize ?? 5;
+      this.status = state.status;
+      this.selectedRow = state.application ?? undefined;
+    }
+
+    this.loadTables(state.application?.id);
   }
 
   ngAfterViewInit(): void {
-    // Assign MatSort after the view is initialized
     this.applicationsDataSource.sort = this.applicationsSort;
+    // this.applicationsDataSource.paginator = this.paginator;
   }
 
   onStatusChange(newStatus: ApplicationStatus) {
     this.status = newStatus;
-    this.loadTables(newStatus);
+    this.pageIndex = 0;
+    this.paginator.firstPage();
+    this.loadTables();
   }
 
-  loadTables(status: ApplicationStatus) {
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.loadTables(); // fetch or slice data accordingly
+  }
+
+  // onPageSizeSelection(newSize: number) {
+  //   this.pageSize = newSize;
+  //   this.pageIndex = 0; // Reset to first page
+  //   setTimeout(() => {
+  //     this.paginator.firstPage();
+  //   }); // Ensure paginator reflects the change
+  //   this.paginator._changePageSize(newSize); // Refresh paginator properly
+  // }
+
+  loadTables(selectedAppId?: number) {
     this.isLoading = true;
-    console.log(`Selected Status is: ${ApplicationStatus[status].toString()}`);
-    this.appService.getAllApplicationsByStatus(status).subscribe({
-      next: (res) => {
-        this.applicationsDataSource.data = res;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error Loading applications', err);
-        this.isLoading = false;
-      },
-    });
+    console.log(
+      `Selected Status is: ${ApplicationStatus[this.status].toString()}`,
+    );
+    this.appService
+      .getAllApplicationsByStatus(
+        this.status,
+        this.pageIndex + 1,
+        this.pageSize,
+      )
+      .subscribe({
+        next: (res) => {
+          this.applicationsDataSource.data = res.items;
+          this.totalItems = res.totalCount;
+          // this.pageSize = res.pageSize;
+          // this.pageIndex = res.page - 1;
+
+          console.log(`Page index is: ${this.pageIndex}`);
+          console.log(`Page size is: ${this.pageSize}`);
+          console.log(`Total Items count is: ${this.totalItems}`);
+          console.log(`Current Items count is: ${res.items.length}`);
+
+          //Check if total items have decreased and reset paginator if necessary
+          // if (res.items.length < this.pageSize * this.pageIndex) {
+          //   this.pageIndex = 0;
+          //   this.paginator.firstPage();
+          // }
+
+          if (selectedAppId) {
+            this.selectedRow = res.items.find(
+              (app) => app.id === selectedAppId,
+            );
+          }
+
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error Loading applications', err);
+          this.isLoading = false;
+        },
+      });
   }
 
   onRowClick(row: ProjectApplicationModel) {
@@ -114,9 +179,20 @@ export class AllApplications implements OnInit, AfterViewInit {
 
     console.log(`Selected row is: ${this.selectedRow}`);
   }
+
+  isSupervisor(app: ProjectApplicationModel): boolean {
+    const currentUserId = this.authService.userId;
+    return app.supervisorId === currentUserId();
+  }
+
   viewDetails() {
     this.router.navigate(['supervisor/application-details'], {
-      state: { application: this.selectedRow },
+      state: {
+        application: this.selectedRow,
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+        status: this.status,
+      },
     });
   }
 
@@ -141,7 +217,7 @@ export class AllApplications implements OnInit, AfterViewInit {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            this.loadTables(this.status);
+            this.loadTables();
           },
           error: (err) => {
             this.snackBar.openFromComponent(CustomSnackbar, {
@@ -174,7 +250,7 @@ export class AllApplications implements OnInit, AfterViewInit {
           verticalPosition: 'top',
         });
         this.selectedRow = undefined;
-        this.loadTables(this.status);
+        this.loadTables();
       },
       error: (err) => {
         this.snackBar.openFromComponent(CustomSnackbar, {

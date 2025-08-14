@@ -5,7 +5,9 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { ApplicationStatus } from 'app/enums/enums';
 
 @Component({
   selector: 'application-details',
@@ -17,6 +19,23 @@ export class ApplicationDetails implements OnInit, OnDestroy {
   application?: ProjectApplicationModel;
   files: ApplicationFileModel[] = [];
   appService = inject(ApplicationService);
+
+  pageIndex!: number;
+  pageSize!: number;
+  status!: ApplicationStatus;
+
+  constructor(
+    private router: Router,
+    private location: Location,
+  ) {
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state) {
+      this.application = state['application'];
+      this.pageIndex = state['pageIndex'];
+      this.pageSize = state['pageSize'];
+      this.status = state['status'];
+    }
+  }
 
   ngOnInit(): void {
     const navigation = window.history.state;
@@ -72,6 +91,18 @@ export class ApplicationDetails implements OnInit, OnDestroy {
       a.click();
       URL.revokeObjectURL(url);
       a.remove();
+    });
+  }
+
+  backClick() {
+    //this.location.back();
+    this.router.navigate(['/supervisor/all-applications'], {
+      state: {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+        status: this.status,
+        application: this.application,
+      },
     });
   }
 }

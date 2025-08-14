@@ -1,4 +1,5 @@
 ﻿using ConstructionCompany.Core.Models;
+using ConstructionCompany.Core.Utilities;
 
 namespace ConstructionCompany.Core.Contracts
 {
@@ -44,6 +45,6 @@ namespace ConstructionCompany.Core.Contracts
 
         Task<int> ApproveApplication(int appId);
 
-        Task<List<ProjectApplicationDetailsModel>> GetAllApplicationsByStatus(int statusId);
+        Task<PagedResult<ProjectApplicationDetailsModel>> GetAllApplicationsByStatus(int statusId, int page, int size);
     }
 }

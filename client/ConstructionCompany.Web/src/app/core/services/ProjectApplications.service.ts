@@ -7,6 +7,7 @@ import {
 } from 'app/models';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { PagedResult } from '../interfaces/PageResult';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
@@ -101,9 +102,11 @@ export class ApplicationService {
 
   getAllApplicationsByStatus(
     statusId: number,
-  ): Observable<ProjectApplicationModel[]> {
-    return this.http.get<ProjectApplicationModel[]>(
-      `${this.apiUrl}/getAllApplicationsByStatus/${statusId}`,
+    page: number,
+    size: number,
+  ): Observable<PagedResult<ProjectApplicationModel>> {
+    return this.http.get<PagedResult<ProjectApplicationModel>>(
+      `${this.apiUrl}/GetAllApplicationsByStatus/${statusId}/${page}/${size}`,
     );
   }
 }
