@@ -17,9 +17,9 @@ export class Register {
   onSubmit(form: NgForm): void {
     if (form.invalid) return;
 
-    const { email, password } = form.value;
+    const { firstName, lastName, email, password } = form.value;
 
-    this.auth.register(email, password, () => {
+    this.auth.register(firstName, lastName, email, password, () => {
       this.router.navigate(['/agent/dashboard']);
     });
   }

@@ -40,6 +40,8 @@ namespace ConstructionCompany.API.Controllers
 
             var user = new ApplicationUser
             {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
                 UserName = dto.Email,
                 Email = dto.Email,
             };
@@ -61,7 +63,8 @@ namespace ConstructionCompany.API.Controllers
             {
                 token,
                 expires = DateTime.UtcNow.AddHours(1),
-                role = roles.FirstOrDefault()
+                role = roles.FirstOrDefault(),
+                userId = user.Id
             });
 
         }

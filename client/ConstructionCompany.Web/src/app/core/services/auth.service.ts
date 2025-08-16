@@ -75,9 +75,17 @@ export class AuthService {
     //   });
   }
 
-  register(email: string, password: string, onSuccess?: () => void): void {
+  register(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    onSuccess?: () => void,
+  ): void {
     this.http
       .post<LoginResponse>(`${environment.apiUrl}/Auth/register`, {
+        firstName,
+        lastName,
         email,
         password,
       })
