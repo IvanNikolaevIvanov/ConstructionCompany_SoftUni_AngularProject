@@ -64,7 +64,14 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadTables();
+    const state = history.state;
+
+    if (state && state.status !== undefined) {
+      // Restore previous state if coming back from details page
+      this.selectedRow = state.application ?? undefined;
+    }
+
+    this.loadTables(state.application?.id);
   }
 
   ngAfterViewInit(): void {
@@ -72,7 +79,7 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
     this.applicationsDataSource.sort = this.applicationsSort;
   }
 
-  loadTables() {
+  loadTables(selectedAppId?: number) {
     this.isLoading = true;
 
     this.appService
@@ -80,6 +87,11 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
       .subscribe({
         next: (res) => {
           this.applicationsDataSource.data = res;
+
+          if (selectedAppId) {
+            this.selectedRow = res.find((app) => app.id === selectedAppId);
+          }
+
           this.isLoading = false;
         },
         error: (err) => {
@@ -123,7 +135,10 @@ export class SupervisorDashboard implements OnInit, AfterViewInit {
 
   viewDetails() {
     this.router.navigate(['supervisor/application-details'], {
-      state: { application: this.selectedRow },
+      state: {
+        from: 'dashboard',
+        application: this.selectedRow,
+      },
     });
   }
 

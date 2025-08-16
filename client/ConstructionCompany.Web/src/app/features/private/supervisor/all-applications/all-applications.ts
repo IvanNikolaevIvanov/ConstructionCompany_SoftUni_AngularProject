@@ -188,6 +188,7 @@ export class AllApplications implements OnInit, AfterViewInit {
   viewDetails() {
     this.router.navigate(['supervisor/application-details'], {
       state: {
+        from: 'allApplications',
         application: this.selectedRow,
         pageIndex: this.pageIndex,
         pageSize: this.pageSize,
