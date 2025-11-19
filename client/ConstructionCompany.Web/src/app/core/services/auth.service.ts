@@ -65,14 +65,6 @@ export class AuthService {
   // Clear auth
   logout(): void {
     this.loginData.set(null);
-    // this.http
-    //   .post(`${environment.apiUrl}/Auth/logout`, {}, { withCredentials: true })
-    //   .subscribe({
-    //     next: () => {
-    //       this.loginData.set(null); // clear UI state
-    //     },
-    //     error: (err) => console.error('Logout failed', err),
-    //   });
   }
 
   register(

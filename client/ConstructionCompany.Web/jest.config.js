@@ -7,6 +7,7 @@ export default {
   },
   moduleNameMapper: {
     "\\.(html|scss)$": "jest-transform-stub",
+    "^environments/(.*)$": "<rootDir>/src/environments/$1",
   },
   moduleFileExtensions: ["ts", "js", "html", "scss"],
   testMatch: ["**/+(*.)+(spec).+(ts)"],

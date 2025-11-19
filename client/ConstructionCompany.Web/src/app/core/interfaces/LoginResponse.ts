@@ -1,6 +1,6 @@
 export interface LoginResponse {
   token: string;
-  role: string; // still useful for UI
+  role: string;
   userId: string;
   expires?: string;
 }
