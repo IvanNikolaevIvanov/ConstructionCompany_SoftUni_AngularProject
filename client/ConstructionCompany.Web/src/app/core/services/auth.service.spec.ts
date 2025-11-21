@@ -76,4 +76,60 @@ describe('AuthService', () => {
     expect(service.role()).toBeUndefined();
     expect(service.userId()).toBeUndefined();
   });
+
+  it('should perform login and update loginData on success', () => {
+    // Arrange
+    const mockResponse: LoginResponse = {
+      token: 'jwt123',
+      userId: '1',
+      role: 'admin',
+    };
+
+    const successSpy = jest.fn();
+
+    // Act
+    service.login('test@example.com', 'password', successSpy);
+
+    // Assert
+    const req = httpMock.expectOne('http://localhost:5247/api/Auth/login');
+    expect(req.request.method).toBe('POST');
+
+    //Fake backend success
+    req.flush(mockResponse);
+
+    // LoginData should be updated
+    expect(service['loginData']()).toEqual(mockResponse);
+
+    // computed signals should update
+    expect(service.isLoggedIn()).toBe(true);
+    expect(service.token()).toBe('jwt123');
+    expect(service.role()).toBe('admin');
+    expect(service.userId()).toBe('1');
+
+    // onSuccess callback should be called
+    expect(successSpy).toHaveBeenCalled();
+  });
+
+  it('should handle login error and call onError callback', () => {
+    // Arrange
+    const errorSpy = jest.fn();
+
+    const errorMessage = 'Invalid credentials';
+    const errorResponse = {
+      status: 401,
+      statusText: 'Unauthorized',
+      error: { message: errorMessage },
+    };
+
+    // Act
+    service.login('wrong@test.com', 'wrongpassword', undefined, errorSpy);
+
+    const req = httpMock.expectOne('http://localhost:5247/api/Auth/login');
+    req.flush(errorResponse.error, errorResponse);
+
+    // Assert
+    expect(service['loginData']()).toBeNull(); // loginData should remain null
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(errorMessage);
+  });
 });
