@@ -5,6 +5,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { LoginResponse } from '../interfaces/LoginResponse';
+import { environment } from 'environments/environment';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -131,5 +132,66 @@ describe('AuthService', () => {
     expect(service['loginData']()).toBeNull(); // loginData should remain null
     expect(errorSpy).toHaveBeenCalledTimes(1);
     expect(errorSpy).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('should perform register and update loginData on success', () => {
+    // Arrange
+    const mockResponse: LoginResponse = {
+      token: 'register-token',
+      role: 'user',
+      userId: '99',
+    };
+
+    const successSpy = jest.fn();
+
+    // Act
+    service.register(
+      'First',
+      'Last',
+      'first@example.com',
+      'password123',
+      successSpy,
+    );
+
+    const req = httpMock.expectOne(`http://localhost:5247/api/Auth/register`);
+    expect(req.request.method).toBe('POST');
+
+    //Fake backend success
+    req.flush(mockResponse);
+
+    //Assert
+    expect(service['loginData']()).toEqual(mockResponse);
+    expect(service.isLoggedIn()).toBe(true);
+    expect(service.token()).toBe('register-token');
+    expect(service.role()).toBe('user');
+    expect(service.userId()).toBe('99');
+
+    expect(successSpy).toHaveBeenCalled();
+  });
+
+  it('should throw error on register failure', () => {
+    // Arrange
+    const successSpy = jest.fn();
+
+    const errorResponse = {
+      status: 500,
+      statusText: 'Server error',
+    };
+
+    // Act
+    service.register(
+      'First',
+      'Last',
+      'first@example.com',
+      'password123',
+      successSpy,
+    );
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/Auth/register`);
+    req.flush({ message: 'Email already exists' }, errorResponse);
+
+    //Assert
+    expect(successSpy).not.toHaveBeenCalled();
+    expect(service.isLoggedIn()).toBe(false);
   });
 });
